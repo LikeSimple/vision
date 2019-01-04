@@ -6,6 +6,17 @@ spring:
 spring:
   profiles: dev
   datasource:
-    driver-class-name:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 1234
+    url: jdbc:mysql://localhost:3306/vision?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&autoReconnect=true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  swagger:
+    show: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
