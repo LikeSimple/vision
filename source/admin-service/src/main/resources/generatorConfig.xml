@@ -36,7 +36,7 @@
 
         <javaClientGenerator targetPackage="org.vision.admin_service.persistence.mapper"
                              targetProject="src/main/java"
-                             type="MIXEDMAPPER"/>
+                             type="ANNOTATEDMAPPER"/>
 
         <table tableName="oauth_client_details"
                enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"

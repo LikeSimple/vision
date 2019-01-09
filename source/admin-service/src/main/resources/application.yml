@@ -20,3 +20,43 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+swagger:
+  enabled: true
+  title: swagger-vision-admin
+  description: vision-admin api docs
+  version: 0.1-SNAPSHOT
+  license:
+  licenseUrl:
+  termsOfServiceUrl:
+  contact:
+    name: Jimmy Xu
+    url:
+    email: 292208860@qq.com
+  base-package: org.vision.admin_service.controller
+  # 分组策略
+#  docket:
+#    apiForMe:
+#      title: Myself
+#      description: 开放给自己的接口
+#      base-path: /api/myself/**
+#    apiForOthers:
+#      title: Others
+#      description: 作为其他人的接口
+#      base-path: /api/others/**
+  # 公共参数
+#  global-operation-parameters[0]:
+#    name: TOKEN
+#    description: 鉴权
+#    modelRef: string
+#    parameterType: header
+#    # 公共参数写成requierd, 对于不需要登录的接口随便写一个字符串即可
+#    required: true
+#  # 通用返回错误码
+#  apply-default-response-messages: true
+#  global-response-message.get[0]:
+#    code: 401
+#    message: 401错误
+#  global-response-message.get[1]:
+#    code: 500
+#    message: 后端错误
+#    modelRef: ERROR

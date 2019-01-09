@@ -1,4 +1,4 @@
-package org.vision.admin_service;
+package org.vision.service.admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
