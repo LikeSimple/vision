@@ -1,8 +1,6 @@
 package org.vision.service.admin.common;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -31,15 +29,15 @@ import java.util.Set;
 /**
  * 异常处理类
  */
-@RestControllerAdvice
+@RestControllerAdvice("org.vision.service.admin.controller")
 @Slf4j
 public class CommonExceptionAdvice {
-  
-  @InitBinder
-  public void initBinder(WebDataBinder binder) {
+
     /**
      * 自动转换日期类型的字段格式
      */
+  @InitBinder
+  public void initBinder(WebDataBinder binder) {
     binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
   }
 
@@ -47,24 +45,10 @@ public class CommonExceptionAdvice {
    * 400 - Bad Request
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MissingServletRequestParameterException.class)
-  public ResponseData<Object> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("参数解析失败");
-    return responseData;
-  }
-
-  /**
-   * 400 - Bad Request
-   */
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseData<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("参数解析失败");
-    return responseData;
+  @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
+  public ResponseData<Object> handleHttpMessageNotReadableException(Exception e) {
+      log.error("参数解析失败", e);
+      return new ResponseData<>(-1, "参数解析失败");
   }
 
   /**
@@ -74,16 +58,7 @@ public class CommonExceptionAdvice {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseData<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
     log.error("参数验证失败", e);
-    BindingResult result = e.getBindingResult();
-    FieldError error = result.getFieldError();
-    String field = error.getField();
-    String code = error.getDefaultMessage();
-    String message = String.format("%s:%s", field, code);
-
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("参数验证失败: " + message);
-    return responseData;
+      return new ResponseData<>(-1, "参数绑定失败" + parseErrorMessage(e.getBindingResult()));
 
   }
 
@@ -94,18 +69,28 @@ public class CommonExceptionAdvice {
   @ExceptionHandler(BindException.class)
   public ResponseData<Object> handleBindException(BindException e) {
     log.error("参数绑定失败", e);
-    BindingResult result = e.getBindingResult();
-    FieldError error = result.getFieldError();
-    String field = error.getField();
-    String code = error.getDefaultMessage();
-    String message = String.format("%s:%s", field, code);
-
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("参数绑定失败: " + message);
-    return responseData;
+      return new ResponseData<>(-1, "参数绑定失败" + parseErrorMessage(e.getBindingResult()));
   }
 
+    private String parseErrorMessage(BindingResult result) {
+    FieldError error = result.getFieldError();
+        String field = null;
+        try {
+            field = error.getField();
+
+        } catch (NullPointerException e) {
+            if (null == field) field = "";
+        }
+
+        String message = null;
+        try {
+            message = error.getDefaultMessage();
+        } catch (NullPointerException e) {
+            if (null == message) message = "";
+        }
+
+        return String.format("%s:%s", field, message);
+  }
 
   /**
    * 400 - Bad Request
@@ -114,14 +99,12 @@ public class CommonExceptionAdvice {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseData<Object> handleServiceException(ConstraintViolationException e) {
     log.error("参数验证失败", e);
+
     Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
     ConstraintViolation<?> violation = violations.iterator().next();
     String message = violation.getMessage();
 
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("参数验证失败: " + message);
-    return responseData;
+      return new ResponseData<>(-1, String.format("参数验证失败: %s", message));
   }
 
   /**
@@ -132,11 +115,7 @@ public class CommonExceptionAdvice {
   public ResponseData<Object> handleValidationException(ValidationException e) {
     log.error("参数验证失败", e);
 
-    e.getMessage();
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("参数验证失败：" + e);
-    return responseData;
+      return new ResponseData<>(-1, String.format("参数验证失败: %s", e.getMessage()));
   }
 
   /**
@@ -145,12 +124,10 @@ public class CommonExceptionAdvice {
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseData<Object> noHandlerFoundException(NoHandlerFoundException e) {
+
     log.error("Not Found", e);
 
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("请求资源不存在");
-    return responseData;
+      return new ResponseData<>(-1, "请求资源不存在");
   }
 
 
@@ -161,10 +138,7 @@ public class CommonExceptionAdvice {
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseData<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
     log.error("不支持当前请求方法", e);
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("请求方法不正确");
-    return responseData;
+      return new ResponseData<>(-1, "请求方法不正确");
   }
 
   /**
@@ -175,10 +149,7 @@ public class CommonExceptionAdvice {
   public ResponseData<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
     log.error("不支持当前媒体类型", e);
 
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("不支持当前媒体类型");
-    return responseData;
+      return new ResponseData<>(-1, "不支持当前媒体类型");
   }
 
   /**
@@ -188,33 +159,16 @@ public class CommonExceptionAdvice {
   @ExceptionHandler(BusinessException.class)
   public ResponseData<Object> handleServiceException(BusinessException e) {
     log.error("业务逻辑异常", e);
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("业务逻辑异常：" + e.getMessage());
-    return responseData;
+      return new ResponseData<>(-1, String.format("业务逻辑异常：%s", e.getMessage()));
   }
 
   /**
    * 获取其它异常。包括500
    */
-  @ExceptionHandler(value = Exception.class)
-  public ResponseData<Object> defaultErrorHandler(Exception e) {
-    log.error("Exception", e);
-
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("发生异常：未知错误");
-    return responseData;
-  }
-
-  @ExceptionHandler(value = Throwable.class)
+  @ExceptionHandler({Exception.class, Throwable.class})
   public ResponseData<Object> defaultErrorHandler(Throwable e) {
-    ResponseData<Object> responseData = new ResponseData<>();
-    responseData.setCode(-1);
-    responseData.setMessage("发生异常：未知错误");
-    return responseData;
+      log.error("Exception", e);
+      return new ResponseData<>(-1, "发生异常：未知错误");
   }
-
-
 
 }
