@@ -1,22 +1,28 @@
 package org.vision.service.admin.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.service.AdminProfile;
+import org.vision.service.admin.service.CurrentAdminProfile;
 import org.vision.service.admin.service.SystemAdminService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/system-admin")
+@RequestMapping("/api/admin")
 public class SystemAdminController {
 
     private SystemAdminService systemAdminService;
 
     public SystemAdminController(SystemAdminService systemAdminService) {
         this.systemAdminService = systemAdminService;
+    }
+
+    @GetMapping("/profile")
+    public CurrentAdminProfile getCurrentAdminProfile() {
+        VisionUserDetail userDetail = (VisionUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return systemAdminService.getProfileById(userDetail.getId());
     }
 
     @PostMapping("/list")
