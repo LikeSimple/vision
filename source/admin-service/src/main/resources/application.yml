@@ -64,4 +64,5 @@ swagger:
 #    code: 500
 #    message: 后端错误
 #    modelRef: ERROR
-
+server:
+  port: 8081

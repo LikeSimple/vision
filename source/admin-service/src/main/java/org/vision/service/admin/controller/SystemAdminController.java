@@ -2,6 +2,7 @@ package org.vision.service.admin.controller;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.service.AdminProfile;
 import org.vision.service.admin.service.CurrentAdminProfile;
@@ -10,7 +11,7 @@ import org.vision.service.admin.service.SystemAdminService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/user")
 public class SystemAdminController {
 
     private SystemAdminService systemAdminService;
@@ -20,16 +21,16 @@ public class SystemAdminController {
     }
 
     @GetMapping("/profile")
-    public CurrentAdminProfile getCurrentAdminProfile() {
+    public ResponseData<CurrentAdminProfile> getCurrentAdminProfile() {
         VisionUserDetail userDetail = (VisionUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return systemAdminService.getProfileById(userDetail.getId());
+        return new ResponseData<>(systemAdminService.getProfileById(userDetail.getId()));
     }
 
     @PostMapping("/list")
-    public List<? extends AdminProfile> getAdminProfileList(
+    public ResponseData<List<? extends AdminProfile>> getAdminProfileList(
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize
     ) {
-        return systemAdminService.getAdminProfileList(pageNumber, pageSize);
+        return new ResponseData<>(systemAdminService.getAdminProfileList(pageNumber, pageSize));
     }
 }

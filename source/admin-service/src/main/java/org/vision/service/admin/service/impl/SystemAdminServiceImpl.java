@@ -98,25 +98,10 @@ public class SystemAdminServiceImpl implements SystemAdminService {
         }
 
         @Override
-        public List<AuthorityItem> getAuthorities() {
-            return systemAuthorities.parallelStream().map(AuthorityItemImpl::new).collect(Collectors.toList());
+        public List<String> getAuthorities() {
+            return systemAuthorities.parallelStream().map(SystemAuthority::getName).collect(Collectors.toList());
         }
 
     }
 
-    private class AuthorityItemImpl implements AuthorityItem, Serializable {
-
-        private static final long serialVersionUID = -2279186754420891490L;
-
-        private SystemAuthority systemAuthority;
-
-        private AuthorityItemImpl(SystemAuthority systemAuthority) {
-            this.systemAuthority = systemAuthority;
-        }
-
-        @Override
-        public String getName() {
-            return systemAuthority.getName();
-        }
-    }
 }

@@ -1,42 +1,62 @@
 import Vue from 'vue'
-
-import Cookies from 'js-cookie'
-
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
-import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-
-import '@/styles/index.scss' // global css
-
-import App from './App'
-import store from './store'
+import App from './App.vue'
 import router from './router'
-
-import i18n from './lang' // Internationalization
-import './icons' // icon
-import './errorLog' // error log
-import './permission' // permission control
-import './mock' // simulation data
-
-import * as filters from './filters' // global filters
-
-Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
-  i18n: (key, value) => i18n.t(key, value)
-})
-
-// register global utility filters.
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
+import axios from 'axios';
+import ElementUI from 'element-ui';
+import store from './store'
+import { USER_GET_PROFILE } from './store/mutation-types'
+import { getToken } from './util/token'
+import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
+// import '../static/css/theme-green/index.css';       // 浅绿色主题
+import './assets/css/icon.css';
+import './components/common/directives';
+import "babel-polyfill";
 
 Vue.config.productionTip = false
+Vue.use(ElementUI, {
+    size: 'small'
+});
+Vue.prototype.$axios = axios;
+
+function hasPermission(authorities, permissionAuthorities) {
+    if (authorities.indexOf('ROLE_ADMIN') >= 0) return true
+    if (!permissionAuthorities) return true
+    return authorities.some( authority => permissionAuthorities.indexOf(authority) >= 0)
+}
+
+//使用钩子函数对路由进行权限跳转
+router.beforeEach((to, from, next) => {
+    const token = getToken();
+    if (!token && to.path !== '/login') {
+        next('/login');
+    } else if (token && store.state.user.authorities.length === 0) {
+        //GET USERINFO
+        store.dispatch(USER_GET_PROFILE).then( // 获取用户数据
+            // 动态增加路由
+            // next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+            // ,set the replace: true so the navigation will not leave a history record
+            to.path == '/login' ? next('/dashboard') : next()
+        ).catch(error => {
+            // Logout
+            console.log(error)
+        })
+    } else if (to.meta.permission) {
+        hasPermission(store.state.user.authorities, to.meta.permissionAuthorities) ? next(): next('/403')
+    } else {
+        // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
+        if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
+            Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {
+                confirmButtonText: '确定'
+            });
+        } else {    
+            next();
+        }
+    }
+})
+
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App)
-})
+    router,
+    store,
+    render: h => h(App)
+}).$mount('#app')

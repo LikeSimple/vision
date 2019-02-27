@@ -1,0 +1,3 @@
+export const USER_LOGIN = 'USER_LOGIN'
+export const USER_GET_PROFILE = 'USER_GET_PROFILE'
+export const USER_WEB_LOGOUT = 'USER_WEB_LOGOUT'

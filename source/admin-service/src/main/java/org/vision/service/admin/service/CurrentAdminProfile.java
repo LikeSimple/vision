@@ -12,6 +12,6 @@ public interface CurrentAdminProfile {
 
     Byte getGender();
 
-    List<AuthorityItem> getAuthorities();
+    List<String> getAuthorities();
 
 }

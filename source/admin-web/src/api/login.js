@@ -1,24 +1,18 @@
-import request from '@/utils/request'
+import request from '../util/request'
 
-export function loginByUsername(username, password) {
-  return request({
-    url: '/login',
-    method: 'post',
-    params: { username, password }
-  })
-}
+export const userLogin = (username, password) => {
+    return request({
+      url: '/api/user/login',
+      method: 'post',
+      params: {
+        username, password
+      }
+    })
+  }
 
-export function logout() {
+export const getUserProfile = () => {
   return request({
-    url: '/logout',
-    method: 'post'
-  })
-}
-
-export function getUserInfo() {
-  return request({
-    url: '/api/admin/info',
+    url: '/api/user/profile',
     method: 'get'
   })
 }
-

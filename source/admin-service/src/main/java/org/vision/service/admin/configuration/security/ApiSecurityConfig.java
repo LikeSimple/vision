@@ -20,12 +20,12 @@ import org.vision.service.admin.configuration.security.jwt.JwtAuthenticationToke
 public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsService userDetailsService;
-    private RESTfulSuccessHandler resTfulSuccessHandler;
+    private RestfulSuccessHandler resTfulSuccessHandler;
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
 
     public ApiSecurityConfig(@Qualifier("visionUserDetailsService") UserDetailsService userDetailsService,
-                             RESTfulSuccessHandler resTfulSuccessHandler,
+                             RestfulSuccessHandler resTfulSuccessHandler,
                              JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
         this.userDetailsService = userDetailsService;
         this.resTfulSuccessHandler = resTfulSuccessHandler;
@@ -51,9 +51,9 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         // Restful无状态风格
         http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().formLogin().successHandler(resTfulSuccessHandler)
+                .and().formLogin().loginPage("/api/user/login").permitAll().successHandler(resTfulSuccessHandler)
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
-                .and().logout().logoutSuccessHandler(new RESTfulLogoutSuccessHandler());
+                .and().logout().logoutUrl("/api/user/logout").logoutSuccessHandler(new RestfulLogoutSuccessHandler());
         // 添加JwtToken验证过滤器
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 安全访问入口
