@@ -1,9 +1,8 @@
 package org.vision.service.admin.persistence.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class SystemRoleAuthority implements Serializable {
@@ -13,5 +12,5 @@ public class SystemRoleAuthority implements Serializable {
 
     private Date createdTime;
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -7898186843034761891L;
 }

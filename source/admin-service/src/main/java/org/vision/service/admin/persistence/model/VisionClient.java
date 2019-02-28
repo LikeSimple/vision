@@ -1,9 +1,9 @@
 package org.vision.service.admin.persistence.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class VisionClient implements Serializable {
@@ -13,7 +13,17 @@ public class VisionClient implements Serializable {
 
     private String name;
 
+    private Boolean gender;
+
     private Integer age;
+
+    private String idNumber;
+
+    private String nativePlace;
+
+    private BigDecimal height;
+
+    private BigDecimal weight;
 
     private Date birthday;
 
@@ -27,9 +37,33 @@ public class VisionClient implements Serializable {
 
     private String detailAddress;
 
-    private Boolean gender;
+    private BigDecimal visionAcuityLeft;
 
-    private String idNumber;
+    private BigDecimal visionAcuityRight;
 
-    private static final long serialVersionUID = 1L;
+    private BigDecimal visionAcuity;
+
+    private Integer dioptersLeft;
+
+    private Integer dioptersRight;
+
+    private Integer astigmatismLeft;
+
+    private Integer astigmatismRight;
+
+    private Integer jointLuminosityLeft;
+
+    private Integer jointLuminosityRight;
+
+    private Integer axisLeft;
+
+    private Integer axisRight;
+
+    private Integer pupilDistance;
+
+    private Date createdTime;
+
+    private Date modifiedTime;
+
+    private static final long serialVersionUID = -4602695220598495960L;
 }

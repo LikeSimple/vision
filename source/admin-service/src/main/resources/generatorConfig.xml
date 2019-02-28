@@ -38,7 +38,137 @@
                              targetProject="src/main/java"
                              type="ANNOTATEDMAPPER"/>
 
-        <table tableName="system_admin"
+
+
+
+        <!--<table tableName="city"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="county"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="province"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+
+        <!--<table tableName="system_audit"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_authority"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_resource"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_resource_authority"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_role"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_role_authority"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_user"-->
+        <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+        <!--enableUpdateByPrimaryKey="true"-->
+        <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--enableUpdateByExample="false"-->
+        <!--modelType="flat">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_user_profile"-->
+        <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+        <!--enableUpdateByPrimaryKey="true"-->
+        <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--enableUpdateByExample="false"-->
+        <!--modelType="flat">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="system_user_role"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="vision_activity"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="vision_activity_client"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <table tableName="vision_activity_client_check_record"
                enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
                enableUpdateByPrimaryKey="true"
                enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
@@ -47,7 +177,34 @@
             <property name="useActualColumnNames" value="false"/>
         </table>
 
-        <table tableName="system_admin_profile"
+        <!--<table tableName="vision_check_record"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="vision_client"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="vision_school"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <table tableName="vision_school_class"
                enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
                enableUpdateByPrimaryKey="true"
                enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
@@ -56,123 +213,23 @@
             <property name="useActualColumnNames" value="false"/>
         </table>
 
-        <table tableName="system_admin_role"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
+        <!--<table tableName="vision_school_class_number"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
 
-        <table tableName="system_audit"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="system_authority"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="system_resource"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="system_resource_authority"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="system_role"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="system_role_authority"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="vision_activity"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="vision_activity_client"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="vision_activity_client_check_report"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="vision_check_report"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="vision_client"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
-        <table tableName="wx_client"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-
+        <!--<table tableName="wx_client"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
     </context>
 
 </generatorConfiguration>

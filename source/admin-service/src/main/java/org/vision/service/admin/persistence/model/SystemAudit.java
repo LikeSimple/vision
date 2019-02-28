@@ -1,9 +1,8 @@
 package org.vision.service.admin.persistence.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class SystemAudit implements Serializable {
@@ -11,7 +10,7 @@ public class SystemAudit implements Serializable {
 
     private String userId;
 
-    private String realName;
+    private String name;
 
     private String action;
 
@@ -19,5 +18,5 @@ public class SystemAudit implements Serializable {
 
     private Date executionTime;
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7313644307059812157L;
 }

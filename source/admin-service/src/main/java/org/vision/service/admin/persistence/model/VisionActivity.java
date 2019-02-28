@@ -1,9 +1,8 @@
 package org.vision.service.admin.persistence.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class VisionActivity implements Serializable {
@@ -25,5 +24,11 @@ public class VisionActivity implements Serializable {
 
     private String remark;
 
-    private static final long serialVersionUID = 1L;
+    private Boolean archived;
+
+    private Date modifiedTime;
+
+    private Date createdTime;
+
+    private static final long serialVersionUID = 5305118938854500301L;
 }

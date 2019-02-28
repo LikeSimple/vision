@@ -5,21 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.vision.service.admin.service.SystemAdminService;
+import org.vision.service.admin.service.SystemUserService;
 
 public class VisionUserDetailsService implements UserDetailsService {
 
-    private SystemAdminService systemAdminService;
+    private SystemUserService systemUserService;
 
-    public VisionUserDetailsService(SystemAdminService systemAdminService) {
-        this.systemAdminService = systemAdminService;
+    public VisionUserDetailsService(SystemUserService systemUserService) {
+        this.systemUserService = systemUserService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         try {
-            return systemAdminService.getUserByUsername(username);
+            return systemUserService.getUserByUsername(username);
 
         } catch (IllegalArgumentException e) {
             throw new UsernameNotFoundException(String.format("user %s not found.", username));
@@ -30,15 +30,15 @@ public class VisionUserDetailsService implements UserDetailsService {
     @Configuration
     public static class VisionUserDetailsServiceConfiguration {
 
-        private SystemAdminService systemAdminService;
+        private SystemUserService systemUserService;
 
-        public VisionUserDetailsServiceConfiguration(SystemAdminService systemAdminService) {
-            this.systemAdminService = systemAdminService;
+        public VisionUserDetailsServiceConfiguration(SystemUserService systemUserService) {
+            this.systemUserService = systemUserService;
         }
 
         @Bean
         public VisionUserDetailsService visionUserDetailsService() {
-            return new VisionUserDetailsService(systemAdminService);
+            return new VisionUserDetailsService(systemUserService);
         }
 
     }

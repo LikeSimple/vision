@@ -4,14 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.persistence.mapper.*;
-import org.vision.service.admin.persistence.model.SystemAdmin;
-import org.vision.service.admin.persistence.model.SystemAuthority;
-import org.vision.service.admin.persistence.model.SystemResource;
-import org.vision.service.admin.persistence.model.SystemRole;
+import org.vision.service.admin.persistence.model.*;
 import org.vision.service.admin.util.ShortUUIDGenerator;
 
 @RunWith(SpringRunner.class)
@@ -19,20 +14,19 @@ import org.vision.service.admin.util.ShortUUIDGenerator;
 public class AdminServiceApplicationTests {
 
     @Autowired
-    private SystemAdminMapper systemAdminMapper;
-
-    @Autowired
-    private SystemAuthorityMapper systemAuthorityMapper;
-
-    @Autowired
-    private SystemAdminAuthorityMapper systemAdminAuthorityMapper;
+    private SystemUserMapper systemUserMapper;
 
     @Autowired
     private SystemRoleMapper systemRoleMapper;
 
     @Autowired
-    private SystemAdminRoleMapper systemAdminRoleMapper;
+    private SystemAuthorityMapper systemAuthorityMapper;
 
+    @Autowired
+    private SystemUserRoleMapper systemUserRoleMapper;
+
+    @Autowired
+    private SystemRoleAuthorityMapper systemRoleAuthorityMapper;
 
     @Test
     public void contextLoads() {
@@ -40,10 +34,29 @@ public class AdminServiceApplicationTests {
         String username = "admin";
         String password = "admin";
 
-        SystemAdmin systemAdmin = systemAdminMapper.selectByUsername(username);
+        SystemUser systemUser = systemUserMapper.selectByUsername(username);
 
+        SystemRole systemRole = new SystemRole();
+        systemRole.setId(ShortUUIDGenerator.newID());
+        systemRole.setName("ROLE_ADMIN");
+        systemRole.setDesc("");
+        systemRoleMapper.insertSelective(systemRole);
 
+        SystemUserRole systemUserRole = new SystemUserRole();
+        systemUserRole.setSystemUserId(systemUser.getId());
+        systemUserRole.setRoleId(systemRole.getId());
+        systemUserRoleMapper.insertSelective(systemUserRole);
 
+        SystemAuthority systemAuthority = new SystemAuthority();
+        systemAuthority.setId(ShortUUIDGenerator.newID());
+        systemAuthority.setName("AUTH_ADMIN");
+        systemAuthority.setDesc("");
+        systemAuthorityMapper.insertSelective(systemAuthority);
+
+        SystemRoleAuthority systemRoleAuthority = new SystemRoleAuthority();
+        systemRoleAuthority.setRoleId(systemRole.getId());
+        systemRoleAuthority.setAuthorityId(systemAuthority.getId());
+        systemRoleAuthorityMapper.insertSelective(systemRoleAuthority);
     }
 
 }

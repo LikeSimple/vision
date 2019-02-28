@@ -1,9 +1,8 @@
 package org.vision.service.admin.persistence.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class WxClient implements Serializable {
@@ -37,5 +36,9 @@ public class WxClient implements Serializable {
 
     private String detailAddress;
 
-    private static final long serialVersionUID = 1L;
+    private Date createdTime;
+
+    private Date modifiedTime;
+
+    private static final long serialVersionUID = 8714499730885514469L;
 }

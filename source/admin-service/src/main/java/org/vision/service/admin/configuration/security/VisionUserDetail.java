@@ -2,7 +2,7 @@ package org.vision.service.admin.configuration.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.vision.service.admin.persistence.model.SystemAdmin;
+import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.persistence.model.SystemAuthority;
 
 import java.util.Collection;
@@ -11,13 +11,13 @@ import java.util.List;
 
 public class VisionUserDetail implements UserDetails {
 
-    private SystemAdmin systemAdmin;
+    private SystemUser systemUser;
 
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public VisionUserDetail(SystemAdmin systemAdmin, List<SystemAuthority> systemAuthorities) {
+    public VisionUserDetail(SystemUser systemUser, List<SystemAuthority> systemAuthorities) {
 
-        this.systemAdmin = systemAdmin;
+        this.systemUser = systemUser;
 
         this.grantedAuthorities = systemAuthorities;
 
@@ -30,35 +30,35 @@ public class VisionUserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return systemAdmin.getPassword();
+        return systemUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return systemAdmin.getUsername();
+        return systemUser.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return null == systemAdmin.getAccountExpire() || systemAdmin.getAccountExpire().after(new Date());
+        return null == systemUser.getAccountExpire() || systemUser.getAccountExpire().after(new Date());
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !systemAdmin.getLocked();
+        return !systemUser.getLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return null == systemAdmin.getCredentialExpire() || systemAdmin.getCredentialExpire().after(new Date());
+        return null == systemUser.getCredentialExpire() || systemUser.getCredentialExpire().after(new Date());
     }
 
     @Override
     public boolean isEnabled() {
-        return systemAdmin.getEnabled();
+        return systemUser.getEnabled();
     }
 
     public String getId() {
-        return systemAdmin.getId();
+        return systemUser.getId();
     }
 }

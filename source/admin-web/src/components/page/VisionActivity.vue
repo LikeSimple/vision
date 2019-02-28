@@ -7,22 +7,24 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
+                <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
+                <el-select v-model="select_cate" placeholder="" class="handle-select mr10">
                     <el-option key="1" label="广东省" value="广东省"></el-option>
                     <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
+                </el-select> -->
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="search" @click="create">创建</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
-                </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
-                </el-table-column>
+                <el-table-column prop="name" label="活动名称" width="100"></el-table-column>
+                <el-table-column prop="activityDate" label="活动日期" width="200"></el-table-column>
+                <el-table-column prop="content" label="活动内容" width="400"></el-table-column>
+                <el-table-column prop="address" label="活动地址" width="250"></el-table-column>
+                <el-table-column prop="contactMan" label="联系人" width="50"></el-table-column>
+                <el-table-column prop="contactPhoneNumber" label="联系电话" width="80"></el-table-column>
+                <el-table-column prop="remark" label="备注" width="100"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -39,13 +41,13 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+                <el-form-item label="活动日期">
+                    <el-date-picker type="activityDate" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
                 </el-form-item>
-                <el-form-item label="姓名">
+                <el-form-item label="活动名称">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
+                <el-form-item label="活动地址">
                     <el-input v-model="form.address"></el-input>
                 </el-form-item>
 
@@ -95,23 +97,32 @@
         },
         computed: {
             data() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
+                return [{
+                    name: 'XX学校视力筛选',
+                    activityDate: '2019-03-01 <-> 2019-03-07',
+                    content: 'XX省XX市XX学校检查视力',
+                    address: 'XX地址',
+                    contactMan: '联系人',
+                    contactPhoneNumber: '00000000000',
+                    remark: '备注'
+                }]
+                // return this.tableData.filter((d) => {
+                //     let is_del = false;
+                //     for (let i = 0; i < this.del_list.length; i++) {
+                //         if (d.name === this.del_list[i].name) {
+                //             is_del = true;
+                //             break;
+                //         }
+                //     }
+                //     if (!is_del) {
+                //         if (d.address.indexOf(this.select_cate) > -1 &&
+                //             (d.name.indexOf(this.select_word) > -1 ||
+                //                 d.address.indexOf(this.select_word) > -1)
+                //         ) {
+                //             return d;
+                //         }
+                //     }
+                // })
             }
         },
         methods: {

@@ -8,8 +8,8 @@ Vue.use(Vuex);
 class NonUser {
   constructor() {
     this.id = '';
-    this.realName = '';
-    this.avatarImage = '';
+    this.name = '';
+    this.avatar = '';
     this.gender = '';
     this.authorities = [];
     this.token = '';
@@ -26,9 +26,9 @@ export default new Vuex.Store({
     },
     [USER_GET_PROFILE](state, profile) {
       state.user.id = profile.id
-      state.user.realName = profile.realName
+      state.user.name = profile.name
       state.user.gender = profile.gender
-      state.user.avatarImage = profile.avatarImage
+      state.user.avatar = profile.avatar
       state.user.authorities = profile.authorities
     },
     [USER_WEB_LOGOUT](state) {

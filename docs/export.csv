@@ -1,0 +1,18 @@
+ID:   2019021700002,NameLast:    ,NameFirst:    ,Time:        20190217105111,Sex:   -,BirthDay:     6-20y,Position:             ,
+PD:    70,
+<L>
+PS:   4.4                
+SE1: -1.75,DS1: -1.50,DC1: -1.00,Axis1:   021,SE2: -1.75,DS2: -2.25,DC2: +1.00,Axis2:   111,GH:   ←02,GV:   ↓00,
+<R>
+DS:   4.2                
+SE1: -1.25,DS1: -1.00,DC1: -1.00,Axis1:   160,SE2: -1.25,DS2: -1.75,DC2: +1.00,Axis2:   070,GH:   →04,GV:   ↑01
+
+ID:   2019021700001,NameLast:    ,NameFirst:    ,Time:        20190217105049,Sex:   -,BirthDay:     6-20y,Position:             ,
+PD:    71,
+<L>
+PS:   4.3                
+SE1: -1.75,DS1: -1.50,DC1: -0.50,Axis1:   016,SE2: -1.75,DS2: -2.00,DC2: +0.50,Axis2:   106,GH:   ←02,GV:   ↑02,
+<R>
+DS:   4.1                
+SE1: -1.50,DS1: -1.00,DC1: -0.75,Axis1:   151,SE2: -1.50,DS2: -1.75,DC2: +0.75,Axis2:   061,GH:   →04,GV:   ↑03
+

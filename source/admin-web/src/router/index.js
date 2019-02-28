@@ -17,22 +17,32 @@ export default new Router({
                 {
                     path: '/dashboard',
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
-                    meta: { title: '系统首页', permission: true, permissionAuthorities: ['ROLE_ADMIN'] }
+                    meta: { title: '系统首页', permission: true, permissionAuthorities: ['AUTH_DASHBOARD'] }
                 },
                 {
                     path: '/client',
                     component: resolve => require(['../components/page/VisionClient.vue'], resolve),
-                    meta: { title: '客户', permission: true, permissionAuthorities: ['ROLE_CLIENT'] }
+                    meta: { title: '客户', permission: true, permissionAuthorities: ['AUTH_CLIENT'] }
                 },
                 {
                     path: '/activity',
                     component: resolve => require(['../components/page/VisionActivity.vue'], resolve),
-                    meta: { title: '活动', permission: true, permissionAuthorities: ['ROLE_ACTIVITY'] }
+                    meta: { title: '活动', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
+                },
+                {
+                    path: '/activity-client',
+                    component: resolve => require(['../components/page/VisionActivityClient.vue'], resolve),
+                    meta: { title: '检测客户', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
+                },
+                {
+                    path: '/activity-report',
+                    component: resolve => require(['../components/page/VisionActivityClient.vue'], resolve),
+                    meta: { title: '检测报告', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
                 },
                 {
                     path: '/report',
                     component: resolve => require(['../components/page/VisionReport.vue'], resolve),
-                    meta: { title: '报告', permission: true, permissionAuthorities: ['ROLE_REPORT'] }
+                    meta: { title: '报告', permission: true, permissionAuthorities: ['AUTH_REPORT'] }
                 },
                 {
                     path: '/statistics',

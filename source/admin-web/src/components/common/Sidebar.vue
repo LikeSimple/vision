@@ -50,8 +50,22 @@
                     },                    
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'activity',
-                        title: '活动'
+                        index: '3',
+                        title: '活动',
+                        subs: [
+                            {
+                                index: 'activity',
+                                title: '活动管理'
+                            },
+                            {
+                                index: 'activity-client',
+                                title: '活动人员管理'
+                            },
+                            {
+                                index: 'activity-report',
+                                title: '活动报告管理'
+                            },
+                        ]
                     },                    
                     {
                         icon: 'el-icon-lx-cascades',
@@ -75,7 +89,7 @@
                     },
                     {
                         icon: 'el-icon-lx-calendar',
-                        index: '3',
+                        index: '9',
                         title: '表单相关',
                         subs: [
                             {
@@ -83,7 +97,7 @@
                                 title: '基本表单'
                             },
                             {
-                                index: '3-2',
+                                index: '9-2',
                                 title: '三级菜单',
                                 subs: [
                                     {
@@ -114,7 +128,7 @@
                     },
                     {
                         icon: 'el-icon-rank',
-                        index: '6',
+                        index: '12',
                         title: '拖拽组件',
                         subs: [
                             {
@@ -129,7 +143,7 @@
                     },
                     {
                         icon: 'el-icon-lx-warn',
-                        index: '7',
+                        index: '13',
                         title: '错误处理',
                         subs: [
                             {

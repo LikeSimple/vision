@@ -19,7 +19,7 @@ Vue.use(ElementUI, {
 Vue.prototype.$axios = axios;
 
 function hasPermission(authorities, permissionAuthorities) {
-    if (authorities.indexOf('ROLE_ADMIN') >= 0) return true
+    if (authorities.indexOf('AUTH_ADMIN') >= 0) return true
     if (!permissionAuthorities) return true
     return authorities.some( authority => permissionAuthorities.indexOf(authority) >= 0)
 }

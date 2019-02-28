@@ -1,51 +1,60 @@
 package org.vision.service.admin.persistence.mapper;
 
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.vision.service.admin.persistence.model.SystemRoleAuthority;
 
 @Mapper
 public interface SystemRoleAuthorityMapper {
     @Delete({
-            "delete from system_role_authority",
-            "where role_id = #{roleId,jdbcType=CHAR}",
-            "and authority_id = #{authorityId,jdbcType=CHAR}"
+        "delete from system_role_authority",
+        "where role_id = #{roleId,jdbcType=CHAR}",
+          "and authority_id = #{authorityId,jdbcType=CHAR}"
     })
     int deleteByPrimaryKey(@Param("roleId") String roleId, @Param("authorityId") String authorityId);
 
     @Insert({
-            "insert into system_role_authority (role_id, authority_id, ",
-            "created_time)",
-            "values (#{roleId,jdbcType=CHAR}, #{authorityId,jdbcType=CHAR}, ",
-            "#{createdTime,jdbcType=TIMESTAMP})"
+        "insert into system_role_authority (role_id, authority_id, ",
+        "created_time)",
+        "values (#{roleId,jdbcType=CHAR}, #{authorityId,jdbcType=CHAR}, ",
+        "#{createdTime,jdbcType=TIMESTAMP})"
     })
     int insert(SystemRoleAuthority record);
 
-    @InsertProvider(type = SystemRoleAuthoritySqlProvider.class, method = "insertSelective")
+    @InsertProvider(type=SystemRoleAuthoritySqlProvider.class, method="insertSelective")
     int insertSelective(SystemRoleAuthority record);
 
     @Select({
-            "select",
-            "role_id, authority_id, created_time",
-            "from system_role_authority",
-            "where role_id = #{roleId,jdbcType=CHAR}",
-            "and authority_id = #{authorityId,jdbcType=CHAR}"
+        "select",
+        "role_id, authority_id, created_time",
+        "from system_role_authority",
+        "where role_id = #{roleId,jdbcType=CHAR}",
+          "and authority_id = #{authorityId,jdbcType=CHAR}"
     })
     @Results({
-            @Result(column = "role_id", property = "roleId", jdbcType = JdbcType.CHAR, id = true),
-            @Result(column = "authority_id", property = "authorityId", jdbcType = JdbcType.CHAR, id = true),
-            @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP)
+        @Result(column="role_id", property="roleId", jdbcType=JdbcType.CHAR, id=true),
+        @Result(column="authority_id", property="authorityId", jdbcType=JdbcType.CHAR, id=true),
+        @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP)
     })
     SystemRoleAuthority selectByPrimaryKey(@Param("roleId") String roleId, @Param("authorityId") String authorityId);
 
-    @UpdateProvider(type = SystemRoleAuthoritySqlProvider.class, method = "updateByPrimaryKeySelective")
+    @UpdateProvider(type=SystemRoleAuthoritySqlProvider.class, method="updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(SystemRoleAuthority record);
 
     @Update({
-            "update system_role_authority",
-            "set created_time = #{createdTime,jdbcType=TIMESTAMP}",
-            "where role_id = #{roleId,jdbcType=CHAR}",
-            "and authority_id = #{authorityId,jdbcType=CHAR}"
+        "update system_role_authority",
+        "set created_time = #{createdTime,jdbcType=TIMESTAMP}",
+        "where role_id = #{roleId,jdbcType=CHAR}",
+          "and authority_id = #{authorityId,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(SystemRoleAuthority record);
 }
