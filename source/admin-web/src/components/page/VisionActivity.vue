@@ -70,6 +70,7 @@
 </template>
 
 <script>
+    import { getActivityList } from '../../api/activity.js'
     export default {
         name: 'basetable',
         data() {
@@ -97,15 +98,7 @@
         },
         computed: {
             data() {
-                return [{
-                    name: 'XX学校视力筛选',
-                    activityDate: '2019-03-01 <-> 2019-03-07',
-                    content: 'XX省XX市XX学校检查视力',
-                    address: 'XX地址',
-                    contactMan: '联系人',
-                    contactPhoneNumber: '00000000000',
-                    remark: '备注'
-                }]
+                return this.tableData;
                 // return this.tableData.filter((d) => {
                 //     let is_del = false;
                 //     for (let i = 0; i < this.del_list.length; i++) {
@@ -134,17 +127,23 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
+                // if (process.env.NODE_ENV === 'development') {
+                //     this.url = '/ms/table/list';
+                // };
+                // this.$axios.post(this.url, {
+                //     page: this.cur_page
+                // }).then((res) => {
+                //     this.tableData = res.data.list;
+                // })
+                getActivityList().then(res => {
+                    this.tableData = res.data;
                 })
             },
             search() {
                 this.is_search = true;
+            },
+            create() {
+
             },
             formatter(row, column) {
                 return row.address;

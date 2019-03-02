@@ -275,6 +275,12 @@ public class ActivityServiceImpl implements ActivityService {
             e.printStackTrace();
         }
 
+        //Clear HashMap
+        visionClientHashMap.clear();
+        visionSchoolHashMap.clear();
+        visionSchoolClassHashMap.clear();
+        visionSchoolClassMemberHashMap.clear();
+
         return visionActivityClientMapper.selectByActivityId(activityId).stream().map(VisionActivityClientVOImpl::new).collect(Collectors.toList());
     }
 
