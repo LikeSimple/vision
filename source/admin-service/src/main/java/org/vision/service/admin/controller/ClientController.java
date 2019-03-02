@@ -42,7 +42,7 @@ public class ClientController {
      */
     @PostMapping("/{clientId}/report/list")
     public ResponseData<List<? extends VisionCheckRecordVO>> getCheckReportList(@PathVariable("clientId") String clientId) {
-        return new ResponseData<>(clientService.getCheckReportList(clientId));
+        return new ResponseData<>(clientService.getCheckRecordList(clientId));
     }
 
 }

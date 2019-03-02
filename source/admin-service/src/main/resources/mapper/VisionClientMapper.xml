@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vision.service.admin.persistence.mapper.VisionClientMapper">
+    <resultMap id="VisionClientMap" type="org.vision.service.admin.persistence.model.VisionClient">
+        <id column="c_id" property="id" jdbcType="CHAR"/>
+        <result column="c_wx_client_id" property="wxClientId" jdbcType="CHAR"/>
+        <result column="c_name" property="name" jdbcType="VARCHAR"/>
+        <result column="c_gender" property="gender" jdbcType="BIT"/>
+        <result column="c_age" property="age" jdbcType="INTEGER"/>
+        <result column="c_id_number" property="idNumber" jdbcType="VARCHAR"/>
+        <result column="c_native_place" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="c_height" property="height" jdbcType="DECIMAL"/>
+        <result column="c_weight" property="weight" jdbcType="DECIMAL"/>
+        <result column="c_birthday" property="birthday" jdbcType="DATE"/>
+        <result column="c_phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="c_province" property="province" jdbcType="VARCHAR"/>
+        <result column="c_city" property="city" jdbcType="VARCHAR"/>
+        <result column="c_county" property="county" jdbcType="VARCHAR"/>
+        <result column="c_detail_address" property="detailAddress" jdbcType="VARCHAR"/>
+        <result column="c_vision_acuity_left" property="visionAcuityLeft" jdbcType="DECIMAL"/>
+        <result column="c_vision_acuity_right" property="visionAcuityRight" jdbcType="DECIMAL"/>
+        <result column="c_vision_acuity" property="visionAcuity" jdbcType="DECIMAL"/>
+        <result column="c_diopters_left" property="dioptersLeft" jdbcType="INTEGER"/>
+        <result column="c_diopters_right" property="dioptersRight" jdbcType="INTEGER"/>
+        <result column="c_astigmatism_left" property="astigmatismLeft" jdbcType="INTEGER"/>
+        <result column="c_astigmatism_right" property="astigmatismRight" jdbcType="INTEGER"/>
+        <result column="c_axis_left" property="axisLeft" jdbcType="INTEGER"/>
+        <result column="c_axis_right" property="axisRight" jdbcType="INTEGER"/>
+        <result column="c_pupil_distance" property="pupilDistance" jdbcType="INTEGER"/>
+        <result column="c_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="c_modified_time" property="modifiedTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <resultMap id="VisionSchoolMap" type="org.vision.service.admin.persistence.model.VisionSchool">
+        <id column="s_id" property="id" jdbcType="CHAR"/>
+        <result column="s_name" property="name" jdbcType="VARCHAR"/>
+        <result column="s_province" property="province" jdbcType="VARCHAR"/>
+        <result column="s_city" property="city" jdbcType="VARCHAR"/>
+        <result column="s_county" property="county" jdbcType="VARCHAR"/>
+        <result column="s_detail_address" property="detailAddress" jdbcType="VARCHAR"/>
+        <result column="s_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="s_modified_time" property="modifiedTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <resultMap id="VisionSchoolClassMap" type="org.vision.service.admin.persistence.model.VisionSchoolClass">
+        <id column="sc_id" property="id" jdbcType="CHAR"/>
+        <result column="sc_vision_school_id" property="visionSchoolId" jdbcType="CHAR"/>
+        <result column="sc_name" property="name" jdbcType="VARCHAR"/>
+        <result column="sc_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="sc_modified_time" property="modifiedTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <resultMap id="VisionSchoolClassMemberMap"
+               type="org.vision.service.admin.persistence.model.VisionSchoolClassMember">
+        <id column="scm_id" property="id" jdbcType="CHAR"/>
+        <result column="scm_vision_class_id" property="visionClassId" jdbcType="CHAR"/>
+        <result column="scm_vision_client_id" property="visionClientId" jdbcType="CHAR"/>
+        <result column="scm_student_number" property="studentNumber" jdbcType="VARCHAR"/>
+        <result column="scm_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="scm_modified_time" property="modifiedTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionClientView">
+        <association property="visionClient" resultMap="VisionClientMap"/>
+        <association property="visionSchool" resultMap="VisionSchoolMap"/>
+        <association property="visionSchoolClass" resultMap="VisionSchoolClassMap"/>
+        <association property="visionSchoolClassMember" resultMap="VisionSchoolClassMemberMap"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      SELECT
+      c.id as c_id, c.wx_client_id as c_wx_client_id, c.name as c_name, c.gender as c_gender, c.age as c_age,
+      c.id_number as c_id_number, c.native_place as c_native_place, c.height as c_height, c.weight as c_weight,
+      c.birthday as c_birthday, c.phone_number as c_phone_number, c.province as c_province, c.city as c_city,
+      c.county as c_county, c.detail_address as c_detail_address, c.vision_acuity_left as c_vision_acuity_left,
+      c.vision_acuity_right as c_vision_acuity_right, c.vision_acuity as c_vision_acuity, c.diopters_left as c_diopters_left,
+      c.diopters_right as c_diopters_right, c.astigmatism_left as c_astigmatism_left, c.astigmatism_right as c_astigmatism_right,
+      c.joint_luminosity_left as c_joint_luminosity_left, c.joint_luminosity_right as c_joint_luminosity_right,
+      c.axis_left as c_axis_left, c.axis_right as c_axis_right, c.pupil_distance as c_pupil_distance,
+      c.created_time as c_created_time, c.modified_time as c_modified_time, scm.id as scm_id,
+      scm.vision_class_id as scm_vision_class_id, scm.vision_client_id as scm_vision_client_id, scm.student_number as scm_student_number,
+      scm.created_time as scm_created_time, scm.modified_time as scm_modified_time, sc.id as sc_id, sc.vision_school_id as sc_vision_school_id,
+      sc.name as sc_name, sc.created_time as sc_created_time, sc.modified_time as sc_modified_time, s.id as s_id, s.name as s_name,
+      s.province as s_province, s.county as s_county, s.city as s_city, s.detail_address as s_detail_address,
+      s.created_time as s_created_time, s.modified_time as s_modified_time
+      FROM
+      vision_client c
+      INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
+      INNER JOIN vision_school_class sc on scm.vision_class_id = sc.id
+      INNER JOIN vision_school s on s.id = sc.vision_school_id
+    </sql>
+
+    <select id="selectByCriteria" resultMap="BaseMap"
+            parameterType="org.vision.service.admin.controller.criteria.VisionClientCriteria">
+        <include refid="Base_Column_List"/>
+        <where>
+            <if test="schoolNameCriteria != null and schoolNameCriteria !=''">
+                and s.name like CONCAT('%', #{schoolNameCriteria,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="idNumber != null"><![CDATA[
+              and c.id_number = #{idNumber, jdbcType=VARCHAR}
+          ]]></if>
+            <if test="clientNameCriteria != null and clientNameCriteria !=''"><![CDATA[
+              and c.name like CONCAT('%', #{clientNameCriteria,jdbcType=VARCHAR}, '%')]]>
+            </if>
+        </where>
+        order by c.name
+    </select>
+</mapper>

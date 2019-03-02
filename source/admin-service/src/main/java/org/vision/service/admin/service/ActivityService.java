@@ -15,7 +15,7 @@ public interface ActivityService {
 
     VisionActivityVO create(ActivityParam activityParam);
 
-    VisionActivityVO modify(String activityId, ActivityParam activityParam);
+    void modify(String activityId, ActivityParam activityParam);
 
     Boolean archive(String activityId);
 
@@ -29,5 +29,7 @@ public interface ActivityService {
 
     List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile);
 
-    List<? extends VisionCheckRecordVO> importClientCheckReport(String activityId, MultipartFile file);
+    List<? extends VisionCheckRecordVO> importClientCheckReport(String activityId, MultipartFile multipartFile);
+
+    VisionActivityVO selectById(String activityId);
 }

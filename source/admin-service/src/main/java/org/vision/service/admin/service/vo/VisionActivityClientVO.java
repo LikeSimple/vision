@@ -1,4 +1,7 @@
 package org.vision.service.admin.service.vo;
 
-public interface VisionActivityClientVO {
+public interface VisionActivityClientVO extends VisionClientVO {
+
+    String getVisionActivityId();
+
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vision.service.admin.persistence.mapper.VisionActivityMapper">
+    <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionActivity">
+        <id column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="begin_date" property="beginDate" jdbcType="DATE"/>
+        <result column="end_date" property="endDate" jdbcType="DATE"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="contact_man" property="contactMan" jdbcType="VARCHAR"/>
+        <result column="contact_phone_number" property="contactPhoneNumber" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectByCriteria" resultMap="BaseMap"
+            parameterType="org.vision.service.admin.controller.criteria.ActivityCriteria">
+        SELECT id, `name`, address, begin_date, end_date, content, contact_man, contact_phone_number, remark, archived,
+        modified_time, created_time
+        FROM vision_activity
+        <where>
+            <if test="nameCriteria != null and nameCriteria !=''">
+                and name like CONCAT('%', #{nameCriteria,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="beginDate != null"><![CDATA[
+              and begin_date >= #{beginDate, jdbcType=DATE}
+          ]]></if>
+            <if test="endDate != null"><![CDATA[
+              and end_date <= #{endDate, jdbcType=DATE}]]>
+            </if>
+            and archived = #{archived, jdbcType=BIT}
+        </where>
+        order by begin_date desc
+    </select>
+</mapper>

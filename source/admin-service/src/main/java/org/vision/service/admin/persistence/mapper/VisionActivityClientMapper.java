@@ -1,17 +1,11 @@
 package org.vision.service.admin.persistence.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.vision.service.admin.persistence.model.VisionActivityClient;
+import org.vision.service.admin.persistence.model.VisionActivityClientView;
+
+import java.util.List;
 
 @Mapper
 public interface VisionActivityClientMapper {
@@ -24,9 +18,11 @@ public interface VisionActivityClientMapper {
 
     @Insert({
         "insert into vision_activity_client (vision_activity_id, vision_client_id, ",
-        "enabled, created_time)",
+            "vision_member_id, enabled, ",
+            "created_time)",
         "values (#{visionActivityId,jdbcType=CHAR}, #{visionClientId,jdbcType=CHAR}, ",
-        "#{enabled,jdbcType=BIT}, #{createdTime,jdbcType=TIMESTAMP})"
+            "#{visionMemberId,jdbcType=CHAR}, #{enabled,jdbcType=BIT}, ",
+            "#{createdTime,jdbcType=TIMESTAMP})"
     })
     int insert(VisionActivityClient record);
 
@@ -35,7 +31,7 @@ public interface VisionActivityClientMapper {
 
     @Select({
         "select",
-        "vision_activity_id, vision_client_id, enabled, created_time",
+            "vision_activity_id, vision_client_id, vision_member_id, enabled, created_time",
         "from vision_activity_client",
         "where vision_activity_id = #{visionActivityId,jdbcType=CHAR}",
           "and vision_client_id = #{visionClientId,jdbcType=CHAR}"
@@ -43,6 +39,7 @@ public interface VisionActivityClientMapper {
     @Results({
         @Result(column="vision_activity_id", property="visionActivityId", jdbcType=JdbcType.CHAR, id=true),
         @Result(column="vision_client_id", property="visionClientId", jdbcType=JdbcType.CHAR, id=true),
+            @Result(column = "vision_member_id", property = "visionMemberId", jdbcType = JdbcType.CHAR),
         @Result(column="enabled", property="enabled", jdbcType=JdbcType.BIT),
         @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP)
     })
@@ -53,10 +50,15 @@ public interface VisionActivityClientMapper {
 
     @Update({
         "update vision_activity_client",
-        "set enabled = #{enabled,jdbcType=BIT},",
+            "set vision_member_id = #{visionMemberId,jdbcType=CHAR},",
+            "enabled = #{enabled,jdbcType=BIT},",
           "created_time = #{createdTime,jdbcType=TIMESTAMP}",
         "where vision_activity_id = #{visionActivityId,jdbcType=CHAR}",
           "and vision_client_id = #{visionClientId,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(VisionActivityClient record);
+
+    VisionActivityClientView selectByClientId(String id);
+
+    List<VisionActivityClientView> selectByActivityId(String id);
 }

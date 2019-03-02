@@ -164,8 +164,9 @@ comment '视力检测活动';
 
 create table vision_activity_client
 (
-	vision_client_id char(22) not null,
 	vision_activity_id char(22) not null,
+	vision_member_id char(22) null,
+	vision_client_id char(22) not null,
 	enabled tinyint(1) default 0 not null comment '激活',
 	created_time datetime default CURRENT_TIMESTAMP not null,
 	primary key (vision_activity_id, vision_client_id)
@@ -176,9 +177,9 @@ create table vision_activity_client_check_record
 (
 	vision_client_id char(22) not null,
 	vision_activity_id char(22) not null,
-	vision_check_reord_id char(22) not null,
+	vision_check_record_id char(22) not null,
 	created_time datetime default CURRENT_TIMESTAMP not null,
-	primary key (vision_client_id, vision_activity_id, vision_check_reord_id)
+	primary key (vision_client_id, vision_activity_id, vision_check_record_id)
 )
 comment '视力检测活动检测报告';
 
@@ -241,7 +242,9 @@ create table vision_client
 	axis_right int default 0 null comment '轴位-右',
 	pupil_distance int default 0 null comment '瞳距',
 	created_time datetime default CURRENT_TIMESTAMP not null,
-	modified_time datetime null
+	modified_time datetime null,
+	constraint vision_client_id_number_uindex
+		unique (id_number)
 )
 comment '睛锐客户';
 
@@ -255,14 +258,16 @@ create table vision_school
 	city varchar(30) null,
 	detail_address varchar(60) null,
 	created_time datetime default CURRENT_TIMESTAMP not null,
-	modified_time datetime null
+	modified_time datetime null,
+	constraint vision_school_name_uindex
+		unique (name)
 );
 
 create table vision_school_class
 (
 	id char(22) default '' not null
 		primary key,
-	vision_schoold_id char(22) default '' not null,
+	vision_school_id char(22) default '' not null,
 	name varchar(30) default '' not null,
 	created_time datetime default CURRENT_TIMESTAMP not null,
 	modified_time datetime null
@@ -272,7 +277,6 @@ create table vision_school_class_member
 (
 	id char(22) default '' not null
 		primary key,
-	vision_school_id char(22) not null,
 	vision_class_id char(22) default '' not null,
 	student_number varchar(20) default '' not null,
 	vision_client_id char(22) default '' not null,

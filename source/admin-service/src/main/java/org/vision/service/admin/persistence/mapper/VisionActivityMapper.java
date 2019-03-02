@@ -1,16 +1,11 @@
 package org.vision.service.admin.persistence.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
+import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.persistence.model.VisionActivity;
+
+import java.util.List;
 
 @Mapper
 public interface VisionActivityMapper {
@@ -81,4 +76,6 @@ public interface VisionActivityMapper {
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(VisionActivity record);
+
+    List<VisionActivity> selectByCriteria(ActivityCriteria activityCriteria);
 }

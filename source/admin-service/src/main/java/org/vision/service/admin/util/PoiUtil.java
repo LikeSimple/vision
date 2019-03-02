@@ -3,7 +3,10 @@ package org.vision.service.admin.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +48,8 @@ public class PoiUtil {
                 int firstRowNum  = sheet.getFirstRowNum();
                 //获得当前sheet的结束行
                 int lastRowNum = sheet.getLastRowNum();
-                //循环除了第一行的所有行
-                for(int rowNum = firstRowNum+1;rowNum <= lastRowNum;rowNum++){
+                //循环所有行
+                for (int rowNum = firstRowNum; rowNum <= lastRowNum; rowNum++) {
                     //获得当前行
                     Row row = sheet.getRow(rowNum);
                     if(row == null){
@@ -76,7 +79,7 @@ public class PoiUtil {
             throw new FileNotFoundException("文件不存在！");
         }
         //获得文件名
-        String fileName = file.getOriginalFilename();
+        String fileName = file.getName();
         //判断文件是否是excel文件
         if(!fileName.endsWith(xls) && !fileName.endsWith(xlsx)){
             log.error(fileName + "不是excel文件");
@@ -85,7 +88,7 @@ public class PoiUtil {
     }
     public static Workbook getWorkBook(MultipartFile file) {
         //获得文件名
-        String fileName = file.getOriginalFilename();
+        String fileName = file.getName();
         //创建Workbook工作薄对象，表示整个excel
         Workbook workbook = null;
         try {

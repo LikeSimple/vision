@@ -1,9 +1,10 @@
 package org.vision.service.admin.persistence.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 @Data
 public class VisionClient implements Serializable {
@@ -13,7 +14,7 @@ public class VisionClient implements Serializable {
 
     private String name;
 
-    private Boolean gender;
+    private Byte gender;
 
     private Integer age;
 

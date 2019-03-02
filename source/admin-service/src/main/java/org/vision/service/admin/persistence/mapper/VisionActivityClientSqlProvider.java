@@ -16,6 +16,10 @@ public class VisionActivityClientSqlProvider {
         if (record.getVisionClientId() != null) {
             sql.VALUES("vision_client_id", "#{visionClientId,jdbcType=CHAR}");
         }
+
+        if (record.getVisionMemberId() != null) {
+            sql.VALUES("vision_member_id", "#{visionMemberId,jdbcType=CHAR}");
+        }
         
         if (record.getEnabled() != null) {
             sql.VALUES("enabled", "#{enabled,jdbcType=BIT}");
@@ -31,6 +35,10 @@ public class VisionActivityClientSqlProvider {
     public String updateByPrimaryKeySelective(VisionActivityClient record) {
         SQL sql = new SQL();
         sql.UPDATE("vision_activity_client");
+
+        if (record.getVisionMemberId() != null) {
+            sql.SET("vision_member_id = #{visionMemberId,jdbcType=CHAR}");
+        }
         
         if (record.getEnabled() != null) {
             sql.SET("enabled = #{enabled,jdbcType=BIT}");

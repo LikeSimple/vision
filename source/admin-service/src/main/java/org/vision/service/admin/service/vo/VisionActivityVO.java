@@ -14,8 +14,6 @@ public interface VisionActivityVO {
 
     Date getEndDate();
 
-    String getDateRange();
-
     String getContent();
 
     String getContactMan();
@@ -24,7 +22,4 @@ public interface VisionActivityVO {
 
     String getRemark();
 
-    String getCreatedTime();
-
-    String getModifiedTime();
 }

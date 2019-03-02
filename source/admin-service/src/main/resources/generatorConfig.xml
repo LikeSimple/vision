@@ -168,14 +168,14 @@
             <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
 
-        <table tableName="vision_activity_client_check_record"
-               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false"
-               modelType="flat">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
+        <!--<table tableName="vision_activity_client_check_record"-->
+        <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+        <!--enableUpdateByPrimaryKey="true"-->
+        <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--enableUpdateByExample="false"-->
+        <!--modelType="flat">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
 
         <!--<table tableName="vision_check_record"-->
                <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
@@ -204,7 +204,25 @@
             <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
 
-        <table tableName="vision_school_class"
+        <!--<table tableName="vision_school_class"-->
+        <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+        <!--enableUpdateByPrimaryKey="true"-->
+        <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--enableUpdateByExample="false"-->
+        <!--modelType="flat">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="vision_school_class_member"-->
+               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--modelType="flat">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
+        <table tableName="wx_client"
                enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
                enableUpdateByPrimaryKey="true"
                enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
@@ -212,24 +230,6 @@
                modelType="flat">
             <property name="useActualColumnNames" value="false"/>
         </table>
-
-        <!--<table tableName="vision_school_class_number"-->
-               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
-               <!--enableUpdateByPrimaryKey="true"-->
-               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--enableUpdateByExample="false"-->
-               <!--modelType="flat">-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="wx_client"-->
-               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
-               <!--enableUpdateByPrimaryKey="true"-->
-               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--enableUpdateByExample="false"-->
-               <!--modelType="flat">-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--</table>-->
     </context>
 
 </generatorConfiguration>

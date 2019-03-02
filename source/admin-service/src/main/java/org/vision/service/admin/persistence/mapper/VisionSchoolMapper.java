@@ -1,14 +1,6 @@
 package org.vision.service.admin.persistence.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.vision.service.admin.persistence.model.VisionSchool;
 
@@ -66,4 +58,22 @@ public interface VisionSchoolMapper {
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(VisionSchool record);
+
+    @Select({
+            "select",
+            "id, name, province, county, city, detail_address, created_time, modified_time",
+            "from vision_school",
+            "where name = #{name,jdbcType=CHAR}"
+    })
+    @Results({
+            @Result(column = "id", property = "id", jdbcType = JdbcType.CHAR, id = true),
+            @Result(column = "name", property = "name", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "province", property = "province", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "county", property = "county", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "city", property = "city", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "detail_address", property = "detailAddress", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+    })
+    VisionSchool selectByName(String name);
 }

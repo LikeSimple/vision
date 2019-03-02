@@ -9,5 +9,5 @@ import java.util.List;
 public interface ClientService {
     List<? extends VisionClientVO> getList(VisionClientCriteria visionClientCriteria, int pageSize, int pageNum);
 
-    List<? extends VisionCheckRecordVO> getCheckReportList(String clientId);
+    List<? extends VisionCheckRecordVO> getCheckRecordList(String clientId);
 }

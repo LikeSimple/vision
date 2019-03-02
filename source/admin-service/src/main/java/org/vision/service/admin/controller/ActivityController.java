@@ -42,8 +42,8 @@ public class ActivityController {
      * @param activityParam
      * @return
      */
-    @PostMapping("/new")
-    public ResponseData<VisionActivityVO> create(ActivityParam activityParam) {
+    @PostMapping(value = "/new")
+    public ResponseData<VisionActivityVO> create(@RequestBody ActivityParam activityParam) {
         return new ResponseData<>(activityService.create(activityParam));
     }
 
@@ -53,8 +53,9 @@ public class ActivityController {
      * @return
      */
     @PostMapping("/{activityId}/modify")
-    public ResponseData<VisionActivityVO> modify(@PathVariable("activityId") String activityId, ActivityParam activityParam) {
-        return new ResponseData<>(activityService.modify(activityId, activityParam));
+    public ResponseData<VisionActivityVO> modify(@PathVariable("activityId") String activityId, @RequestBody ActivityParam activityParam) {
+        activityService.modify(activityId, activityParam);
+        return new ResponseData<>(activityService.selectById(activityId));
     }
 
     /**
@@ -128,11 +129,11 @@ public class ActivityController {
     /**
      * 导入活动用户视力筛查数据
      * @param activityId
-     * @param file
+     * @param multipartFile
      * @return
      */
     @PostMapping("/{activityId}/report/import")
-    public ResponseData<List<? extends VisionCheckRecordVO>> importClientCheckReport(@PathVariable("activityId") String activityId, MultipartFile file) {
-        return new ResponseData<>(activityService.importClientCheckReport(activityId, file));
+    public ResponseData<List<? extends VisionCheckRecordVO>> importClientCheckReport(@PathVariable("activityId") String activityId, MultipartFile multipartFile) {
+        return new ResponseData<>(activityService.importClientCheckReport(activityId, multipartFile));
     }
 }
