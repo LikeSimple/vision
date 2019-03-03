@@ -7,28 +7,24 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
+                姓名：<el-input v-model="clientNameCriteria"  class="handle-input mr10"></el-input>
+                身份证号：<el-input v-model="idNumber"  class="handle-input mr10"></el-input>
+                学校：<el-input v-model="schoolNameCriteria"  class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
-                </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="schoolName" label="学校" sortable width="300"></el-table-column>
+                <el-table-column prop="className" label="班级" ></el-table-column>
+                <el-table-column prop="studentNumber" label="学号"></el-table-column>
+                <el-table-column prop="name" label="姓名" ></el-table-column>
+                <el-table-column prop="gender" label="性别" ></el-table-column>
+                <el-table-column prop="age" label="年龄"></el-table-column>
+                <el-table-column prop="visionAcuity" label="视力" width="120"></el-table-column>
+                <el-table-column prop="visionAcuityLeft" label="左眼" width="120"></el-table-column>
+                <el-table-column prop="visionAcuityRight" label="右眼" width="120"></el-table-column>
+                <el-table-column prop="idNumber" label="身份证号" width="300"></el-table-column>
+                
+                
             </el-table>
             <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
@@ -68,6 +64,7 @@
 </template>
 
 <script>
+    import { getActivityList, createActivity, editActivity, deleteActivity, getClientList } from '../../api/client.js'
     export default {
         name: 'basetable',
         data() {
@@ -78,6 +75,9 @@
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
+                clientNameCriteria: '',
+                idNumber: '', 
+                schoolNameCriteria: '',
                 del_list: [],
                 is_search: false,
                 editVisible: false,
@@ -91,48 +91,30 @@
             }
         },
         created() {
-            this.getData();
+            this.getData(null, null, null);
         },
         computed: {
             data() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
+                return this.tableData
             }
         },
         methods: {
             // 分页导航
             handleCurrentChange(val) {
+                console.log("43")
                 this.cur_page = val;
                 this.getData();
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
+                console.log("2343")
+                getClientList(this.clientNameCriteria, this.idNumber, this.schoolNameCriteria, this.cur_page).then(res => {
+                    this.tableData = res.data;
                 })
             },
             search() {
+                console.log("22")
+                this.getData()
                 this.is_search = true;
             },
             formatter(row, column) {

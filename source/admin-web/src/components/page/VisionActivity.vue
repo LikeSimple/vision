@@ -19,7 +19,8 @@
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="name" label="活动名称" width="100"></el-table-column>
-                <el-table-column prop="activityDate" label="活动日期" width="200"></el-table-column>
+                <el-table-column prop="beginDate" label="活动开始日期" width="200"></el-table-column>
+                <el-table-column prop="endDate" label="活动结束日期" width="200"></el-table-column>
                 <el-table-column prop="content" label="活动内容" width="400"></el-table-column>
                 <el-table-column prop="address" label="活动地址" width="250"></el-table-column>
                 <el-table-column prop="contactMan" label="联系人" width="50"></el-table-column>
@@ -41,9 +42,14 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="活动日期">
-                    <el-date-picker type="activityDate" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+                <el-input type="hidden" v-model="form.id"  style="width: 50%;"></el-input>
+                <el-form-item label="活动开始日期">
+                    <el-input placeholder="选择日期" v-model="form.beginDate"  style="width: 50%;"></el-input>
                 </el-form-item>
+                <el-form-item label="活动结束日期">
+                    <el-input placeholder="选择日期" v-model="form.endDate" style="width: 50%;"></el-input>
+                </el-form-item>
+                
                 <el-form-item label="活动名称">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
@@ -55,6 +61,34 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 创建弹出框 -->
+        <el-dialog title="创建" :visible.sync="createVisible" width="30%">
+            <el-form ref="form" :model="form" label-width="50px">
+                <el-form-item label="活动开始日期">
+                    <el-input placeholder="选择日期" v-model="form.beginDate"  style="width: 50%;"></el-input>
+                </el-form-item>
+                <el-form-item label="活动结束日期">
+                    <el-input placeholder="选择日期" v-model="form.endDate" style="width: 50%;"></el-input>
+                </el-form-item>
+                
+                <el-form-item label="活动名称">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="活动地址">
+                    <el-input v-model="form.address"></el-input>
+                </el-form-item>
+                <el-form-item label="活动详情">
+                    <el-input v-model="form.content"></el-input>
+                </el-form-item>
+                
+
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="createVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveCreate">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -70,7 +104,7 @@
 </template>
 
 <script>
-    import { getActivityList } from '../../api/activity.js'
+    import { getActivityList, createActivity, editActivity, deleteActivity } from '../../api/activity.js'
     export default {
         name: 'basetable',
         data() {
@@ -84,11 +118,15 @@
                 del_list: [],
                 is_search: false,
                 editVisible: false,
+                createVisible: false,
                 delVisible: false,
                 form: {
                     name: '',
                     date: '',
-                    address: ''
+                    address: '',
+                    beginDate: '',
+                    endDate: '',
+                    content:''
                 },
                 idx: -1
             }
@@ -122,10 +160,10 @@
             // 分页导航
             handleCurrentChange(val) {
                 this.cur_page = val;
-                this.getData();
+                this.getData(null);
             },
             // 获取 easy-mock 的模拟数据
-            getData() {
+            getData(select_word) {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
                 // if (process.env.NODE_ENV === 'development') {
                 //     this.url = '/ms/table/list';
@@ -135,14 +173,17 @@
                 // }).then((res) => {
                 //     this.tableData = res.data.list;
                 // })
-                getActivityList().then(res => {
+                getActivityList(select_word, this.cur_page).then(res => {
                     this.tableData = res.data;
                 })
             },
             search() {
                 this.is_search = true;
+                this.getData(this.select_word)
             },
             create() {
+
+                this.createVisible = true;
 
             },
             formatter(row, column) {
@@ -155,8 +196,10 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
+                    id: item.id,
                     name: item.name,
-                    date: item.date,
+                    beginDate: item.beginDate,
+                    endDate: item.endDate,
                     address: item.address
                 }
                 this.editVisible = true;
@@ -180,12 +223,20 @@
             },
             // 保存编辑
             saveEdit() {
+                editActivity(this.form.id, this.form.name, this.form.address, this.form.beginDate, this.form.endDate);
                 this.$set(this.tableData, this.idx, this.form);
                 this.editVisible = false;
                 this.$message.success(`修改第 ${this.idx+1} 行成功`);
             },
+            saveCreate() {
+                createActivity(this.form.name, this.form.address, this.form.beginDate, this.form.endDate, this.form.content);
+                this.createVisible = false;
+                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                this.search();
+            },
             // 确定删除
             deleteRow(){
+                deleteActivity(this.idx);
                 this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
