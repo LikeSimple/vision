@@ -94,15 +94,15 @@
         <include refid="Base_Column_List"/>
         <where>
             <if test="schoolNameCriteria != null and schoolNameCriteria !=''">
-                and s.name like CONCAT('%', #{schoolNameCriteria,jdbcType=VARCHAR}, '%')
+                and s.`name` like CONCAT('%', #{schoolNameCriteria,jdbcType=VARCHAR}, '%')
             </if>
             <if test="idNumber != null and idNumber != ''"><![CDATA[
-              and c.id_number = #{idNumber, jdbcType=VARCHAR}
+              and `c`.id_number = #{idNumber, jdbcType=VARCHAR}
           ]]></if>
             <if test="clientNameCriteria != null and clientNameCriteria !=''"><![CDATA[
-              and c.name like CONCAT('%', #{clientNameCriteria,jdbcType=VARCHAR}, '%')]]>
+              and `c`.`name` like CONCAT('%', #{clientNameCriteria,jdbcType=VARCHAR}, '%')]]>
             </if>
         </where>
-        order by c.name
+        order by `c`.`name`
     </select>
 </mapper>

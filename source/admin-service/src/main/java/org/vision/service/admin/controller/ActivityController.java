@@ -13,7 +13,7 @@ import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/activity")
+@RequestMapping(value = "/api/activity")
 public class ActivityController {
 
     private ActivityService activityService;
@@ -24,6 +24,7 @@ public class ActivityController {
 
     /**
      * 根据查询条件获取活动列表，按照时间顺序倒序排列
+     *
      * @param activityCriteria
      * @param pageSize
      * @param pageNum
@@ -39,6 +40,7 @@ public class ActivityController {
 
     /**
      * 创建一个活动
+     *
      * @param activityParam
      * @return
      */
@@ -49,6 +51,7 @@ public class ActivityController {
 
     /**
      * 修改一个活动
+     *
      * @param activityParam
      * @return
      */
@@ -60,6 +63,7 @@ public class ActivityController {
 
     /**
      * 归档一个活动
+     *
      * @param activityId
      * @return
      */
@@ -70,6 +74,7 @@ public class ActivityController {
 
     /**
      * 恢复一个活动
+     *
      * @param activityId
      * @return
      */
@@ -80,6 +85,7 @@ public class ActivityController {
 
     /**
      * 获取活动用户列表（学校学生）
+     *
      * @param activityId
      * @param pageSize
      * @param pageNum
@@ -95,6 +101,7 @@ public class ActivityController {
 
     /**
      * 导入活动用户列表（文件形式）
+     *
      * @param activityId
      * @param multipartFile
      * @return
@@ -106,17 +113,19 @@ public class ActivityController {
 
     /**
      * 添加活动用户（单个）
+     *
      * @param activityId
      * @param clientId
      * @return
      */
     @PostMapping("/{activityId}/client/{clientId}/new")
-    public  ResponseData<VisionActivityClientVO> createClient(@PathVariable("activityId") String activityId, @PathVariable("clientId") String clientId) {
+    public ResponseData<VisionActivityClientVO> createClient(@PathVariable("activityId") String activityId, @PathVariable("clientId") String clientId) {
         return new ResponseData<>(activityService.newClient(activityId, clientId));
     }
 
     /**
      * 删除活动用户（单个）
+     *
      * @param activityId
      * @param clientId
      * @return
@@ -128,6 +137,7 @@ public class ActivityController {
 
     /**
      * 导入活动用户视力筛查数据
+     *
      * @param activityId
      * @param multipartFile
      * @return

@@ -21,6 +21,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,15 +102,18 @@ public class AdminServiceApplicationTests {
     }
 
     @Test
-    public void VisionActivityTest() {
+    public void VisionActivityTest() throws ParseException {
         ActivityCriteria criteria = new ActivityCriteria();
         criteria.setNameCriteria("活动");
+        Assert.isTrue(2 == activityService.selectByCriteria(criteria, 2, 1).size());
+        Assert.isTrue(1 == activityService.selectByCriteria(criteria, 2, 2).size());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        criteria.setBeginDate(df.parse("2019-03-01 00:00:00"));
         Assert.notEmpty(activityService.selectByCriteria(criteria, 1, 20));
 
-        criteria.setBeginDate(new Date(2019, 2, 28));
-        Assert.notEmpty(activityService.selectByCriteria(criteria, 1, 20));
-
-        criteria.setEndDate(new Date(2019, 3, 28));
+        criteria.setEndDate(df.parse("2019-03-28 00:00:00"));
         Assert.notEmpty(activityService.selectByCriteria(criteria, 1, 20));
 
         criteria.setArchived(false);

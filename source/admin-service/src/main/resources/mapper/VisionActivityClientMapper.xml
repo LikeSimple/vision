@@ -135,5 +135,6 @@
             and ac.vision_member_id = scm.id
             and c.id = #{clientId, jdbcType=CHAR}
         </where>
+        order by s.`name`, sc.`name`, `c`.`name`
     </select>
 </mapper>

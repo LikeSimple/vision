@@ -18,7 +18,7 @@
         FROM vision_activity
         <where>
             <if test="nameCriteria != null and nameCriteria !=''">
-                and name like CONCAT('%', #{nameCriteria,jdbcType=VARCHAR}, '%')
+                and `name` like CONCAT('%', #{nameCriteria,jdbcType=VARCHAR}, '%')
             </if>
             <if test="beginDate != null"><![CDATA[
               and begin_date >= #{beginDate, jdbcType=DATE}
