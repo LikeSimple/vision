@@ -41,14 +41,14 @@
 
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
+            <el-form ref="form" :model="form">
                 <el-input type="hidden" v-model="form.id"  style="width: 50%;"></el-input>
-                <el-form-item label="活动开始日期">
-                    <el-input placeholder="选择日期" v-model="form.beginDate"  style="width: 50%;"></el-input>
-                </el-form-item>
-                <el-form-item label="活动结束日期">
-                    <el-input placeholder="选择日期" v-model="form.endDate" style="width: 50%;"></el-input>
-                </el-form-item>
+                <el-row>
+                    <el-form-item label="活动时间">
+                        <el-date-picker v-model="form.beginDate" type="date"  value-format="yyyy-MM-dd" placeholder="开始日期"></el-date-picker>
+                        <el-date-picker v-model="form.endDate" type="date"  value-format="yyyy-MM-dd" placeholder="结束日期"></el-date-picker>
+                    </el-form-item>
+                </el-row> 
                 
                 <el-form-item label="活动名称">
                     <el-input v-model="form.name"></el-input>
@@ -56,7 +56,11 @@
                 <el-form-item label="活动地址">
                     <el-input v-model="form.address"></el-input>
                 </el-form-item>
-
+                <el-row>    
+                    <el-form-item label="活动详情">
+                        <el-input type="textarea" v-model="form.content"></el-input>
+                    </el-form-item>
+                </el-row>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -66,25 +70,28 @@
 
         <!-- 创建弹出框 -->
         <el-dialog title="创建" :visible.sync="createVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="活动开始日期">
-                    <el-input placeholder="选择日期" v-model="form.beginDate"  style="width: 50%;"></el-input>
-                </el-form-item>
-                <el-form-item label="活动结束日期">
-                    <el-input placeholder="选择日期" v-model="form.endDate" style="width: 50%;"></el-input>
-                </el-form-item>
-                
-                <el-form-item label="活动名称">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="活动地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-                <el-form-item label="活动详情">
-                    <el-input v-model="form.content"></el-input>
-                </el-form-item>
-                
-
+            <el-form ref="form" :model="form">
+                <el-row>
+                    <el-form-item label="活动时间">
+                        <el-date-picker v-model="form.beginDate" type="date"  value-format="yyyy-MM-dd" placeholder="开始日期"></el-date-picker>
+                        <el-date-picker v-model="form.endDate" type="date"  value-format="yyyy-MM-dd" placeholder="结束日期"></el-date-picker>
+                    </el-form-item>
+                </el-row>    
+                <el-row>
+                    <el-form-item label="活动名称">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>    
+                    <el-form-item label="活动地址" width="70%">
+                        <el-input v-model="form.address" width="30%"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>    
+                    <el-form-item label="活动详情">
+                        <el-input type="textarea" v-model="form.content"></el-input>
+                    </el-form-item>
+                </el-row>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="createVisible = false">取 消</el-button>
@@ -182,7 +189,14 @@
                 this.getData(this.select_word)
             },
             create() {
-
+                this.form = {
+                    id: null,
+                    name: null,
+                    beginDate: null,
+                    endDate: null,
+                    address: null,
+                    content: null
+                }
                 this.createVisible = true;
 
             },
@@ -200,7 +214,8 @@
                     name: item.name,
                     beginDate: item.beginDate,
                     endDate: item.endDate,
-                    address: item.address
+                    address: item.address,
+                    content: item.content
                 }
                 this.editVisible = true;
             },
@@ -223,21 +238,22 @@
             },
             // 保存编辑
             saveEdit() {
-                editActivity(this.form.id, this.form.name, this.form.address, this.form.beginDate, this.form.endDate);
+                editActivity(this.form.id, this.form.name, this.form.address, this.form.beginDate + ' 00:00:00', this.form.endDate + ' 23:59:59', this.content);
                 this.$set(this.tableData, this.idx, this.form);
                 this.editVisible = false;
                 this.$message.success(`修改第 ${this.idx+1} 行成功`);
             },
+
+            // 保存新增
             saveCreate() {
-                createActivity(this.form.name, this.form.address, this.form.beginDate, this.form.endDate, this.form.content);
+                createActivity(this.form.name, this.form.address, this.form.beginDate + ' 00:00:00', this.form.endDate + ' 23:59:59', this.content);
                 this.createVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                this.$message.success(`创建成功`);
                 this.search();
             },
             // 确定删除
             deleteRow(){
                 deleteActivity(this.idx);
-                this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
             }

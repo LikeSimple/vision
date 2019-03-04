@@ -13,9 +13,12 @@
                     <el-option key="2" label="湖南省" value="湖南省"></el-option>
                 </el-select> -->
 
-                <el-select v-model="select_cate" placeholder="" class="handle-select mr10">
-                    <el-option key="1" label="活动四" value="06WKRfvmJ6KEnb8N-gp3lL"></el-option>
-                    <el-option key="2" label="活动二" value="2KSDlSrNZfBrUMzrG9iad6"></el-option>
+                <el-select v-model="select_cate" placeholder="请选择活动" class="handle-select mr10">
+                    <el-option v-for="item in activityList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
                 </el-select>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
@@ -69,7 +72,8 @@
 </template>
 
 <script>
-    import { getActivityList, createActivity, editActivity, deleteActivity, getActivityClientList } from '../../api/activityClient.js'
+    import { getActivityClientList } from '../../api/activityClient.js'
+    import { getActivityList} from '../../api/activity.js'
     export default {
         name: 'basetable',
         data() {
@@ -84,6 +88,7 @@
                 is_search: false,
                 editVisible: false,
                 delVisible: false,
+                activityList: [],
                 form: {
                     name: '',
                     date: '',
@@ -93,7 +98,7 @@
             }
         },
         created() {
-            
+            this.getActivityListMethod();
         },
         computed: {
             data() {
@@ -181,6 +186,11 @@
                 this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
+            },
+            getActivityListMethod(){
+                getActivityList(null, 1, 200).then(res =>{
+                    this.activityList = res.data;
+                });
             }
         }
     }

@@ -1,11 +1,11 @@
 import request from '../util/request'
 
-export const getActivityList = (nameCriteria, pageNum) => {
+export const getActivityList = (nameCriteria, pageNum, pageSize) => {
     return request({
       url: '/api/activity/list',
       method: 'post',
       params: {
-        nameCriteria, pageNum
+        nameCriteria, pageNum, pageSize
       }
     })
   }
@@ -22,8 +22,8 @@ export const createActivity = (name, address, beginDate, endDate, content) => {
   })
 }
 
-export const editActivity = (id, name, address, beginDate, endDate) => {
-  const data = {"name":name, "address":address, "beginDate":beginDate, "endDate":endDate};
+export const editActivity = (id, name, address, beginDate, endDate, content) => {
+  const data = {"name":name, "address":address, "beginDate":beginDate, "endDate":endDate, "content":content};
   return request({
     url: '/api/activity/' + id + '/modify',
     method: 'post',
