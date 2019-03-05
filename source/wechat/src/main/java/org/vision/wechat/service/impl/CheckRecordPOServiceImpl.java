@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vision.wechat.common.ResponseData;
 import org.vision.wechat.model.CheckRecordGetListBO;
+import org.vision.wechat.model.CheckRecordListBO;
 import org.vision.wechat.persistence.mapper.VisionCheckRecordPOMapper;
 import org.vision.wechat.persistence.model.VisionCheckRecordPO;
 import org.vision.wechat.service.CheckRecordPOService;
@@ -20,12 +21,12 @@ public class CheckRecordPOServiceImpl implements CheckRecordPOService {
   private VisionCheckRecordPOMapper visionCheckRecordPOMapper;
   
   @Override
-  public ResponseData<PageInfo<CheckRecordGetListBO>> list(CheckRecordGetListBO bo) {
+  public ResponseData<PageInfo<CheckRecordListBO>> list(CheckRecordGetListBO bo) {
     PageHelper.offsetPage(bo.getPageNum(), bo.getPageSize());
     
-    List<CheckRecordGetListBO> list = visionCheckRecordPOMapper.list(bo);
+    List<CheckRecordListBO> list = visionCheckRecordPOMapper.list(bo);
     
-    ResponseData<PageInfo<CheckRecordGetListBO>> responseData  = new ResponseData<>();
+    ResponseData<PageInfo<CheckRecordListBO>> responseData  = new ResponseData<>();
     responseData.setData(new PageInfo<>(list));
     
     return responseData;

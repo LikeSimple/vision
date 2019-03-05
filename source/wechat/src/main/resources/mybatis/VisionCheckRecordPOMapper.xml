@@ -577,7 +577,10 @@
 	JOIN vision_check_record r ON t.vision_check_record_id = r.id
 	JOIN vision_activity a ON t.vision_activity_id = a.id
 	WHERE
-		t.vision_client_id = #{visionClientId}
+	    1 = 1
+	<if test="visionClientId != null and visionClientId != '' ">
+      AND t.vision_client_id = #{visionClientId}
+    </if>    
 	<if test="checkDateStart != null and checkDateStart != '' ">
       AND r.check_date &gt;= CONCAT(#{checkDateStart}," 00:00:00")
     </if>
