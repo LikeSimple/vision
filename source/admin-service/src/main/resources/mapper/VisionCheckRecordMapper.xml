@@ -120,9 +120,11 @@
       scm.created_time as scm_created_time, scm.modified_time as scm_modified_time, sc.id as sc_id, sc.vision_school_id as sc_vision_school_id,
       sc.name as sc_name, sc.created_time as sc_created_time, sc.modified_time as sc_modified_time, s.id as s_id, s.name as s_name,
       s.province as s_province, s.county as s_county, s.city as s_city, s.detail_address as s_detail_address,
-      s.created_time as s_created_time, s.modified_time as s_modified_time,cr.`id`, cr.`vision_client_id`, cr.`eye_type`, cr.`check_date`, cr.`data_type`, 
-      cr.`picture_file`, cr.`pupil`, cr.`se1`, cr.`ds1`, cr.`dc1`, cr.`axis1`, cr.`se2`, cr.`ds2`, cr.`dc2`, cr.`axis2`, cr.`pd`, cr.`mm_hg`, 
-      cr.`gaze_h`, cr.`gaze_v`, cr.`remark`, cr.`enabled`, cr.`create_time`, cr.`modified_time`
+      s.created_time as s_created_time, s.modified_time as s_modified_time,cr.`id` cr_id, cr.`vision_client_id` cr_vision_client_id, 
+      cr.`eye_type` cr_eye_type, cr.`check_date` cr_check_date, cr.`data_type` cr_data_type, cr.`picture_file` cr_picture_file, 
+      cr.`pupil` cr_pupil, cr.`se1` cr_se1, cr.`ds1` cr_ds1, cr.`dc1` cr_dc1, cr.`axis1` cr_axis1, cr.`se2` cr_se2, 
+      cr.`ds2` cr_ds2, cr.`dc2` cr_dc2, cr.`axis2` cr_axis2, cr.`pd` cr_pd, cr.`mm_hg` cr_mm_hg, cr.`gaze_h` cr_gaze_h, 
+      cr.`gaze_v` cr_gaze_v, cr.`remark` cr_remark, cr.`enabled` cr_enabled, cr.`create_time` cr_create_time, cr.`modified_time` cr_modified_time
       FROM vision_activity a
       INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
       INNER JOIN vision_client c on ac.vision_client_id = c.id
@@ -133,21 +135,32 @@
     </sql>
 
     <select id="selectByCriteria" resultMap="BaseMap"
-            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.CheckRecordCriteria">
+            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
         <include refid="Base_Column_List"/>
         <where>
-            <if test="name != null and nameCriteria !=''">
-                and `name` like CONCAT('%', #{nameCriteria,jdbcType=VARCHAR}, '%')
+            <if test="schoolName != null and schoolName !=''">
+                and s.`name` like CONCAT('%', #{schoolName,jdbcType=VARCHAR}, '%')
             </if>
-            <if test="beginDate != null"><![CDATA[
-              and begin_date >= #{beginDate, jdbcType=DATE}
-          ]]></if>
-            <if test="endDate != null"><![CDATA[
-              and end_date <= #{endDate, jdbcType=DATE}]]>
+            <if test="className != null and className !=''">
+                and sc.`name` like CONCAT('%', #{className,jdbcType=VARCHAR}, '%')
             </if>
-            and archived = #{archived, jdbcType=BIT}
+            <if test="name != null and name !=''">
+                and c.`name` like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="idNumber != null and idNumber !=''">
+                and c.`id_number` like CONCAT('%', #{idNumber,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="activityName != null and activityName !=''">
+                and a.`name` like CONCAT('%', #{activityName,jdbcType=VARCHAR}, '%')
+            </if>
+            
+            <if test="beginDate != null and beginDate != ''">
+            	<![CDATA[and created_time >= #{beginDate, jdbcType=DATE}]]></if>
+            <if test="endDate != null and endDate != ''">
+            	<![CDATA[and created_time <= #{endDate, jdbcType=DATE}]]>
+            </if>
         </where>
-        order by begin_date desc
+        order by cr.check_date desc
     </select>
 
     
