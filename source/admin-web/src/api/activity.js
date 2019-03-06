@@ -10,26 +10,23 @@ export const getActivityList = (nameCriteria, pageNum, pageSize) => {
     })
   }
 
-export const createActivity = (name, address, beginDate, endDate, content) => {
-  const data = {"name":name, "address":address, "beginDate":beginDate, "endDate":endDate, "content":content};
+export const createActivity = (form) => {
   return request({
     url: '/api/activity/new',
     method: 'post',
-    transformRequest: [function(){
-      return JSON.stringify(data);
-    }]
+    params: form
+    // transformRequest: [function(){
+    //   return JSON.stringify(data);
+    // }]
   })
 }
 
-export const editActivity = (id, name, address, beginDate, endDate, content) => {
-  const data = {"name":name, "address":address, "beginDate":beginDate, "endDate":endDate, "content":content};
+export const editActivity = (form) => {
+
   return request({
     url: '/api/activity/' + id + '/modify',
     method: 'post',
-    headers: {"Content-Type": "application/json"},
-    transformRequest: [function(){
-      return JSON.stringify(data);
-    }]
+    params: form
   })
 }
 
