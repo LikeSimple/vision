@@ -23,8 +23,6 @@
                 <el-table-column prop="visionAcuityLeft" label="左眼" width="60" align="center"></el-table-column>
                 <el-table-column prop="visionAcuityRight" label="右眼" width="60" align="center"></el-table-column>
                 <el-table-column prop="idNumber" label="身份证号" width="200" align="center"></el-table-column>
-                
-                
             </el-table>
             <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
