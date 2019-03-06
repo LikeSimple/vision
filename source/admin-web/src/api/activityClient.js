@@ -9,3 +9,14 @@ export const getActivityClientList = (activityId, pageNum) => {
       }
     })
   }
+
+
+  export const getActivityClientRecordList = (name, idNumber, schoolName, className, activityName, pageNum) => {
+    return request({
+      url: '/api/record/list',
+      method: 'post',
+      params: {
+        name, idNumber, schoolName, className, activityName, pageNum
+      }
+    })
+  }
