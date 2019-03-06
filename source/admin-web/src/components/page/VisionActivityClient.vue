@@ -23,15 +23,15 @@
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column prop="schoolName" label="学校" sortable width="300"></el-table-column>
-                <el-table-column prop="className" label="班级" ></el-table-column>
-                <el-table-column prop="studentNumber" label="学号"></el-table-column>
-                <el-table-column prop="name" label="姓名" ></el-table-column>
-                <el-table-column prop="gender" label="性别" ></el-table-column>
-                <el-table-column prop="age" label="年龄"></el-table-column>
-                <el-table-column prop="visionAcuity" label="视力" width="120"></el-table-column>
-                <el-table-column prop="visionAcuityLeft" label="左眼" width="120"></el-table-column>
-                <el-table-column prop="visionAcuityRight" label="右眼" width="120"></el-table-column>
+                <el-table-column prop="schoolName" label="学校" width="200"></el-table-column>
+                <el-table-column prop="className" label="班级" width="30" ></el-table-column>
+                <el-table-column prop="studentNumber" label="学号" width="30"></el-table-column>
+                <el-table-column prop="name" label="姓名" width="30"></el-table-column>
+                <el-table-column prop="gender" label="性别" width="30" ></el-table-column>
+                <el-table-column prop="age" label="年龄" width="30"></el-table-column>
+                <el-table-column prop="visionAcuity" label="视力" width="60"></el-table-column>
+                <el-table-column prop="visionAcuityLeft" label="左眼" width="60"></el-table-column>
+                <el-table-column prop="visionAcuityRight" label="右眼" width="60"></el-table-column>
                 <el-table-column prop="idNumber" label="身份证号" width="300"></el-table-column>
             </el-table>
             <div class="pagination">

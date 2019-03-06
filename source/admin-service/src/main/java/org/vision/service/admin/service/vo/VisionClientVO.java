@@ -15,7 +15,7 @@ public interface VisionClientVO {
 
     String getName();
 
-    Byte getGender();
+    Integer getGender();
 
     Integer getAge();
 

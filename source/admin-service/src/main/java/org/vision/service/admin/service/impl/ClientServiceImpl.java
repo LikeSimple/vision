@@ -69,8 +69,8 @@ public class ClientServiceImpl implements ClientService {
         }
 
         @Override
-        public Byte getGender() {
-            return visionClientView.getVisionClient().getGender();
+        public Integer getGender() {
+            return new Integer(visionClientView.getVisionClient().getGender());
         }
 
         @Override

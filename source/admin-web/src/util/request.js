@@ -1,8 +1,15 @@
 import axios from "axios";
-import { getToken } from "./token";
-import { Message, MessageBox } from "element-ui";
+import {
+  getToken
+} from "./token";
+import {
+  Message,
+  MessageBox
+} from "element-ui";
 import store from "../store";
-import { USER_WEB_LOGOUT } from "../store/mutation-types";
+import {
+  USER_WEB_LOGOUT
+} from "../store/mutation-types";
 var instance = axios.create({
   baseURL: process.env.baseURL,
   timeout: 5 * 1000

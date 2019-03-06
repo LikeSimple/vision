@@ -13,16 +13,16 @@
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column prop="schoolName" label="学校" sortable width="300"></el-table-column>
-                <el-table-column prop="className" label="班级" ></el-table-column>
-                <el-table-column prop="studentNumber" label="学号"></el-table-column>
-                <el-table-column prop="name" label="姓名" ></el-table-column>
-                <el-table-column prop="gender" label="性别" ></el-table-column>
-                <el-table-column prop="age" label="年龄"></el-table-column>
-                <el-table-column prop="visionAcuity" label="视力" width="120"></el-table-column>
-                <el-table-column prop="visionAcuityLeft" label="左眼" width="120"></el-table-column>
-                <el-table-column prop="visionAcuityRight" label="右眼" width="120"></el-table-column>
-                <el-table-column prop="idNumber" label="身份证号" width="300"></el-table-column>
+                <el-table-column prop="schoolName" label="学校" sortable width="160" align="center"></el-table-column>
+                <el-table-column prop="className" label="班级" width="120" align="center"></el-table-column>
+                <el-table-column prop="studentNumber" label="学号" width="100" align="center"></el-table-column>
+                <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+                <el-table-column prop="gender" label="性别" width="50" :formatter="genderFormatter" align="center"></el-table-column>
+                <el-table-column prop="age" label="年龄" width="50" align="center"></el-table-column>
+                <el-table-column prop="visionAcuity" label="视力" width="60" align="center"></el-table-column>
+                <el-table-column prop="visionAcuityLeft" label="左眼" width="60" align="center"></el-table-column>
+                <el-table-column prop="visionAcuityRight" label="右眼" width="60" align="center"></el-table-column>
+                <el-table-column prop="idNumber" label="身份证号" width="200" align="center"></el-table-column>
                 
                 
             </el-table>
@@ -101,24 +101,21 @@
         methods: {
             // 分页导航
             handleCurrentChange(val) {
-                console.log("43")
                 this.cur_page = val;
                 this.getData();
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                console.log("2343")
                 getClientList(this.clientNameCriteria, this.idNumber, this.schoolNameCriteria, this.cur_page).then(res => {
                     this.tableData = res.data;
                 })
             },
             search() {
-                console.log("22")
                 this.getData()
                 this.is_search = true;
             },
-            formatter(row, column) {
-                return row.address;
+            genderFormatter(row, column) {
+                return 1 == row.gender ? '男' : '女'
             },
             filterTag(value, row) {
                 return row.tag === value;
@@ -177,7 +174,7 @@
     }
 
     .handle-input {
-        width: 300px;
+        width: 200px;
         display: inline-block;
     }
     .del-dialog-cnt{

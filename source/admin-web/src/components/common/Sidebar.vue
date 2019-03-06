@@ -44,7 +44,7 @@
                         title: '系统首页'
                     },
                     {
-                        icon: 'el-icon-lx-cascades',
+                        icon: 'el-icon-lx-people',
                         index: 'client',
                         title: '客户'
                     },                    
@@ -67,16 +67,16 @@
                             },
                         ]
                     },                    
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'report',
-                        title: '报告'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'statistics',
-                        title: '统计'
-                    },                    
+                    // {
+                    //     icon: 'el-icon-lx-text',
+                    //     index: 'report',
+                    //     title: '报告'
+                    // },
+                    // {
+                    //     icon: 'el-icon-lx-rank',
+                    //     index: 'statistics',
+                    //     title: '统计'
+                    // },                    
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'table',

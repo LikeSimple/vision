@@ -401,8 +401,8 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         @Override
-        public Byte getGender() {
-            return visionActivityClientView.getVisionClient().getGender();
+        public Integer getGender() {
+            return new Integer(visionActivityClientView.getVisionClient().getGender());
         }
 
         @Override

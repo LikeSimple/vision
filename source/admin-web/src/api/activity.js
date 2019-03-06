@@ -15,7 +15,6 @@ export const createActivity = (name, address, beginDate, endDate, content) => {
   return request({
     url: '/api/activity/new',
     method: 'post',
-    headers: {"Content-Type": "application/json"},
     transformRequest: [function(){
       return JSON.stringify(data);
     }]
