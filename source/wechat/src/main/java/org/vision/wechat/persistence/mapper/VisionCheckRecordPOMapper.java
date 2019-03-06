@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.vision.wechat.model.CheckRecordGetListBO;
+import org.vision.wechat.model.CheckRecordListBO;
 import org.vision.wechat.persistence.model.VisionCheckRecordPO;
 import org.vision.wechat.persistence.model.VisionCheckRecordPOExample;
 
@@ -97,5 +98,5 @@ public interface VisionCheckRecordPOMapper {
      */
     int updateByPrimaryKey(VisionCheckRecordPO record);
     
-    List<CheckRecordGetListBO> list(CheckRecordGetListBO bo);
+    List<CheckRecordListBO> list(CheckRecordGetListBO bo);
 }
