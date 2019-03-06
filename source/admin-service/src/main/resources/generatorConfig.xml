@@ -222,7 +222,7 @@
             <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
 
-        <table tableName="wx_client"
+        <table tableName="vision_check_record"
                enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
                enableUpdateByPrimaryKey="true"
                enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

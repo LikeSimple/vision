@@ -1,5 +1,7 @@
 package org.vision.service.admin.persistence.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -10,7 +12,10 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
+import org.vision.service.admin.controller.criteria.CheckRecordCriteria;
+import org.vision.service.admin.persistence.model.VisionActivity;
 import org.vision.service.admin.persistence.model.VisionCheckRecord;
+import org.vision.service.admin.persistence.model.VisionCheckRecordClientView;
 
 @Mapper
 public interface VisionCheckRecordMapper {
@@ -110,4 +115,6 @@ public interface VisionCheckRecordMapper {
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(VisionCheckRecord record);
+    
+    List<VisionCheckRecordClientView> selectByCriteria(CheckRecordCriteria activityCriteria);
 }
