@@ -30,7 +30,7 @@ public interface ActivityService {
 
     List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile) throws IOException;
 
-    List<? extends VisionCheckRecordVO> importClientCheckReport(String activityId, MultipartFile multipartFile);
+    List<? extends VisionCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile multipartFile);
 
     VisionActivityVO selectById(String activityId);
 }

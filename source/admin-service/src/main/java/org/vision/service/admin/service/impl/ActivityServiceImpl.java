@@ -289,7 +289,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @Transactional
-    public List<? extends VisionCheckRecordVO> importClientCheckReport(String activityId, MultipartFile multipartFile) {
+    public List<? extends VisionCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile multipartFile) {
         return null;
     }
 

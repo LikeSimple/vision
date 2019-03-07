@@ -108,7 +108,7 @@ public class ActivityController {
      * @return
      */
     @PostMapping("/{activityId}/client/upload")
-    public ResponseData<List<? extends VisionActivityClientVO>> importClientList(@PathVariable("activityId") String activityId, MultipartFile file) throws IOException {
+    public ResponseData<List<? extends VisionActivityClientVO>> uploadClientList(@PathVariable("activityId") String activityId, MultipartFile file) throws IOException {
         return new ResponseData<>(activityService.importClientList(activityId, file));
     }
 
@@ -143,8 +143,14 @@ public class ActivityController {
      * @param multipartFile
      * @return
      */
-    @PostMapping("/{activityId}/report/import")
-    public ResponseData<List<? extends VisionCheckRecordVO>> importClientCheckReport(@PathVariable("activityId") String activityId, MultipartFile multipartFile) {
-        return new ResponseData<>(activityService.importClientCheckReport(activityId, multipartFile));
+    @PostMapping("/{activityId}/record/upload")
+    public ResponseData<List<? extends VisionCheckRecordVO>> uploadClientCheckRecord(@PathVariable("activityId") String activityId, MultipartFile multipartFile) {
+        return new ResponseData<>(activityService.importClientCheckRecord(activityId, multipartFile));
+    }
+
+
+    @PostMapping("/{activityId}/record/list")
+    public ResponseData<List<? extends VisionCheckRecordVO>> getClientCheckRecord(@PathVariable("activityId") String activityId) {
+        return null;
     }
 }

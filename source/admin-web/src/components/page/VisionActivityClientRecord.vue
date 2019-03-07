@@ -64,7 +64,7 @@
 </template>
 
 <script>
-    import { getActivityClientList, getActivityClientRecordList } from '../../api/activityClient.js'
+    import { getActivityClientRecordList } from '../../api/activityClientRecord.js'
     export default {
         name: 'basetable',
         data() {
@@ -124,7 +124,7 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 getActivityClientRecordList(this.query_name, this.query_id_number, this.query_school_name, 
-                    this.query_class_name, this.query_activity_name, this.cur_page).then((res) => {
+                    this.query_class_name, this.query_activity_name, this.cur_page, 20).then((res) => {
                     this.tableData = res.data;
                 })
             },

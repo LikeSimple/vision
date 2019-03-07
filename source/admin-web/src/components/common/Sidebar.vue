@@ -62,20 +62,16 @@
                                 title: '活动人员管理'
                             },
                             {
-                                index: 'activity-report',
+                                index: 'activity-client-record',
                                 title: '活动报告管理'
-                            },
-                            {
-                                index: 'upload',
-                                title: '上传'
                             }
                         ]
-                    }                    
-                    // {
-                    //     icon: 'el-icon-lx-text',
-                    //     index: 'report',
-                    //     title: '报告'
-                    // },
+                    },                
+                    {
+                        icon: 'el-icon-lx-text',
+                        index: 'record',
+                        title: '报告'
+                    },
                     // {
                     //     icon: 'el-icon-lx-rank',
                     //     index: 'statistics',

@@ -35,13 +35,13 @@ export default new Router({
                     meta: { title: '检测客户', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
                 },
                 {
-                    path: '/activity-record',
-                    component: resolve => require(['../components/page/VisionActivityRecord.vue'], resolve),
+                    path: '/activity-client-record',
+                    component: resolve => require(['../components/page/VisionActivityClientRecord.vue'], resolve),
                     meta: { title: '检测报告', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
                 },
                 {
-                    path: '/report',
-                    component: resolve => require(['../components/page/VisionReport.vue'], resolve),
+                    path: '/record',
+                    component: resolve => require(['../components/page/VisionRecord.vue'], resolve),
                     meta: { title: '报告', permission: true, permissionAuthorities: ['AUTH_REPORT'] }
                 },
                 {
@@ -126,6 +126,11 @@ export default new Router({
         {
             path: '/login',
             component: resolve => require(['../components/page/Login.vue'], resolve)
+        },
+        {
+            path: '/qrcode',
+            component: resolve => require(['../components/page/VisionActivityClientQRCode.vue'], resolve),
+            meta: { title: '权限测试', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
         },
         {
             path: '*',

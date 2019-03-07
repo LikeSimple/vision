@@ -15,9 +15,6 @@ export const createActivity = (form) => {
     url: '/api/activity/new',
     method: 'post',
     params: form
-    // transformRequest: [function(){
-    //   return JSON.stringify(data);
-    // }]
   })
 }
 
