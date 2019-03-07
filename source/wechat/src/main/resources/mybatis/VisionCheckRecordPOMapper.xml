@@ -569,11 +569,14 @@
   <select id="list" parameterType="org.vision.wechat.model.CheckRecordGetListBO" resultType="org.vision.wechat.model.CheckRecordListBO">
 	SELECT
 		a.`name` activity_name,
+		vc.name client_name,
+		vc.id_number id_number,
 		r.id,
 		r.eye_type,
 		r.check_date
 	FROM
 		vision_activity_client_check_record t
+	JOIN vision_client vc on t.vision_client_id = vc.id
 	JOIN vision_check_record r ON t.vision_check_record_id = r.id
 	JOIN vision_activity a ON t.vision_activity_id = a.id
 	WHERE

@@ -67,30 +67,29 @@ public class RedisClient {
    * @param value
    * @return
    */
-  public boolean set(final String key, Object value) {
+  public boolean set(final String key, Object value, Long expireTime) {
     boolean result = false;
     try {
       ValueOperations<Serializable, Object> operations = this.redisTemplate.opsForValue();
       operations.set(key, value);
+      this.redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
       result = true;
     } catch (Exception e) {
       e.printStackTrace();
     }
     return result;
   }
-
+  
   /**
-   * 写入缓存
-   *
+   * 设置过期时间
    * @param key
    * @param value
+   * @param expireTime
    * @return
    */
-  public boolean set(final String key, Object value, Long expireTime) {
+  public boolean expire(final String key, Long expireTime) {
     boolean result = false;
     try {
-      ValueOperations<Serializable, Object> operations = this.redisTemplate.opsForValue();
-      operations.set(key, value);
       this.redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
       result = true;
     } catch (Exception e) {

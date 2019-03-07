@@ -36,6 +36,9 @@ public class LoginInterceptor implements HandlerInterceptor {
       response.getWriter().write(JSONObject.toJSONString(responseData));
       return false;
     }
+    
+    this.redisClient.expire(wechatSessionId, HttpConstants.WECHAT_SESSION_EXPIRED);
+    this.redisClient.expire(wechatSessionId + "_user", HttpConstants.WECHAT_SESSION_EXPIRED);
 
     return exists;
   }
