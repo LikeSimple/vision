@@ -7,11 +7,19 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                姓名：<el-input v-model="query_name"  class="handle-input"></el-input>
-                身份证号：<el-input v-model="query_id_number"  class="handle-input"></el-input>
-                学校：<el-input v-model="query_school_name"  class="handle-input"></el-input>
-                班级：<el-input v-model="query_class_name"  class="handle-input"></el-input>
-                活动：<el-input v-model="query_activity_name"  class="handle-input"></el-input>
+                <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
+                        <el-select v-model="select_cate" placeholder="" class="handle-select mr10">
+                            <el-option key="1" label="广东省" value="广东省"></el-option>
+                            <el-option key="2" label="湖南省" value="湖南省"></el-option>
+                </el-select>-->
+                <el-select v-model="select_cate" placeholder="请选择活动" class="handle-select mr10">
+                <el-option
+                    v-for="item in activityList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -64,6 +72,7 @@
 </template>
 
 <script>
+    import { getActivityList } from "../../api/activity.js";
     import { getActivityClientRecordList } from '../../api/activityClientRecord.js'
     export default {
         name: 'basetable',
@@ -73,15 +82,12 @@
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
-                query_name: "", 
-                query_id_number: "", 
-                query_school_name: "", 
-                query_class_name: "", 
-                query_activity_name: "",
                 del_list: [],
                 is_search: false,
                 editVisible: false,
                 delVisible: false,
+                activityList: [],
+                select_cate: "",
                 form: {
                     name: '',
                     date: '',
@@ -91,7 +97,7 @@
             }
         },
         created() {
-            this.getData();
+            this.getActivityListMethod();
         },
         computed: {
             data() {
@@ -123,12 +129,15 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                getActivityClientRecordList(this.query_name, this.query_id_number, this.query_school_name, 
-                    this.query_class_name, this.query_activity_name, this.cur_page, 20).then((res) => {
+                getActivityClientRecordList(this.select_cate, this.cur_page, 20).then((res) => {
                     this.tableData = res.data;
                 })
             },
             search() {
+                if (this.select_cate == null || this.select_cate == "") {
+                    alert("请选择活动");
+                    return false;
+                }
                 this.getData();
                 this.is_search = true;
             },
@@ -179,6 +188,8 @@
             },
             eyeTypeFormatter(row, column) {
                 var value = "未知";
+                console.log(row);
+                console.log(row.getEyeType);
                 if ("OD" == row.eysType){
                     value = "左眼";
                 } else if ("OD" == row.eysType){
@@ -186,6 +197,11 @@
                 }
                 return value;
             },
+            getActivityListMethod() {
+                getActivityList(null, 1, 200).then(res => {
+                    this.activityList = res.data;
+                });
+            }
         }
     }
 

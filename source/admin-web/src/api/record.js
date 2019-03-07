@@ -1,6 +1,8 @@
-export const getClientRecordList = (name, idNumber, schoolName, className, activityName, pageNum, pageSize) => {
+import request from '../util/request'
+
+export const getRecordList = (name, idNumber, schoolName, className, activityName, pageNum, pageSize) => {
   return request({
-    url: '/api/activity/' + activityId + '/record/list',
+    url: '/api/record/list',
     method: 'post',
     params: {
       name,
