@@ -10,6 +10,7 @@ import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
 import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -103,12 +104,12 @@ public class ActivityController {
      * 导入活动用户列表（文件形式）
      *
      * @param activityId
-     * @param multipartFile
+     * @param file
      * @return
      */
-    @PostMapping("/{activityId}/client/import")
-    public ResponseData<List<? extends VisionActivityClientVO>> importClientList(@PathVariable("activityId") String activityId, MultipartFile multipartFile) {
-        return new ResponseData<>(activityService.importClientList(activityId, multipartFile));
+    @PostMapping("/{activityId}/client/upload")
+    public ResponseData<List<? extends VisionActivityClientVO>> importClientList(@PathVariable("activityId") String activityId, MultipartFile file) throws IOException {
+        return new ResponseData<>(activityService.importClientList(activityId, file));
     }
 
     /**

@@ -24,6 +24,8 @@
         <result column="c_diopters_right" property="dioptersRight" jdbcType="INTEGER"/>
         <result column="c_astigmatism_left" property="astigmatismLeft" jdbcType="INTEGER"/>
         <result column="c_astigmatism_right" property="astigmatismRight" jdbcType="INTEGER"/>
+        <result column="c_joint_luminosity_left" property="jointLuminosityLeft" jdbcType="INTEGER"/>
+        <result column="c_joint_luminosity_right" property="jointLuminosityRight" jdbcType="INTEGER"/>
         <result column="c_axis_left" property="axisLeft" jdbcType="INTEGER"/>
         <result column="c_axis_right" property="axisRight" jdbcType="INTEGER"/>
         <result column="c_pupil_distance" property="pupilDistance" jdbcType="INTEGER"/>

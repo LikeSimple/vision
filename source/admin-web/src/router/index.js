@@ -35,8 +35,8 @@ export default new Router({
                     meta: { title: '检测客户', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
                 },
                 {
-                    path: '/activity-report',
-                    component: resolve => require(['../components/page/VisionActivityClient.vue'], resolve),
+                    path: '/activity-record',
+                    component: resolve => require(['../components/page/VisionActivityRecord.vue'], resolve),
                     meta: { title: '检测报告', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
                 },
                 {

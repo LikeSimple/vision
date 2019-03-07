@@ -53,9 +53,9 @@ public interface VisionClientVO {
 
     Integer getAstigmatismRight();
 
-    Integer getJoinLuminosityLeft();
+    Integer getJointLuminosityLeft();
 
-    Integer getJoinLuminosityRight();
+    Integer getJointLuminosityRight();
 
     Integer getAxisLeft();
 

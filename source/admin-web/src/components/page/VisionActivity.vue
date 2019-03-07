@@ -21,6 +21,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="活动名称" width="200" align="center"></el-table-column>
         <el-table-column prop="beginDate" label="活动开始日期" width="150" align="center"></el-table-column>
         <el-table-column prop="endDate" label="活动结束日期" width="150" align="center"></el-table-column>
@@ -42,6 +43,11 @@
               class="red"
               @click="handleDelete(scope.$index, scope.row)"
             >归档</el-button>
+            <el-button
+              type="text"
+              icon="el-icon-upload"
+              @click="handleUpload(scope.$index, scope.row)"
+            >上传</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -54,6 +60,20 @@
         ></el-pagination>
       </div>
     </div>
+
+    <!-- 上传弹出框 -->
+    <el-dialog title="编辑" :visible.sync="uploadVisible" width="50%">
+      <el-input value="currentActivityId" type="hidden"></el-input>
+      <el-upload class="upload-demo" drag v-bind:action="'/api/activity/' + this.currentItem.id + '/client/upload'"
+      v-bind:headers="tokenHeader"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip" slot="tip">只能上传xls、xlsx文件，且不超过2M</div>
+      </el-upload>
+    </el-dialog>
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="60%">
@@ -160,134 +180,150 @@
 </template>
 
 <script>
-    import { getActivityList, createActivity, editActivity, deleteActivity } from '../../api/activity.js'
-    export default {
-        name: 'activity',
-        data() {
-            return {
-                url: './vuetable.json',
-                tableData: [],
-                cur_page: 1,
-                multipleSelection: [],
-                select_cate: '',
-                select_word: '',
-                del_list: [],
-                is_search: false,
-                editVisible: false,
-                createVisible: false,
-                delVisible: false,
-                form: {
-                    id: '',
-                    name: '',
-                    date: '',
-                    address: '',
-                    beginDate: '',
-                    endDate: '',
-                    content:'',
-                    contactMan:'',
-                    contactPhoneNumber:'',
-                    remark: ''
-                },
-                idx: -1
-            }
-        },
-        created() {
-            this.getData('');
-        },
-        computed: {
-            data() {
-                return this.tableData;
-            }
-        },
-        methods: {
-            // 分页导航
-            handleCurrentChange(val) {
-                this.cur_page = val;
-                this.getData('');
-            },
-            getData(selectKey) {
-                getActivityList(selectKey, this.cur_page, 20).then(res => {
-                    console.log('LOG' + res.data);
-                    this.tableData = res.data;
-                })
-            },
-            search() {
-                this.is_search = true;
-                this.getData(this.select_word)
-            },
-            create() {
-                this.form = {
-                    id: null,
-                    name: null,
-                    beginDate: null,
-                    endDate: null,
-                    address: null,
-                    content: null,
-                    contactMan: null,
-                    contactPhoneNumber: null,
-                    remark: null
-                }
-                this.createVisible = true;
-            },
-            filterTag(value, row) {
-                return row.tag === value;
-            },
-            handleEdit(index, row) {
-                this.idx = index;
-                const item = this.tableData[index];
-                this.form = {
-                    id: item.id,
-                    name: item.name,
-                    beginDate: item.beginDate,
-                    endDate: item.endDate,
-                    address: item.address,
-                    content: item.content,
-                    contactMan: item.contactMan,
-                    contactPhoneNumber: item.contactPhoneNumber,
-                    remark: item.remark
-                }
-                this.editVisible = true;
-            },
-            handleDelete(index, row) {
-                this.idx = index;
-                this.delVisible = true;
-            },
-            delAll() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
-                }
-                this.$message.error('删除了' + str);
-                this.multipleSelection = [];
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            // 保存编辑
-            saveEdit() {
-                editActivity(this.form);
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
-            },
-            // 保存新增
-            saveCreate() {
-                createActivity(this.form);
-                this.createVisible = false;
-                this.$message.success(`创建成功`);
-                this.search();
-            },
-            // 确定删除
-            deleteRow(){
-                deleteActivity(this.idx);
-                this.$message.success('删除成功');
-                this.delVisible = false;
-            }
-        }
+import {
+  getActivityList,
+  createActivity,
+  editActivity,
+  deleteActivity
+} from "../../api/activity.js";
+import {
+  getToken
+} from "../../util/token.js";
+export default {
+  name: "activity",
+  data() {
+    return {
+      url: "./vuetable.json",
+      tableData: [],
+      cur_page: 1,
+      multipleSelection: [],
+      select_cate: "",
+      select_word: "",
+      del_list: [],
+      is_search: false,
+      editVisible: false,
+      createVisible: false,
+      delVisible: false,
+      uploadVisible: false,
+      form: {
+        id: "",
+        name: "",
+        date: "",
+        address: "",
+        beginDate: "",
+        endDate: "",
+        content: "",
+        contactMan: "",
+        contactPhoneNumber: "",
+        remark: ""
+      },
+      idx: -1,
+      currentItem: {}
+    };
+  },
+  created() {
+    this.getData("");
+  },
+  computed: {
+    data() {
+      return this.tableData;
+    },
+    tokenHeader() {
+      return { Authorization: 'Bearer ' + getToken() }
     }
-
+  },
+  methods: {
+    // 分页导航
+    handleCurrentChange(val) {
+      this.cur_page = val;
+      this.getData("");
+    },
+    getData(selectKey) {
+      getActivityList(selectKey, this.cur_page, 20).then(res => {
+        this.tableData = res.data;
+      });
+    },
+    search() {
+      this.is_search = true;
+      this.getData(this.select_word);
+    },
+    create() {
+      this.form = {
+        id: null,
+        name: null,
+        beginDate: null,
+        endDate: null,
+        address: null,
+        content: null,
+        contactMan: null,
+        contactPhoneNumber: null,
+        remark: null
+      };
+      this.createVisible = true;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    handleEdit(index, row) {
+      this.idx = index;
+      const item = this.tableData[index];
+      this.form = {
+        id: item.id,
+        name: item.name,
+        beginDate: item.beginDate,
+        endDate: item.endDate,
+        address: item.address,
+        content: item.content,
+        contactMan: item.contactMan,
+        contactPhoneNumber: item.contactPhoneNumber,
+        remark: item.remark
+      };
+      this.editVisible = true;
+    },
+    handleDelete(index, row) {
+      this.idx = index;
+      this.delVisible = true;
+    },
+    handleUpload(index, row) {
+      this.idx = index;
+      this.currentItem = this.tableData[this.idx];
+      this.uploadVisible = true;
+    },
+    delAll() {
+      const length = this.multipleSelection.length;
+      let str = "";
+      this.del_list = this.del_list.concat(this.multipleSelection);
+      for (let i = 0; i < length; i++) {
+        str += this.multipleSelection[i].name + " ";
+      }
+      this.$message.error("删除了" + str);
+      this.multipleSelection = [];
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // 保存编辑
+    saveEdit() {
+      editActivity(this.form);
+      this.$set(this.tableData, this.idx, this.form);
+      this.editVisible = false;
+      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+    },
+    // 保存新增
+    saveCreate() {
+      createActivity(this.form);
+      this.createVisible = false;
+      this.$message.success(`创建成功`);
+      this.search();
+    },
+    // 确定删除
+    deleteRow() {
+      deleteActivity(this.idx);
+      this.$message.success("删除成功");
+      this.delVisible = false;
+    }
+  }
+};
 </script>
 
 <style scoped>

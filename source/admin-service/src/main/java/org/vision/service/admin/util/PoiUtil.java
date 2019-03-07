@@ -36,7 +36,7 @@ public class PoiUtil {
         //获得Workbook工作薄对象
         Workbook workbook = getWorkBook(file);
         //创建返回对象，把每行中的值作为一个数组，所有行作为一个集合返回
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> list = new ArrayList<>();
         if(workbook != null){
             for(int sheetNum = 0;sheetNum < workbook.getNumberOfSheets();sheetNum++){
                 //获得当前sheet工作表
@@ -79,7 +79,8 @@ public class PoiUtil {
             throw new FileNotFoundException("文件不存在！");
         }
         //获得文件名
-        String fileName = file.getName();
+        String fileName = file.getOriginalFilename();
+        log.info("获取的文件名：" + fileName);
         //判断文件是否是excel文件
         if(!fileName.endsWith(xls) && !fileName.endsWith(xlsx)){
             log.error(fileName + "不是excel文件");
@@ -88,7 +89,7 @@ public class PoiUtil {
     }
     public static Workbook getWorkBook(MultipartFile file) {
         //获得文件名
-        String fileName = file.getName();
+        String fileName = file.getOriginalFilename();
         //创建Workbook工作薄对象，表示整个excel
         Workbook workbook = null;
         try {

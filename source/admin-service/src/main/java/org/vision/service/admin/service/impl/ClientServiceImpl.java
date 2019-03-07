@@ -164,12 +164,12 @@ public class ClientServiceImpl implements ClientService {
         }
 
         @Override
-        public Integer getJoinLuminosityLeft() {
+        public Integer getJointLuminosityLeft() {
             return visionClientView.getVisionClient().getJointLuminosityLeft();
         }
 
         @Override
-        public Integer getJoinLuminosityRight() {
+        public Integer getJointLuminosityRight() {
             return visionClientView.getVisionClient().getJointLuminosityRight();
         }
 

@@ -7,6 +7,7 @@ import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
 import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ActivityService {
@@ -27,7 +28,7 @@ public interface ActivityService {
 
     Boolean deleteClient(String activityId, String clientId);
 
-    List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile);
+    List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile) throws IOException;
 
     List<? extends VisionCheckRecordVO> importClientCheckReport(String activityId, MultipartFile multipartFile);
 
