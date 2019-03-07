@@ -116,4 +116,7 @@ public interface VisionCheckRecordMapper {
     int updateByPrimaryKey(VisionCheckRecord record);
     
     List<VisionCheckRecordClientView> selectByCriteria(VisionCheckRecordCriteria criteria);
+    
+    List<VisionCheckRecordClientView> selectActivityRecordByCriteria(String activityId);
+    
 }

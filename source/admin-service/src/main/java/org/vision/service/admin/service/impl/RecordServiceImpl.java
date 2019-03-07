@@ -29,7 +29,12 @@ public class RecordServiceImpl implements RecordService {
       return visionCheckRecordMapper.selectByCriteria(visionCheckRecordCriteria).stream().map(VisionCheckRecordVOImpl::new).collect(Collectors.toList());
     }
     
-    
+    @Override
+    public List<? extends VisionCheckRecordVO> getActivityRecordList(
+        String activityId, int pageSize, int pageNum) {
+      PageHelper.startPage(pageNum, pageSize);
+      return visionCheckRecordMapper.selectActivityRecordByCriteria(activityId).stream().map(VisionCheckRecordVOImpl::new).collect(Collectors.toList());
+    }
     
     private class VisionCheckRecordVOImpl implements VisionCheckRecordVO {
 
@@ -209,4 +214,5 @@ public class RecordServiceImpl implements RecordService {
 
       
   }
+
 }

@@ -11,6 +11,8 @@ public class VisionCheckRecordCriteria {
   
   private String className;
   
+  private String activityId;
+  
   private String activityName;
   
   private String name;

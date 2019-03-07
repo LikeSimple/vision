@@ -5,7 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
+import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.service.ActivityService;
+import org.vision.service.admin.service.RecordService;
 import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
 import org.vision.service.admin.service.vo.VisionCheckRecordVO;
@@ -19,8 +21,11 @@ public class ActivityController {
 
     private ActivityService activityService;
 
-    public ActivityController(ActivityService activityService) {
+    private RecordService recordService;
+    
+    public ActivityController(ActivityService activityService, RecordService recordService) {
         this.activityService = activityService;
+        this.recordService = recordService;
     }
 
     /**
@@ -150,7 +155,9 @@ public class ActivityController {
 
 
     @PostMapping("/{activityId}/record/list")
-    public ResponseData<List<? extends VisionCheckRecordVO>> getClientCheckRecord(@PathVariable("activityId") String activityId) {
-        return null;
+    public ResponseData<List<? extends VisionCheckRecordVO>> getClientCheckRecord(@PathVariable("activityId") String activityId,
+        @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
+        @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
+        return new ResponseData<>(recordService.getActivityRecordList(activityId, pageSize, pageNum));
     }
 }

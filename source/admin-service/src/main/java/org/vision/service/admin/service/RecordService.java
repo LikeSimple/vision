@@ -9,4 +9,6 @@ import java.util.List;
 public interface RecordService {
 
     List<? extends VisionCheckRecordVO> getList(VisionCheckRecordCriteria visionCheckRecordCriteria, int pageSize, int pageNum);
+    
+    List<? extends VisionCheckRecordVO> getActivityRecordList(String activityId, int pageSize, int pageNum);
 }

@@ -125,18 +125,18 @@
       cr.`pupil` cr_pupil, cr.`se1` cr_se1, cr.`ds1` cr_ds1, cr.`dc1` cr_dc1, cr.`axis1` cr_axis1, cr.`se2` cr_se2, 
       cr.`ds2` cr_ds2, cr.`dc2` cr_dc2, cr.`axis2` cr_axis2, cr.`pd` cr_pd, cr.`mm_hg` cr_mm_hg, cr.`gaze_h` cr_gaze_h, 
       cr.`gaze_v` cr_gaze_v, cr.`remark` cr_remark, cr.`enabled` cr_enabled, cr.`create_time` cr_create_time, cr.`modified_time` cr_modified_time
-      FROM vision_activity a
+    </sql>
+
+    <select id="selectByCriteria" resultMap="BaseMap"
+            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
+        <include refid="Base_Column_List"/>
+        FROM vision_activity a
       INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
       INNER JOIN vision_client c on ac.vision_client_id = c.id
       INNER JOIN vision_check_record cr on c.id = cr.vision_client_id
       INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
       INNER JOIN vision_school_class sc on sc.id = scm.vision_class_id
       INNER JOIN vision_school s on s.id = sc.vision_school_id
-    </sql>
-
-    <select id="selectByCriteria" resultMap="BaseMap"
-            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
-        <include refid="Base_Column_List"/>
         <where>
             <if test="schoolName != null and schoolName !=''">
                 and s.`name` like CONCAT('%', #{schoolName,jdbcType=VARCHAR}, '%')
@@ -163,5 +163,19 @@
         order by cr.check_date desc
     </select>
 
+    <select id="selectActivityRecordByCriteria" resultMap="BaseMap"
+            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
+        <include refid="Base_Column_List"/>
+        FROM vision_activity a
+      INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
+      INNER JOIN vision_client c on ac.vision_client_id = c.id
+      INNER JOIN vision_check_record cr on c.id = cr.vision_client_id
+      INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
+      INNER JOIN vision_school_class sc on sc.id = scm.vision_class_id
+      INNER JOIN vision_school s on s.id = sc.vision_school_id
+        where
+        	a.`id` = #{activityId,jdbcType=VARCHAR}
+        order by cr.check_date desc
+    </select>
     
 </mapper>
