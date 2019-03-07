@@ -9,6 +9,7 @@ import org.vision.wechat.common.IDUtils;
 import org.vision.wechat.common.RedisClient;
 import org.vision.wechat.common.ResponseData;
 import org.vision.wechat.common.SysResponseEnum;
+import org.vision.wechat.controllers.HttpConstants;
 import org.vision.wechat.model.WxUserInfoBO;
 import org.vision.wechat.persistence.mapper.WxClientPOMapper;
 import org.vision.wechat.persistence.model.WxClientPO;
@@ -42,8 +43,8 @@ public class WxMiniprgmServiceImpl implements WxMiniprgmService {
       return responseData;
     }
     
-    String wechatSessionId = UUID.randomUUID().toString().replaceAll("-", "");
-    redisClient.set(wechatSessionId, jsonObject, 2678400L);
+    String wechatSessionId = HttpConstants.WECHAT_SESSION_ID + UUID.randomUUID().toString().replaceAll("-", "");
+    redisClient.set(wechatSessionId, jsonObject, HttpConstants.WECHAT_SESSION_EXPIRED);
     
     responseData.setData(wechatSessionId);
     
@@ -78,7 +79,7 @@ public class WxMiniprgmServiceImpl implements WxMiniprgmService {
     }
     
     
-    redisClient.set(wechatSessionId + "_user", record, 2678400L);
+    redisClient.set(wechatSessionId + "_user", record, HttpConstants.WECHAT_SESSION_EXPIRED);
     return new ResponseData<>();
   }
 

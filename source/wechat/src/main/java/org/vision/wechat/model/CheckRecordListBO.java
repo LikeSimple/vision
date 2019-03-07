@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class CheckRecordListBO {
   
+  private String clientName;
+  private String idNumber;
   private String activityName;
   private String id;
   private String eyeType;

@@ -4,7 +4,7 @@ public enum SysResponseEnum {
     SUCCESS(0, "操作成功！"),
     FAILED(100, "操作失败！"),
     
-    NOT_LOGIN(-1, "用户未登录！"),
+    NOT_LOGIN(-2, "用户未登录！"),
     NOT_REGISTER(1001, "请先注册！"),
   
     WX_MINIGRGM_JSCODE_SESSION(1000, "获取用户身份失败！"),
