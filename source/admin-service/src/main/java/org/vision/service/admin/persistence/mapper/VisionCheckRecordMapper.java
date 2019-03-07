@@ -12,8 +12,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.vision.service.admin.controller.criteria.CheckRecordCriteria;
-import org.vision.service.admin.persistence.model.VisionActivity;
+import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.persistence.model.VisionCheckRecord;
 import org.vision.service.admin.persistence.model.VisionCheckRecordClientView;
 
@@ -116,5 +115,5 @@ public interface VisionCheckRecordMapper {
     })
     int updateByPrimaryKey(VisionCheckRecord record);
     
-    List<VisionCheckRecordClientView> selectByCriteria(CheckRecordCriteria activityCriteria);
+    List<VisionCheckRecordClientView> selectByCriteria(VisionCheckRecordCriteria criteria);
 }

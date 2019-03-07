@@ -12,7 +12,7 @@ import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/report")
+@RequestMapping("/api/record")
 public class RecordController {
 
     private RecordService recordService;

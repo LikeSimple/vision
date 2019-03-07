@@ -7,30 +7,24 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select> -->
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
+                姓名：<el-input v-model="query_name"  class="handle-input"></el-input>
+                身份证号：<el-input v-model="query_id_number"  class="handle-input"></el-input>
+                学校：<el-input v-model="query_school_name"  class="handle-input"></el-input>
+                班级：<el-input v-model="query_class_name"  class="handle-input"></el-input>
+                活动：<el-input v-model="query_activity_name"  class="handle-input"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="活动名称" width="100"></el-table-column>
-                <el-table-column prop="activityDate" label="活动日期" width="150"></el-table-column>
-                <el-table-column prop="content" label="活动内容" width="200"></el-table-column>
-                <el-table-column prop="address" label="活动地址" width="100"></el-table-column>
-                <el-table-column prop="contactMan" label="联系人" width="50"></el-table-column>
-                <el-table-column prop="contactPhoneNumber" label="联系电话" width="80"></el-table-column>
-                <el-table-column prop="remark" label="备注" width="100"></el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">活动用户</el-button>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="schoolName" label="学校" width="180" align="center"></el-table-column>
+                <el-table-column prop="className" label="班级" width="120" align="center"></el-table-column>
+                <el-table-column prop="name" label="姓名" width="120" align="center"></el-table-column>
+                <el-table-column prop="idNumber" label="身份证号" width="200" align="center"></el-table-column>
+                <el-table-column prop="eyeType" label="左右眼" :formatter="eyeTypeFormatter" width="100" align="center"></el-table-column>
+                <el-table-column prop="pupil" label="瞳孔大小" width="50" align="center"></el-table-column>
+                <el-table-column prop="pd" label="瞳距" width="80" align="center"></el-table-column>
+                <el-table-column prop="activityName" label="活动" width="80" align="center"></el-table-column>
+                <el-table-column prop="checkDate" label="检测日期" width="200" align="center"></el-table-column>
+                
             </el-table>
             <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
@@ -70,6 +64,7 @@
 </template>
 
 <script>
+    import { getActivityClientList, getActivityClientRecordList } from '../../api/activityClient.js'
     export default {
         name: 'basetable',
         data() {
@@ -78,8 +73,11 @@
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
-                select_cate: '',
-                select_word: '',
+                query_name: "", 
+                query_id_number: "", 
+                query_school_name: "", 
+                query_class_name: "", 
+                query_activity_name: "",
                 del_list: [],
                 is_search: false,
                 editVisible: false,
@@ -97,15 +95,7 @@
         },
         computed: {
             data() {
-                return [{
-                    name: 'XX学校视力筛选',
-                    activityDate: '2019-03-01 <-> 2019-03-07',
-                    content: 'XX省XX市XX学校检查视力',
-                    address: 'XX地址',
-                    contactMan: '联系人',
-                    contactPhoneNumber: '00000000000',
-                    remark: '备注'
-                }]
+                return this.tableData;
                 // return this.tableData.filter((d) => {
                 //     let is_del = false;
                 //     for (let i = 0; i < this.del_list.length; i++) {
@@ -133,17 +123,13 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
+                getActivityClientRecordList(this.query_name, this.query_id_number, this.query_school_name, 
+                    this.query_class_name, this.query_activity_name, this.cur_page).then((res) => {
+                    this.tableData = res.data;
                 })
             },
             search() {
+                this.getData();
                 this.is_search = true;
             },
             formatter(row, column) {
@@ -190,7 +176,16 @@
                 this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
-            }
+            },
+            eyeTypeFormatter(row, column) {
+                var value = "未知";
+                if ("OD" == row.eysType){
+                    value = "左眼";
+                } else if ("OD" == row.eysType){
+                    value = "右眼";
+                }
+                return value;
+            },
         }
     }
 
