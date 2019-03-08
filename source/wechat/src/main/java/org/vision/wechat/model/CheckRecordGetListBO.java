@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class CheckRecordGetListBO {
   
+  private String wxClientId;
+  
   private String visionClientId;
   
   @io.swagger.annotations.ApiModelProperty(value = "检测日期区间起始", name = "checkDateStart", required = false, example = "")

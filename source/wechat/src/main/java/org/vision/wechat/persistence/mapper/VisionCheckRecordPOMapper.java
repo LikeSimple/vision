@@ -3,6 +3,7 @@ package org.vision.wechat.persistence.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.vision.wechat.model.CheckRecordGetListBO;
 import org.vision.wechat.model.CheckRecordListBO;
 import org.vision.wechat.persistence.model.VisionCheckRecordPO;
@@ -99,4 +100,6 @@ public interface VisionCheckRecordPOMapper {
     int updateByPrimaryKey(VisionCheckRecordPO record);
     
     List<CheckRecordListBO> list(CheckRecordGetListBO bo);
+    
+    List<VisionCheckRecordPO> activityClientList(@Param("activityId") String activityId, @Param("clientId") String clientId);
 }

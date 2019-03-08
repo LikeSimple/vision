@@ -571,16 +571,19 @@
 		a.`name` activity_name,
 		vc.name client_name,
 		vc.id_number id_number,
+		vc.id client_id,
+		t.activity_id,
 		r.id,
 		r.eye_type,
 		r.check_date
 	FROM
-		vision_activity_client_check_record t
-	JOIN vision_client vc on t.vision_client_id = vc.id
+		wx_client_vision_client cvc
+	JOIN vision_client vc on cvc.vision_client_id = vc.id
+	JOIN vision_activity_client_check_record t on t.vision_client_id = vc.id
 	JOIN vision_check_record r ON t.vision_check_record_id = r.id
 	JOIN vision_activity a ON t.vision_activity_id = a.id
 	WHERE
-	    1 = 1
+	    cvc.wx_client_id = #{wxClientId,jdbcType=VARCHAR}
 	<if test="visionClientId != null and visionClientId != '' ">
       AND t.vision_client_id = #{visionClientId}
     </if>    
@@ -592,4 +595,19 @@
     </if>
     order by r.create_time desc	
   </select>
+  
+  <select id="activityClientList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from vision_check_record  
+    where 
+      id in (select vision_check_record_id from vision_activity_client_check_record
+      	where 
+      		vision_activity_id = #{activityId,jdbcType=VARCHAR}
+    	and vision_client_id = #{clientId,jdbcType=VARCHAR}
+      ) 
+         
+      
+  </select>
+  
 </mapper>
