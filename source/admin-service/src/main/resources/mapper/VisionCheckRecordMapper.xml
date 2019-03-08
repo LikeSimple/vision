@@ -2,98 +2,98 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.vision.service.admin.persistence.mapper.VisionCheckRecordMapper">
 
+    <resultMap id="VisionCheckRecordMap" type="org.vision.service.admin.persistence.model.VisionCheckRecord">
+        <result column="vcr_id" jdbcType="CHAR" property="id"/>
+        <result column="vcr_vision_client_id" jdbcType="CHAR" property="visionClientId"/>
+        <result column="vcr_eye_type" jdbcType="CHAR" property="eyeType"/>
+        <result column="vcr_check_date" jdbcType="TIMESTAMP" property="checkDate"/>
+        <result column="vcr_data_type" jdbcType="BIT" property="dataType"/>
+        <result column="vcr_picture_file" jdbcType="VARCHAR" property="pictureFile"/>
+        <result column="vcr_pupil" jdbcType="DECIMAL" property="pupil"/>
+        <result column="vcr_se1" jdbcType="DECIMAL" property="se1"/>
+        <result column="vcr_ds1" jdbcType="DECIMAL" property="ds1"/>
+        <result column="vcr_dc1" jdbcType="DECIMAL" property="dc1"/>
+        <result column="vcr_axis1" jdbcType="INTEGER" property="axis1"/>
+        <result column="vcr_se2" jdbcType="DECIMAL" property="se2"/>
+        <result column="vcr_ds2" jdbcType="DECIMAL" property="ds2"/>
+        <result column="vcr_dc2" jdbcType="DECIMAL" property="dc2"/>
+        <result column="vcr_axis2" jdbcType="INTEGER" property="axis2"/>
+        <result column="vcr_pd" jdbcType="INTEGER" property="pd"/>
+        <result column="vcr_mm_hg" jdbcType="DECIMAL" property="mmHg"/>
+        <result column="vcr_gaze_h" jdbcType="INTEGER" property="gazeH"/>
+        <result column="vcr_gaze_v" jdbcType="INTEGER" property="gazeV"/>
+        <result column="vcr_remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="vcr_enabled" jdbcType="BIT" property="enabled"/>
+        <result column="vcr_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="vcr_modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+    </resultMap>
+
+    <resultMap id="VisionActivityMap" type="org.vision.service.admin.persistence.model.VisionActivity">
+        <id column="va_id" property="id" jdbcType="CHAR"/>
+        <result column="va_name" property="name" jdbcType="VARCHAR"/>
+        <result column="va_address" property="address" jdbcType="VARCHAR"/>
+        <result column="va_begin_date" property="beginDate" jdbcType="DATE"/>
+        <result column="va_end_date" property="endDate" jdbcType="DATE"/>
+        <result column="va_content" property="content" jdbcType="VARCHAR"/>
+        <result column="va_contact_man" property="contactMan" jdbcType="VARCHAR"/>
+        <result column="va_contact_phone_number" property="contactPhoneNumber" jdbcType="VARCHAR"/>
+        <result column="va_remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="va_archived" property="archived" jdbcType="BIT"/>
+        <result column="va_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="va_modified_time" property="modifiedTime" jdbcType="DATE"/>
+    </resultMap>
     <resultMap id="VisionSchoolMap" type="org.vision.service.admin.persistence.model.VisionSchool">
-        <id column="s_id" property="id" jdbcType="CHAR"/>
-        <result column="s_name" property="name" jdbcType="VARCHAR"/>
-        <result column="s_province" property="province" jdbcType="VARCHAR"/>
-        <result column="s_city" property="city" jdbcType="VARCHAR"/>
-        <result column="s_county" property="county" jdbcType="VARCHAR"/>
-        <result column="s_detail_address" property="detailAddress" jdbcType="VARCHAR"/>
-        <result column="s_created_time" property="createdTime" jdbcType="DATE"/>
-        <result column="s_modified_time" property="modifiedTime" jdbcType="DATE"/>
+        <id column="vs_id" property="id" jdbcType="CHAR"/>
+        <result column="vs_name" property="name" jdbcType="VARCHAR"/>
+        <result column="vs_province" property="province" jdbcType="VARCHAR"/>
+        <result column="vs_city" property="city" jdbcType="VARCHAR"/>
+        <result column="vs_county" property="county" jdbcType="VARCHAR"/>
+        <result column="vs_detail_address" property="detailAddress" jdbcType="VARCHAR"/>
+        <result column="vs_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="vs_modified_time" property="modifiedTime" jdbcType="DATE"/>
     </resultMap>
 
     <resultMap id="VisionSchoolClassMap" type="org.vision.service.admin.persistence.model.VisionSchoolClass">
-        <id column="sc_id" property="id" jdbcType="CHAR"/>
-        <result column="sc_vision_school_id" property="visionSchoolId" jdbcType="CHAR"/>
-        <result column="sc_name" property="name" jdbcType="VARCHAR"/>
-        <result column="sc_created_time" property="createdTime" jdbcType="DATE"/>
-        <result column="sc_modified_time" property="modifiedTime" jdbcType="DATE"/>
+        <id column="vsc_id" property="id" jdbcType="CHAR"/>
+        <result column="vsc_vision_school_id" property="visionSchoolId" jdbcType="CHAR"/>
+        <result column="vsc_name" property="name" jdbcType="VARCHAR"/>
+        <result column="vsc_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="vsc_modified_time" property="modifiedTime" jdbcType="DATE"/>
     </resultMap>
-    
-    <resultMap id="VisionActivityMap" type="org.vision.service.admin.persistence.model.VisionActivity">
-        <id column="a_id" property="id" jdbcType="CHAR"/>
-        <result column="a_name" property="name" jdbcType="VARCHAR"/>
-        <result column="a_address" property="address" jdbcType="VARCHAR"/>
-        <result column="a_begin_date" property="beginDate" jdbcType="DATE"/>
-        <result column="a_end_date" property="endDate" jdbcType="DATE"/>
-        <result column="a_content" property="content" jdbcType="VARCHAR"/>
-        <result column="a_contact_man" property="contactMan" jdbcType="VARCHAR"/>
-        <result column="a_contact_phone_number" property="contactPhoneNumber" jdbcType="VARCHAR"/>
-        <result column="a_created_time" property="createdTime" jdbcType="DATE"/>
-        <result column="a_modified_time" property="modifiedTime" jdbcType="DATE"/>
-    </resultMap>
+
 
     <resultMap id="VisionClientMap" type="org.vision.service.admin.persistence.model.VisionClient">
-        <id column="c_id" property="id" jdbcType="CHAR"/>
-        <result column="c_wx_client_id" property="wxClientId" jdbcType="CHAR"/>
-        <result column="c_name" property="name" jdbcType="VARCHAR"/>
-        <result column="c_gender" property="gender" jdbcType="BIT"/>
-        <result column="c_age" property="age" jdbcType="INTEGER"/>
-        <result column="c_id_number" property="idNumber" jdbcType="VARCHAR"/>
-        <result column="c_native_place" property="nativePlace" jdbcType="VARCHAR"/>
-        <result column="c_height" property="height" jdbcType="DECIMAL"/>
-        <result column="c_weight" property="weight" jdbcType="DECIMAL"/>
-        <result column="c_birthday" property="birthday" jdbcType="DATE"/>
-        <result column="c_phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
-        <result column="c_province" property="province" jdbcType="VARCHAR"/>
-        <result column="c_city" property="city" jdbcType="VARCHAR"/>
-        <result column="c_county" property="county" jdbcType="VARCHAR"/>
-        <result column="c_detail_address" property="detailAddress" jdbcType="VARCHAR"/>
-        <result column="c_vision_acuity_left" property="visionAcuityLeft" jdbcType="DECIMAL"/>
-        <result column="c_vision_acuity_right" property="visionAcuityRight" jdbcType="DECIMAL"/>
-        <result column="c_vision_acuity" property="visionAcuity" jdbcType="DECIMAL"/>
-        <result column="c_diopters_left" property="dioptersLeft" jdbcType="INTEGER"/>
-        <result column="c_diopters_right" property="dioptersRight" jdbcType="INTEGER"/>
-        <result column="c_astigmatism_left" property="astigmatismLeft" jdbcType="INTEGER"/>
-        <result column="c_astigmatism_right" property="astigmatismRight" jdbcType="INTEGER"/>
-        <result column="c_joint_luminosity_left" property="jointLuminosityLeft" jdbcType="INTEGER"/>
-        <result column="c_joint_luminosity_right" property="jointLuminosityRight" jdbcType="INTEGER"/>
-        <result column="c_axis_left" property="axisLeft" jdbcType="INTEGER"/>
-        <result column="c_axis_right" property="axisRight" jdbcType="INTEGER"/>
-        <result column="c_pupil_distance" property="pupilDistance" jdbcType="INTEGER"/>
-        <result column="c_created_time" property="createdTime" jdbcType="DATE"/>
-        <result column="c_modified_time" property="modifiedTime" jdbcType="DATE"/>
+        <id column="vc_id" property="id" jdbcType="CHAR"/>
+        <result column="vc_wx_client_id" property="wxClientId" jdbcType="CHAR"/>
+        <result column="vc_name" property="name" jdbcType="VARCHAR"/>
+        <result column="vc_gender" property="gender" jdbcType="BIT"/>
+        <result column="vc_age" property="age" jdbcType="INTEGER"/>
+        <result column="vc_id_number" property="idNumber" jdbcType="VARCHAR"/>
+        <result column="vc_native_place" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="vc_height" property="height" jdbcType="DECIMAL"/>
+        <result column="vc_weight" property="weight" jdbcType="DECIMAL"/>
+        <result column="vc_birthday" property="birthday" jdbcType="DATE"/>
+        <result column="vc_phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="vc_province" property="province" jdbcType="VARCHAR"/>
+        <result column="vc_city" property="city" jdbcType="VARCHAR"/>
+        <result column="vc_county" property="county" jdbcType="VARCHAR"/>
+        <result column="vc_detail_address" property="detailAddress" jdbcType="VARCHAR"/>
+        <result column="vc_vision_acuity_left" property="visionAcuityLeft" jdbcType="DECIMAL"/>
+        <result column="vc_vision_acuity_right" property="visionAcuityRight" jdbcType="DECIMAL"/>
+        <result column="vc_vision_acuity" property="visionAcuity" jdbcType="DECIMAL"/>
+        <result column="vc_diopters_left" property="dioptersLeft" jdbcType="INTEGER"/>
+        <result column="vc_diopters_right" property="dioptersRight" jdbcType="INTEGER"/>
+        <result column="vc_astigmatism_left" property="astigmatismLeft" jdbcType="INTEGER"/>
+        <result column="vc_astigmatism_right" property="astigmatismRight" jdbcType="INTEGER"/>
+        <result column="vc_joint_luminosity_left" property="jointLuminosityLeft" jdbcType="INTEGER"/>
+        <result column="vc_joint_luminosity_right" property="jointLuminosityRight" jdbcType="INTEGER"/>
+        <result column="vc_axis_left" property="axisLeft" jdbcType="INTEGER"/>
+        <result column="vc_axis_right" property="axisRight" jdbcType="INTEGER"/>
+        <result column="vc_pupil_distance" property="pupilDistance" jdbcType="INTEGER"/>
+        <result column="vc_created_time" property="createdTime" jdbcType="DATE"/>
+        <result column="vc_modified_time" property="modifiedTime" jdbcType="DATE"/>
     </resultMap>
 
-	<resultMap id="VisionCheckRecordMap" type="org.vision.service.admin.persistence.model.VisionCheckRecord">
-		
-		<result column="t_id" jdbcType="CHAR" property="checkId" />
-		<result column="c_vision_client_id" jdbcType="CHAR" property="visionClientId" />
-		<result column="cr_id" jdbcType="CHAR" property="id" />
-	    
-	    <result column="cr_eye_type" jdbcType="CHAR" property="eyeType" />
-	    <result column="cr_check_date" jdbcType="TIMESTAMP" property="checkDate" />
-	    <result column="cr_data_type" jdbcType="BIT" property="dataType" />
-	    <result column="cr_picture_file" jdbcType="VARCHAR" property="pictureFile" />
-	    <result column="cr_pupil" jdbcType="DECIMAL" property="pupil" />
-	    <result column="cr_se1" jdbcType="DECIMAL" property="se1" />
-	    <result column="cr_ds1" jdbcType="DECIMAL" property="ds1" />
-	    <result column="cr_dc1" jdbcType="DECIMAL" property="dc1" />
-	    <result column="cr_axis1" jdbcType="INTEGER" property="axis1" />
-	    <result column="cr_se2" jdbcType="DECIMAL" property="se2" />
-	    <result column="cr_ds2" jdbcType="DECIMAL" property="ds2" />
-	    <result column="cr_dc2" jdbcType="DECIMAL" property="dc2" />
-	    <result column="cr_axis2" jdbcType="INTEGER" property="axis2" />
-	    <result column="cr_pd" jdbcType="INTEGER" property="pd" />
-	    <result column="cr_mm_hg" jdbcType="DECIMAL" property="mmHg" />
-	    <result column="cr_gaze_h" jdbcType="INTEGER" property="gazeH" />
-	    <result column="cr_gaze_v" jdbcType="INTEGER" property="gazeV" />
-	    <result column="cr_remark" jdbcType="VARCHAR" property="remark" />
-	    <result column="cr_enabled" jdbcType="BIT" property="enabled" />
-	    <result column="cr_create_time" jdbcType="TIMESTAMP" property="createTime" />
-	    <result column="cr_modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
-    </resultMap>
 
     <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionCheckRecordClientView">
         <association property="visionActivity" resultMap="VisionActivityMap"/>
@@ -104,81 +104,71 @@
     </resultMap>
     <sql id="Base_Column_List">
       SELECT
-      t.id as t_id,
-      c.id as c_vision_client_id,
-      a.id as a_id, a.name as a_name, a.address as a_address, a.begin_date as a_begin_date, a.end_date as a_end_date,
-      a.content as a_content, a.contact_man as a_contact_man, a.contact_phone_number as a_contact_phone_number,
-      a.remark as a_remark, a.archived as a_archived, a.created_time as a_created_time, a.modified_time as a_modified_time,
-      ac.vision_activity_id as ac_vision_activity_id, ac.vision_member_id as ac_vision_member_id, ac.vision_client_id as ac_vision_client_id, ac.enabled as ac_enabled,
-      ac.created_time as ac_create_time, c.id as c_id, c.wx_client_id as c_wx_client_id, c.name as c_name, c.gender as c_gender, c.age as c_age,
-      c.id_number as c_id_number, c.native_place as c_native_place, c.height as c_height, c.weight as c_weight,
-      c.birthday as c_birthday, c.phone_number as c_phone_number, c.province as c_province, c.city as c_city,
-      c.county as c_county, c.detail_address as c_detail_address, c.vision_acuity_left as c_vision_acuity_left,
-      c.vision_acuity_right as c_vision_acuity_right, c.vision_acuity as c_vision_acuity, c.diopters_left as c_diopters_left,
-      c.diopters_right as c_diopters_right, c.astigmatism_left as c_astigmatism_left, c.astigmatism_right as c_astigmatism_right,
-      c.joint_luminosity_left as c_joint_luminosity_left, c.joint_luminosity_right as c_joint_luminosity_right,
-      c.axis_left as c_axis_left, c.axis_right as c_axis_right, c.pupil_distance as c_pupil_distance,
-      c.created_time as c_created_time, c.modified_time as c_modified_time, scm.id as scm_id,
-      scm.vision_class_id as scm_vision_class_id, scm.vision_client_id as scm_vision_client_id, scm.student_number as scm_student_number,
-      scm.created_time as scm_created_time, scm.modified_time as scm_modified_time, sc.id as sc_id, sc.vision_school_id as sc_vision_school_id,
-      sc.name as sc_name, sc.created_time as sc_created_time, sc.modified_time as sc_modified_time, s.id as s_id, s.name as s_name,
-      s.province as s_province, s.county as s_county, s.city as s_city, s.detail_address as s_detail_address,
-      s.created_time as s_created_time, s.modified_time as s_modified_time,cr.`id` cr_id, cr.`vision_client_id` cr_vision_client_id, 
-      cr.`eye_type` cr_eye_type, cr.`check_date` cr_check_date, cr.`data_type` cr_data_type, cr.`picture_file` cr_picture_file, 
-      cr.`pupil` cr_pupil, cr.`se1` cr_se1, cr.`ds1` cr_ds1, cr.`dc1` cr_dc1, cr.`axis1` cr_axis1, cr.`se2` cr_se2, 
-      cr.`ds2` cr_ds2, cr.`dc2` cr_dc2, cr.`axis2` cr_axis2, cr.`pd` cr_pd, cr.`mm_hg` cr_mm_hg, cr.`gaze_h` cr_gaze_h, 
-      cr.`gaze_v` cr_gaze_v, cr.`remark` cr_remark, cr.`enabled` cr_enabled, cr.`create_time` cr_create_time, cr.`modified_time` cr_modified_time
+        vcr.id as vcr_id, vcr.vision_client_id as vcr_vision_client_id, vcr.eye_type as vcr_eye_type, vcr.check_date as vcr_check_date,
+        vcr.data_type as vcr_data_type, vcr.picture_file as vcr_picture_file, vcr.pupil as vcr_pupil, vcr.se1 as vcr_se1,
+        vcr.ds1 as vcr_ds1, vcr.dc1 as vcr_dc1, vcr.axis1 as vcr_axis1, vcr.se2 as vcr_se2, vcr.ds2 as vcr_ds2, vcr.dc2 as vcr_dc2,
+        vcr.axis2 as vcr_axis2, vcr.pd as vcr_pd, vcr.mm_hg as vcr_mm_hg, vcr.gaze_h as vcr_gaze_h, vcr.gaze_v as vcr_gaze_v,
+        vcr.remark as vcr_remark, vcr.enabled as vcr_enabled, vcr.create_time as vcr_create_time, vcr.modified_time as vcr_modified_time,
+        va.id as va_id, va.name as va_name, va.address as va_address, va.begin_date as va_begin_date, va.end_date as va_end_date,
+        va.content as va_content, va.contact_man as va_contact_man, va.contact_phone_number as va_contact_phone_number,
+        va.remark as va_remark, va.archived as va_archived, va.modified_time as va_modified_time, va.created_time as va_created_time,
+        vc.id as vc_id, vc.wx_client_id as vc_wx_client_id, vc.name as vc_name, vc.gender as vc_gender, vc.age as vc_age,
+        vc.id_number as vc_id_number, vc.native_place as vc_native_place, vc.height as vc_height, vc.weight as vc_weight,
+        vc.birthday as vc_birthday, vc.phone_number as vc_phone_number, vc.province as vc_province, vc.city as vc_city,
+        vc.county as vc_county, vc.detail_address as vc_detail_address, vc.vision_acuity_left as vc_vision_acuity_left,
+        vc.vision_acuity_right as vc_vision_acuity_right, vc.vision_acuity as vc_vision_acuity, vc.diopters_left as vc_diopters_left,
+        vc.diopters_right as vc_diopters_right, vc.astigmatism_left as vc_astigmatism_left, vc.astigmatism_right as vc_astigmatism_right,
+        vc.joint_luminosity_left as vc_joint_luminosity_left, vc.joint_luminosity_right as vc_joint_luminosity_right,
+        vc.axis_left as vc_axis_left, vc.axis_right as vc_axis_right, vc.pupil_distance as vc_pupil_distance,
+        vc.created_time as vc_created_time, vc.modified_time as vc_modified_time, vscm.id as vscm_id,
+        vscm.vision_class_id as vscm_vision_class_id, vscm.student_number as vscm_student_number, vscm.vision_client_id as vscm_vision_client_id,
+        vscm.created_time as vscm_created_time, vscm.modified_time as vscm_modified_time,
+        vsc.id as vsc_id, vsc.vision_school_id as vsc_vision_school_id, vsc.name as vsc_name, vsc.created_time as vsc_created_time,
+        vsc.modified_time as vsc_modified_time, vs.id as vs_id, vs.name as vs_name, vs.province as vs_province, vs.county as vs_county,
+        vs.city as vs_city, vs.detail_address as vs_detail_address, vs.created_time as vs_created_time, vs.modified_time as vs_modified_time
+      FROM
+        vision_check_record vcr
+        INNER JOIN vision_activity_client_check_record vaccr ON vcr.id = vaccr.vision_check_record_id
+        INNER JOIN vision_activity va ON vaccr.vision_activity_id = va.id
+        INNER JOIN vision_client vc ON vaccr.vision_client_id = vc.id
+        INNER JOIN vision_school_class_member vscm on vc.id = vscm.vision_client_id
+        INNER JOIN vision_school_class vsc on vsc.id = vscm.vision_class_id
+        INNER JOIN vision_school vs on vs.id = vsc.vision_school_id
     </sql>
 
     <select id="selectByCriteria" resultMap="BaseMap"  parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
         <include refid="Base_Column_List"/>
-        FROM vision_activity a
-      INNER JOIN vision_activity_client_check_record t on t.vision_activity_id = a.id 
-      INNER JOIN vision_check_record cr on t.vision_client_id = cr.vision_client_id and t.vision_check_record_id = cr.id
-      INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
-      INNER JOIN vision_client c on ac.vision_client_id = c.id
-      INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
-      INNER JOIN vision_school_class sc on sc.id = scm.vision_class_id
-      INNER JOIN vision_school s on s.id = sc.vision_school_id
         <where>
             <if test="schoolName != null and schoolName !=''">
-                and s.`name` like CONCAT('%', #{schoolName,jdbcType=VARCHAR}, '%')
+                and vs.`name` like CONCAT('%', #{schoolName,jdbcType=VARCHAR}, '%')
             </if>
             <if test="className != null and className !=''">
-                and sc.`name` like CONCAT('%', #{className,jdbcType=VARCHAR}, '%')
+                and vsc.`name` like CONCAT('%', #{className,jdbcType=VARCHAR}, '%')
             </if>
             <if test="name != null and name !=''">
-                and c.`name` like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+                and vc.`name` like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
             </if>
             <if test="idNumber != null and idNumber !=''">
-                and c.`id_number` like CONCAT('%', #{idNumber,jdbcType=VARCHAR}, '%')
+                and vc.`id_number` like CONCAT('%', #{idNumber,jdbcType=VARCHAR}, '%')
             </if>
             <if test="activityName != null and activityName !=''">
-                and a.`name` like CONCAT('%', #{activityName,jdbcType=VARCHAR}, '%')
+                and va.`name` like CONCAT('%', #{activityName,jdbcType=VARCHAR}, '%')
             </if>
             
             <if test="beginDate != null and beginDate != ''">
-            	<![CDATA[and created_time >= #{beginDate, jdbcType=DATE}]]></if>
+                <![CDATA[and vcr.created_time >= #{beginDate, jdbcType=DATE}]]></if>
             <if test="endDate != null and endDate != ''">
-            	<![CDATA[and created_time <= #{endDate, jdbcType=DATE}]]>
+                <![CDATA[and vcr.created_time <= #{endDate, jdbcType=DATE}]]>
             </if>
         </where>
-        order by cr.check_date desc
+        order by va.id, vc.id, vcr.id
     </select>
 
     <select id="selectActivityRecordByCriteria" resultMap="BaseMap" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
         <include refid="Base_Column_List"/>
-        FROM vision_activity a
-      INNER JOIN vision_activity_client_check_record t on t.vision_activity_id = a.id 
-      INNER JOIN vision_check_record cr on t.vision_client_id = cr.vision_client_id and t.vision_check_record_id = cr.id
-      INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
-      INNER JOIN vision_client c on ac.vision_client_id = c.id
-      INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
-      INNER JOIN vision_school_class sc on sc.id = scm.vision_class_id
-      INNER JOIN vision_school s on s.id = sc.vision_school_id
         where
-        	a.`id` = #{activityId,jdbcType=VARCHAR}
-        order by cr.check_date desc
+        va.`id` = #{activityId,jdbcType=CHAR}
+        order by va.id, vc.id, vcr.id
     </select>
     
 </mapper>

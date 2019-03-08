@@ -1,9 +1,10 @@
 package org.vision.service.admin.persistence.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 @Data
 public class VisionCheckRecord implements Serializable {
@@ -18,7 +19,7 @@ public class VisionCheckRecord implements Serializable {
 
     private Date checkDate;
 
-    private Boolean dataType;
+    private Integer dataType;
 
     private String pictureFile;
 

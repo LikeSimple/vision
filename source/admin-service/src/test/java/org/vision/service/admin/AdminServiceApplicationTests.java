@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
+import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.persistence.mapper.*;
 import org.vision.service.admin.persistence.model.*;
 import org.vision.service.admin.service.ActivityService;
@@ -68,6 +69,8 @@ public class AdminServiceApplicationTests {
     @Autowired
     private VisionClientMapper visionClientMapper;
 
+    @Autowired
+    private VisionCheckRecordMapper visionCheckRecordMapper;
 
     @Test
     @Transactional
@@ -379,6 +382,44 @@ public class AdminServiceApplicationTests {
         for (int i = 0; i < source.length; i++)
             System.out.print(String.format("%d %s\t", line, source[i]));
         System.out.println();
+    }
+
+    @Test
+    public void CheckRecordTest() throws ParseException {
+        VisionCheckRecord visionCheckRecord = new VisionCheckRecord();
+        visionCheckRecord.setId(ShortUUIDGenerator.newID());
+        visionCheckRecord.setVisionClientId("0Z5dmcYQd3qqrsf0LtXXUN");
+        visionCheckRecord.setEyeType("OS");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        visionCheckRecord.setCheckDate(df.parse("2019-03-08 12:00:00"));
+        visionCheckRecord.setDataType(1);
+        visionCheckRecord.setPictureFile("");
+        visionCheckRecord.setPupil(new BigDecimal(2.1));
+        visionCheckRecord.setSe1(new BigDecimal(-2.0));
+        visionCheckRecord.setDs1(new BigDecimal(2.0));
+        visionCheckRecord.setDc1(new BigDecimal(2.0));
+        visionCheckRecord.setAxis1(30);
+        visionCheckRecord.setSe2(new BigDecimal(2.0));
+        visionCheckRecord.setDs2(new BigDecimal(-2.0));
+        visionCheckRecord.setDc2(new BigDecimal(3.0));
+        visionCheckRecord.setAxis2(180);
+        visionCheckRecord.setPd(30);
+        visionCheckRecord.setMmHg(new BigDecimal(0));
+        visionCheckRecord.setGazeH(111);
+        visionCheckRecord.setGazeV(111);
+        visionCheckRecord.setEnabled(true);
+        visionCheckRecord.setCreateTime(df.parse("2019-03-08 12:00:00"));
+        visionCheckRecordMapper.insertSelective(visionCheckRecord);
+
+    }
+
+    @Test
+    public void SelectCheckRecordTest() {
+        VisionCheckRecordCriteria checkRecordCriteria = new VisionCheckRecordCriteria();
+        checkRecordCriteria.setActivityId("06WKRfvmJ6KEnb8N-gp3lL");
+        List<VisionCheckRecordClientView> visionCheckRecords = visionCheckRecordMapper.selectByCriteria(checkRecordCriteria);
+        Assert.notEmpty(visionCheckRecords);
+        System.out.println(visionCheckRecords);
     }
 
 }
