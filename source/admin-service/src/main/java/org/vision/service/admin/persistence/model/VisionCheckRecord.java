@@ -7,6 +7,9 @@ import lombok.Data;
 
 @Data
 public class VisionCheckRecord implements Serializable {
+  
+    private String checkId;
+    
     private String id;
 
     private String visionClientId;

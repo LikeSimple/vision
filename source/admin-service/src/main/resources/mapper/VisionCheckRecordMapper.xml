@@ -67,8 +67,11 @@
     </resultMap>
 
 	<resultMap id="VisionCheckRecordMap" type="org.vision.service.admin.persistence.model.VisionCheckRecord">
-		<id column="cr_id" jdbcType="CHAR" property="id" />
-	    <result column="cr_vision_client_id" jdbcType="CHAR" property="visionClientId" />
+		
+		<result column="t_id" jdbcType="CHAR" property="checkId" />
+		<result column="c_vision_client_id" jdbcType="CHAR" property="visionClientId" />
+		<result column="cr_id" jdbcType="CHAR" property="id" />
+	    
 	    <result column="cr_eye_type" jdbcType="CHAR" property="eyeType" />
 	    <result column="cr_check_date" jdbcType="TIMESTAMP" property="checkDate" />
 	    <result column="cr_data_type" jdbcType="BIT" property="dataType" />
@@ -92,17 +95,17 @@
 	    <result column="cr_modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
     </resultMap>
 
-    
-
     <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionCheckRecordClientView">
         <association property="visionActivity" resultMap="VisionActivityMap"/>
         <association property="visionClient" resultMap="VisionClientMap"/>
         <association property="visionSchool" resultMap="VisionSchoolMap"/>
         <association property="visionSchoolClass" resultMap="VisionSchoolClassMap"/>
-        <association property="visionCheckRecord" resultMap="VisionCheckRecordMap"/>
+        <collection  property="recordList" resultMap="VisionCheckRecordMap"/>
     </resultMap>
     <sql id="Base_Column_List">
       SELECT
+      t.id as t_id,
+      c.id as c_vision_client_id,
       a.id as a_id, a.name as a_name, a.address as a_address, a.begin_date as a_begin_date, a.end_date as a_end_date,
       a.content as a_content, a.contact_man as a_contact_man, a.contact_phone_number as a_contact_phone_number,
       a.remark as a_remark, a.archived as a_archived, a.created_time as a_created_time, a.modified_time as a_modified_time,
@@ -127,13 +130,13 @@
       cr.`gaze_v` cr_gaze_v, cr.`remark` cr_remark, cr.`enabled` cr_enabled, cr.`create_time` cr_create_time, cr.`modified_time` cr_modified_time
     </sql>
 
-    <select id="selectByCriteria" resultMap="BaseMap"
-            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
+    <select id="selectByCriteria" resultMap="BaseMap"  parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
         <include refid="Base_Column_List"/>
         FROM vision_activity a
+      INNER JOIN vision_activity_client_check_record t on t.vision_activity_id = a.id 
+      INNER JOIN vision_check_record cr on t.vision_client_id = cr.vision_client_id and t.vision_check_record_id = cr.id
       INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
       INNER JOIN vision_client c on ac.vision_client_id = c.id
-      INNER JOIN vision_check_record cr on c.id = cr.vision_client_id
       INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
       INNER JOIN vision_school_class sc on sc.id = scm.vision_class_id
       INNER JOIN vision_school s on s.id = sc.vision_school_id
@@ -163,13 +166,13 @@
         order by cr.check_date desc
     </select>
 
-    <select id="selectActivityRecordByCriteria" resultMap="BaseMap"
-            resultType="org.vision.service.admin.persistence.model.VisionActivityClientView" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
+    <select id="selectActivityRecordByCriteria" resultMap="BaseMap" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
         <include refid="Base_Column_List"/>
         FROM vision_activity a
+      INNER JOIN vision_activity_client_check_record t on t.vision_activity_id = a.id 
+      INNER JOIN vision_check_record cr on t.vision_client_id = cr.vision_client_id and t.vision_check_record_id = cr.id
       INNER JOIN vision_activity_client ac on a.id = ac.vision_activity_id
       INNER JOIN vision_client c on ac.vision_client_id = c.id
-      INNER JOIN vision_check_record cr on c.id = cr.vision_client_id
       INNER JOIN vision_school_class_member scm on scm.vision_client_id = c.id
       INNER JOIN vision_school_class sc on sc.id = scm.vision_class_id
       INNER JOIN vision_school s on s.id = sc.vision_school_id
