@@ -1,0 +1,36 @@
+.student-row {
+   width: 50%;
+   margin: 30rpx auto;
+}
+.student-col {
+   background: #1296db;
+   color: #fff;
+   margin: 40rpx;
+   padding: 30rpx;
+   text-align: center;
+   font-size: 30rpx;
+   border-radius: 25rpx;
+}
+.relevancy-btn {
+  margin: 0 auto;
+  width: 200rpx;
+  font-size: 100rpx;
+  color: #e83342;
+  text-align: center;
+}
+.student-noData {
+  text-align: center;
+  width: 100%;
+  margin: 200rpx auto;
+}
+.student-noData  image {
+  width: 272rpx;
+  height: 220rpx;
+  
+}
+.student-noData text {
+  font-size: 30rpx;
+  color: #666;
+  display: block;
+  margin-top: 20rpx;
+}

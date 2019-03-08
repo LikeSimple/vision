@@ -1,0 +1,19 @@
+/* pages/checkinfo/checkinfo.wxss */
+page{
+  background:#fff;
+}
+.checkinfo-box {
+  padding: 40rpx;
+}
+.checkinfo-item {
+  width: 100%;
+  height: 200rpx;
+  border-radius: 10rpx;
+  background:#1296db;
+  color: #fff;
+  font-size: 32rpx;
+  margin-bottom: 30rpx;
+}
+.checkinfo-item .checkinfo-col {
+  padding: 30rpx;
+}

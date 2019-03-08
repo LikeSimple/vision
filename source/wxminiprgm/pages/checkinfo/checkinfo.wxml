@@ -1,0 +1,17 @@
+<!--pages/checkinfo/checkinfo.wxml-->
+<view class='checkinfo-page'>
+<scroll-view scroll-y='true' style="height:{{height}}px">
+   <view class='checkinfo-box'>
+      <view class='checkinfo-item' wx:for="{{list}}" wx:key="{{index}}" wx:index="{{index}}" bindtap='goDetails' data-item="{{item}}">
+         <view class='checkinfo-col flex_between'>
+            <text>编号</text>
+            <text>{{item.idNumber}}</text>
+         </view>
+          <view class='checkinfo-col flex_between'>
+            <text>姓名</text>
+            <text>{{item.clientName}}</text>
+         </view>
+      </view>
+   </view>
+   </scroll-view>
+</view>

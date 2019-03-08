@@ -1,0 +1,16 @@
+<!--pages/userinfo/userinfo.wxml-->
+<view class="userinfo-page">
+      <view class='userinfo-header'>
+        <image src="{{userInfo.avatarUrl}}"></image>
+      </view>
+   <view class='userinfo-row'>
+     <view class='userinfo-section flex_between'>
+        <text>昵称</text>
+        <text>{{userInfo.nickName}}</text>
+     </view>
+     <view class='userinfo-section flex_between'>
+        <text>地区</text>
+        <text>{{userInfo.province}}{{userInfo.city}}</text>
+     </view>
+   </view>
+</view>

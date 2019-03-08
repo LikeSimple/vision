@@ -1,0 +1,10 @@
+<view class='studentList'>
+  <view class='student-row' wx:if="{{isData}}">
+      <view wx:for="{{students}}" wx:key="index"  wx:index="index" class="student-col" bindtap='goCheckRecord'>{{item.name}}</view>
+  </view>
+   <view class='student-noData' wx:else>
+     <image src="../../images/list.png"></image>
+     <text>暂无学生数据</text>
+  </view>
+  <view class="relevancy-btn" bindtap='relevancy'>+</view>
+</view>

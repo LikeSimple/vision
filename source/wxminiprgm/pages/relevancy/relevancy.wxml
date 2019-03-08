@@ -1,0 +1,14 @@
+<view class='student-relevancy'>
+  <view class='flex_center student-item'>
+     <view class='col-1'>姓名</view>
+     <input :value ="name" bindinput='changeName'/>
+  </view>
+  <view class='flex_center student-item'>
+     <view  class='col-1'>身份证 </view>
+     <input :value ="idNumber" bindinput='changeIdCard'/>
+  </view>
+  <view class="student-btn flex_center">
+     <button plain ="true" bindtap='cancel'>取消</button>
+     <button class="confirm" bindtap='save'>确定</button>
+  </view>
+</view>

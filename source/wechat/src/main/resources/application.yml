@@ -39,7 +39,8 @@ spring:
     allow-bean-definition-overriding: true     
         
 mybatis:
-  mapper-locations: classpath:mybatis/*Mapper.xml    
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mybatis/*Mapper.xml   
 wx:
   config:
     appid: wx499efff7ae899e05

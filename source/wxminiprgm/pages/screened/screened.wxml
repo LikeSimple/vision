@@ -1,0 +1,94 @@
+
+<view class='vision-screened-page'>
+   <view class='vision-top'>
+     <view class="vision-name">杨萌萌</view>
+     <view class="vision-title">校园视力筛查</view>
+   </view>
+   <view class='vision-content vision-content-1'>
+     <view class='vision-section'>
+        <view class='vision-col-1'></view>
+        <view class='vision-col-2'>
+           <text>左眼</text>
+           <text>右眼</text>
+        </view>
+     </view>
+     <view class='vision-section'>
+        <view class='vision-col-1'>
+           屈光度（球镜）：
+        </view>
+        <view class='vision-col-2'>
+           <text>{{leftEye.ds1}}</text>
+           <text>{{rightEye.dc1}}</text>
+        </view>
+     </view>
+     <view class='vision-section'>
+      <view class='vision-col-1'>
+           散光度（柱镜）：
+        </view>
+        <view class='vision-col-2'>
+           <text>{{leftEye.ds1}}</text>
+           <text>{{rightEye.dc1}}</text>
+        </view>
+     </view>
+     <view class='vision-section'>
+       <view class='vision-col-1'>
+          联合光度：
+        </view>
+        <view class='vision-col-2'>
+           <text></text>
+           <text></text>
+        </view>
+     </view>
+     <view class='vision-section'>
+       <view class='vision-col-1'>
+          轴位：
+        </view>
+        <view class='vision-col-2'>
+           <text>{{leftEye.axis1}}</text>
+           <text>{{rightEye.axis2}}</text>
+        </view>
+     </view>
+   </view>
+   <view class='vision-content'>
+     <view class='vision-section'>
+        <view class='vision-col-1'></view>
+        <view class='vision-col-2'>
+           <text>左眼</text>
+           <text>右眼</text>
+           <text>双眼</text>
+        </view>
+     </view>
+     <view class='vision-section'>
+        <view class='vision-col-1'>
+           裸眼视力 ：
+        </view>
+        <view class='vision-col-2'>
+           <text></text>
+           <text></text>
+        </view>
+     </view>
+     <view class='vision-section'>
+      <view class='vision-col-1'>
+          矫正视力 ：
+        </view>
+        <view class='vision-col-2'>
+           <text></text>
+           <text></text>
+        </view>
+     </view>
+   </view>
+   <view class='vision-PD'>
+      <view class='vision-col-1'>
+          瞳距 ：
+          <text>{{leftEye.pd}}mm</text>
+        </view>
+  </view>
+  <view class='vision-date'>
+      <view class='vision-col-1'>
+          瞳筛查日期 ：
+          <text>{{year}}年</text>
+          <text>{{month}}月</text>
+          <text>{{day}}日</text>
+        </view>
+  </view>
+</view>

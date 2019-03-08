@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/welcome/welcome",
+    "pages/studentList/studentList",
+    "pages/userinfo/userinfo",
+    "pages/qrCode/qr-code",
+    "pages/claim/claim",
+    "pages/checkinfo/checkinfo",
+    "pages/screened/screened",
+    "pages/relevancy/relevancy"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#b3d4db",
+    "navigationBarTitleText": "睛锐光学"
+  },
+  "tabBar": {
+    "color": "#ccc",
+    "selectedColor": "#35495e",
+    "borderStyle": "white",
+    "backgroundColor": "#f9f9f9",
+    "list": [
+      {
+        "text": "综合信息",
+        "pagePath": "pages/welcome/welcome",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-actived.png"
+      },
+      {
+        "text": "视力检查",
+        "pagePath": "pages/studentList/studentList",
+        "iconPath": "images/note.png",
+        "selectedIconPath": "images/note-actived.png"
+      },
+      {
+        "text": "个人信息",
+        "pagePath": "pages/userinfo/userinfo",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-actived.png"
+      }
+    ]
+  }
+}

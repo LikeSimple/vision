@@ -1,0 +1,27 @@
+/* pages/userinfo/userinfo.wxss */
+page{
+    background:#fff;   
+}
+.userinfo-page {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.userinfo-page .userinfo-header{
+  text-align: center;
+  margin: 40rpx auto 0;
+}
+.userinfo-header image{
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 100%;
+}
+.userinfo-row{
+  padding: 40rpx;
+}
+.userinfo-section  {
+  height: 120rpx;
+  border-bottom: 2rpx solid #f5f5f5;
+  color: #666;
+  font-size: 32rpx;
+}

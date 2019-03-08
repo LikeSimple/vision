@@ -1,0 +1,52 @@
+/* pages/screened/screened.wxss */
+.vision-screened-page {
+  padding: 30rpx;
+  font-size: 30rpx;
+  color: 666;
+}
+.vision-top{
+   text-align: center;
+   width: 100%;
+   font-size: 34rpx;
+}
+.vision-content{
+  margin-top: 100rpx;
+}
+.vision-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.vision-section .vision-col-1{
+   width: 45%;
+}
+.vision-section .vision-col-2 {
+   width: 55%;
+}
+.vision-section .vision-col-2 text{
+   margin-left:-30rpx;
+   margin-right:80rpx;
+   width:60rpx;
+   text-align:center;
+   display: inline-block;
+}
+.vision-content-1 .vision-section .vision-col-2 {
+  text-align: left;
+}
+.vision-content-1 .vision-section .vision-col-2 text {
+  margin-left: 35rpx;
+}
+.vision-PD {
+  margin-top: 30rpx;
+  text-align: left;
+}
+.vision-PD .vision-col-1 text {
+  margin-left:60rpx;
+}
+.vision-date {
+  margin-top: 50rpx;
+}
+.vision-date text {
+  margin-left:40rpx;
+}

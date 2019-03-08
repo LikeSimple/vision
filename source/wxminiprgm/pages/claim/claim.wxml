@@ -1,0 +1,15 @@
+<view class="container form-page">
+  <form bindsubmit="formSubmit" class="form-box">
+    <view class="section flex_center">
+       <image src='../../images/name.png'></image>
+       <input placeholder="请输入档案人姓名" :value='name' bindinput='changeName'/>
+    </view>
+    <view class="section flex_center">
+      <image src='../../images/ID.png'></image>
+      <input placeholder="请输入档案身份证" :value='idNumber' bindinput='changeIdCard' bindblur='blur'/>
+    </view>
+    <view class="btn-area">
+       <button form-type="submit" plain="true" class="{{name&&idNumber?'isActive':''}}">认领</button>
+    </view>
+</form>
+</view> 

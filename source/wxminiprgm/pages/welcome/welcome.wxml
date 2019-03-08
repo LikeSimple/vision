@@ -1,0 +1,36 @@
+<view class="welcome-page">
+ 
+    <button wx:if="{{!hasUserInfo}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" class="login-btn"> 微信登陆 </button>
+    <view wx:else> 
+       <view class="userInfo-top">
+         <view class='userinfo-box'>
+           <view class="userName">{{userInfo.nickName}}</view>
+              <view class='flex_center userinfo-row'>
+                <view class="section">
+                  <text>左眼视力</text>
+                  <view class="number">—— ——</view>
+                </view>
+                <view class="section">
+                  <text>右眼视力</text>
+                  <view class="number">—— ——</view>
+                </view>
+              </view>
+              <view class='flex_center userInfo-list'>
+                <view class="section">
+                  <image src='../../images/button_grey.png'></image>
+                </view>
+                <view class="section" bindtap='claim'>
+                  <image src='../../images/button_pink.png'></image>
+                </view>
+           </view>
+       </view>
+     </view>
+     <view class='recommend'>
+         <view class='recommend-title'>为你推荐</view>
+         <view class='recommend-content flex_center'>
+           敬请期待
+         </view>
+       </view>
+   </view>
+</view>
+
