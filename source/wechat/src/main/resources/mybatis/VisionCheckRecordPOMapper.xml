@@ -572,7 +572,7 @@
 		vc.name client_name,
 		vc.id_number id_number,
 		vc.id client_id,
-		t.activity_id,
+		t.vision_activity_id activity_id,
 		r.id,
 		r.eye_type,
 		r.check_date
