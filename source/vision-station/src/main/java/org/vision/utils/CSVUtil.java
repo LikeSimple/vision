@@ -1,4 +1,4 @@
-package main.java.org.vision.utils;
+package org.vision.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

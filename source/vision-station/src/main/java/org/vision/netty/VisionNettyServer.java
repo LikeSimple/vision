@@ -1,4 +1,4 @@
-package main.java.org.vision.netty;
+package org.vision.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -8,17 +8,21 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import main.java.org.vision.utils.CRC16Util;
+import lombok.Setter;
+import org.vision.frames.VisionClient;
+import org.vision.frames.VisionClientRecord;
+import org.vision.utils.CRC16Util;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
-import static main.java.org.vision.utils.ByteArrayUtil.combineArray;
+import static org.vision.utils.ByteArrayUtil.combineArray;
+import static org.vision.utils.ByteArrayUtil.reverseArray;
 
 public class VisionNettyServer {
 
@@ -27,6 +31,13 @@ public class VisionNettyServer {
     private final static byte[] INSTRUCTION_END = new byte[]{(byte) 0xEE};
     private final static byte[] INSTRUCTION_REPEAT = new byte[]{(byte) 0xFF};
 
+    @Setter
+    private VisionClient visionClient = new VisionClient();
+    private String inetHost;
+
+    public VisionNettyServer(String inetHost) {
+        this.inetHost = inetHost;
+    }
 
     public void bind(int port) throws Exception {
         //配置服务端的NIO线程组
@@ -53,9 +64,10 @@ public class VisionNettyServer {
                     //主要用于处理网络I/O事件，例如记录日志，对消息进行编解码等
                     .childHandler(new ChildServerHandler());
             //绑定监听端口，调用sync同步阻塞方法等待绑定操作完成，完成后返回ChannelFuture类似于JDK中Future
-            ChannelFuture f = b.bind("192.168.0.103", port).sync();
+            ChannelFuture f = b.bind(inetHost, port).sync();
             //使用sync方法进行阻塞，等待服务端链路关闭之后Main函数才退出
             f.channel().closeFuture().sync();
+            System.out.println("Netty 监听关闭");
         } finally {
             //优雅退出，释放线程池资源
             bossGroup.shutdownGracefully();
@@ -152,15 +164,12 @@ public class VisionNettyServer {
 
             byte[] crc16 = new byte[2];
             in.readBytes(crc16);
+            reverseArray(crc16);
+            System.out.println("Origin CRC16: " + (new BigInteger(crc16).intValue()));
 
-            //TODO CRC16 CHECK
-//            reverseArray(crc16);
-//
-//            System.out.println(String.format("crc16 %d, %d", crc16, crc16));
-//
             byte[] allData = combineArray(header, data);
             System.out.println("CRC16: " + CRC16Util.calcCrc16(allData));
-//
+
 //            if (new BigInteger(crc16).intValue() != CRC16Util.calcCrc16(allData)) {
 //                // CRC校验没通过，要求重传
 //                System.out.println("接收的数据CRC校验没通过，向客户端发送重发指令");
@@ -169,12 +178,11 @@ public class VisionNettyServer {
 //                ctx.flush();
 //                return null;
 //            }
+//            System.out.println("接收的数据CRC校验通过");
 
             VisionMessageData messageData = new VisionMessageData(data, messageHeader.getDataType());
-
             return new VisionMessage(messageHeader, messageData, crc16);
         }
-
     }
 
     private class VisionServerHandler extends ChannelHandlerAdapter {
@@ -193,53 +201,69 @@ public class VisionNettyServer {
             ctx.flush();
         }
 
-        private void saveMessage(VisionMessage message) throws IOException {
+        private void saveMessage(VisionMessage message) {
 
-            // TODO 缺少用户ID
-            // TODO 图形文件采用用户ID+时间戳形式命名
             //图形文件
-            if (message.getHeader().getDataType() == 0x02) {
-                String imageFile = "用户ID_" + message.getHeader().getDate() + message.getHeader().getTime() + ".jpg";
-                BufferedOutputStream outputStream = null;
-                Path imagePath = FileSystems.getDefault().getPath(imageFile);
-                if (Files.notExists(imagePath, NOFOLLOW_LINKS)) {
-                    Files.createFile(imagePath);
-                }
-                try {
-                    outputStream = new BufferedOutputStream(new FileOutputStream(new File(imageFile)));
-                    outputStream.write(message.getData().getData());
-                } catch (FileNotFoundException e) {
-                    System.out.println(e.getMessage());
-                } finally {
-                    if (outputStream != null) {
-                        outputStream.flush();
-                        outputStream.close();
-                    }
-                }
-            } else {
-                // CSV文件
-                String file = "vision_check_data.csv";
-                PrintWriter writer = null;
-                Path filePath = FileSystems.getDefault().getPath(file);
-                if (Files.notExists(filePath, NOFOLLOW_LINKS)) {
-                    Files.createFile(filePath);
-                }
-                try {
-                    writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(new File(file))));
-                    writer.write(message.getHeader().toCSV() + "," + message.getData().toCSV() + ",用户ID,图形文件ID");
+            switch (message.getHeader().getDataType()) {
+                case 2:
+                    String imageFile = visionClient.getActivityId() + "_" + visionClient.getClientId() + "_"
+                            + message.getHeader().getDate() + message.getHeader().getTime() + ".jpg";
+                    BufferedOutputStream outputStream = null;
 
-                } catch (FileNotFoundException e) {
-                    System.out.println(e.getMessage());
-                } finally {
-                    if (writer != null) {
-                        writer.flush();
-                        writer.close();
+                    try {
+                        Path imagePath = FileSystems.getDefault().getPath(imageFile);
+                        if (Files.notExists(imagePath, NOFOLLOW_LINKS)) {
+                            Files.createFile(imagePath);
+                        }
+                        outputStream = new BufferedOutputStream(new FileOutputStream(new File(imageFile)));
+                        outputStream.write(message.getData().getData());
+                        System.out.println("图像保存成功！");
+
+
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    } finally {
+                        try {
+                            if (outputStream != null) {
+                                outputStream.flush();
+                                outputStream.close();
+                            }
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
-                }
+                    break;
+                case 1:
+                    visionClient.getRecordList().add(new VisionClientRecord(message));
+                    // CSV文件(Append)
+                    String file = message.getHeader().getDate() + "_vision_check_data.csv";
+                    PrintWriter writer = null;
+                    try {
+                        Path filePath = FileSystems.getDefault().getPath(file);
+                        if (Files.notExists(filePath, NOFOLLOW_LINKS)) {
+                            System.out.println("新建文件:" + file);
+                            Files.createFile(filePath);
+                            writer = new PrintWriter(new FileOutputStream(filePath.toFile()));
+                            System.out.println("插入csv头部信息");
+                            writer.append(message.toCSVHeader());
+                        } else {
+                            writer = new PrintWriter(new FileOutputStream(filePath.toFile(), true));
+                        }
+                        System.out.println("写入视力筛查数据！");
+                        writer.append(message.toCSVData(visionClient.getClientId(), visionClient.getActivityId()));
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    } finally {
+                        if (writer != null) {
+                            writer.flush();
+                            writer.close();
+                        }
+                    }
+                    break;
+                default:
             }
 
         }
-
 
         @Override
         public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
@@ -255,7 +279,6 @@ public class VisionNettyServer {
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
             ctx.close();
         }
-
     }
 
 

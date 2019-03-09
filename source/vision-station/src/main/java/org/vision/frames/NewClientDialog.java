@@ -1,4 +1,4 @@
-package main.java.org.vision.frames;
+package org.vision.frames;
 
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ public class NewClientDialog extends JDialog {
     public NewClientDialog() {
 
         this.setLayout(new BorderLayout());
-        this.setMinimumSize(new Dimension(200, 50));
+        this.setMinimumSize(new Dimension(600, 50));
         this.setModal(true);
         this.setLocationRelativeTo(null);
 

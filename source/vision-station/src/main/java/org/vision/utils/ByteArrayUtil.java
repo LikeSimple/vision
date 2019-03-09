@@ -1,4 +1,4 @@
-package main.java.org.vision.utils;
+package org.vision.utils;
 
 public class ByteArrayUtil {
     public static void reverseArray(byte[] bytes) {

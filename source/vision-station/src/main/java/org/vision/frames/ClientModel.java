@@ -1,4 +1,4 @@
-package main.java.org.vision.frames;
+package org.vision.frames;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;

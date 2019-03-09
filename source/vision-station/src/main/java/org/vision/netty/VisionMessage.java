@@ -1,10 +1,10 @@
-package main.java.org.vision.netty;
+package org.vision.netty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
-import static main.java.org.vision.utils.CSVUtil.fieldToHeader;
+import static org.vision.utils.CSVUtil.fieldToHeader;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +18,11 @@ public class VisionMessage {
     private byte[] crc16;
 
     public static String toCSVHeader() {
-        return fieldToHeader(VisionMessageHeader.class) + "," + fieldToHeader(VisionMessageData.class);
+        return fieldToHeader(VisionMessageHeader.class) + "," + fieldToHeader(VisionMessageData.class) + ",activityId,clientId\n";
+    }
+
+    public String toCSVData(String clientId, String activityId) {
+        return header.toCSV() + "," + data.toCSV() + "," + activityId + "," + clientId + "\n";
     }
 
 }

@@ -1,4 +1,4 @@
-package main.java.org.vision.frames;
+package org.vision.frames;
 
 import lombok.Setter;
 

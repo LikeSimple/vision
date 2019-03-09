@@ -1,4 +1,4 @@
-package main.java.org.vision.utils;
+package org.vision.utils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -20,10 +20,28 @@ public class Addressing {
             while (addresses.hasMoreElements()) {
                 InetAddress addr = addresses.nextElement();
                 if (addr.isLoopbackAddress()) continue;
-                return addr;
+                if (AccessibleAddress.condition(addr))
+                    return addr;
             }
         }
 
         throw new SocketException("Can't get our ip address, interfaces are: " + interfaces);
+    }
+
+    private static class AccessibleAddress {
+        public static boolean condition(InetAddress addr) {
+            if (4 == addr.getAddress().length) {
+                return true;
+            } else
+                return false;
+        }
+    }
+
+    public static String inetHostFormat(InetAddress inetAddress) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : inetAddress.getAddress()) {
+            sb.append(".").append(b < 0 ? 256 + b : b);
+        }
+        return sb.substring(1);
     }
 }

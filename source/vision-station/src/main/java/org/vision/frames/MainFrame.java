@@ -1,6 +1,8 @@
-package main.java.org.vision.frames;
+package org.vision.frames;
 
-import main.java.org.vision.utils.Addressing;
+import lombok.extern.slf4j.Slf4j;
+import org.vision.netty.VisionNettyServer;
+import org.vision.utils.Addressing;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -10,14 +12,38 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.List;
 
-
+@Slf4j
 public class MainFrame extends JFrame {
 
     private NewClientDialog dialog = new NewClientDialog();
     private InetAddress inetAddress;
+    private Thread thread;
+    private VisionNettyServer server;
 
-    public MainFrame(String name, List<VisionClient> visionClientList) throws SocketException {
+    public MainFrame(String name, List<VisionClient> visionClientList, InetAddress inetAddress) throws SocketException {
+
         super(name);
+        this.inetAddress = inetAddress;
+        Runnable runnable = () -> {
+            server = new VisionNettyServer(Addressing.inetHostFormat(this.inetAddress));
+            try {
+                server.bind(2323);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                System.exit(1);
+            }
+        };
+
+        thread = new Thread(runnable);
+        thread.setUncaughtExceptionHandler((t, e12) -> {
+            log.error(e12.getMessage());
+            t.interrupt();
+        });
+
+        // 开始监听
+        thread.start();
+        System.out.println("启动监听线程成功！");
+
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -26,15 +52,15 @@ public class MainFrame extends JFrame {
         //左边Panel
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
-        leftPanel.setMinimumSize(new Dimension(300, 400));
+        leftPanel.setMinimumSize(new Dimension(300, 100));
         leftPanel.setBorder(BorderFactory.createEtchedBorder());
 
         //网络地址
         JPanel leftTopPanel = new JPanel();
         leftTopPanel.setLayout(new FlowLayout());
         leftTopPanel.setMinimumSize(new Dimension(300, 100));
-        inetAddress = Addressing.getIpAddress();
-        JLabel addressLabel = new JLabel(inetAddress.getHostAddress());
+
+        JLabel addressLabel = new JLabel(Addressing.inetHostFormat(inetAddress));
         addressLabel.setMinimumSize(new Dimension(150,30));
         leftTopPanel.add(addressLabel);
 
@@ -61,7 +87,8 @@ public class MainFrame extends JFrame {
                         visionClientList.add(dialog.getVisionClient());
                         clientModel.fireTableDataChanged();
                         clientTable.setRowSelectionInterval(visionClientList.size() - 1, visionClientList.size() - 1);
-                        //激活端口监听
+
+                        server.setVisionClient(visionClientList.get(clientTable.getSelectedRow()));
 
                     }
                 }
@@ -94,5 +121,6 @@ public class MainFrame extends JFrame {
         contentPane.add(leftPanel, BorderLayout.WEST);
         contentPane.add(rightPanel, BorderLayout.CENTER);
     }
+
 
 }

@@ -1,4 +1,4 @@
-package main.java.org.vision.netty;
+package org.vision.netty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static main.java.org.vision.utils.ByteArrayUtil.reverseArray;
+import static org.vision.utils.ByteArrayUtil.reverseArray;
 
 
 @Data

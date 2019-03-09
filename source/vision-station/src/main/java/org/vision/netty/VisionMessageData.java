@@ -1,8 +1,8 @@
-package main.java.org.vision.netty;
+package org.vision.netty;
 
 import lombok.Data;
 import lombok.ToString;
-import main.java.org.vision.utils.FieldIgnore;
+import org.vision.utils.FieldIgnore;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
