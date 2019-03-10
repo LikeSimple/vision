@@ -2,13 +2,12 @@ package org.vision.service.admin.service;
 
 
 import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
-import org.vision.service.admin.service.vo.VisionCheckRecordVO;
+import org.vision.service.admin.service.vo.VisionClientCheckRecordVO;
 
 import java.util.List;
 
 public interface RecordService {
 
-    List<? extends VisionCheckRecordVO> getList(VisionCheckRecordCriteria visionCheckRecordCriteria, int pageSize, int pageNum);
-    
-    List<? extends VisionCheckRecordVO> getActivityRecordList(String activityId, int pageSize, int pageNum);
+    List<? extends VisionClientCheckRecordVO> getClientCheckRecordList(VisionCheckRecordCriteria visionCheckRecordCriteria, int pageSize, int pageNum);
+
 }

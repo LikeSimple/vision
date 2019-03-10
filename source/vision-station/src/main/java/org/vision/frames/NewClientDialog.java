@@ -1,5 +1,6 @@
 package org.vision.frames;
 
+import cn.hutool.core.codec.Base64;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -15,13 +16,13 @@ public class NewClientDialog extends JDialog {
     public NewClientDialog() {
 
         this.setLayout(new BorderLayout());
-        this.setMinimumSize(new Dimension(600, 50));
+        this.setMinimumSize(new Dimension(600, 100));
         this.setModal(true);
         this.setLocationRelativeTo(null);
 
         // 配置文本框
         textField = new JTextField();
-        textField.setMinimumSize(new Dimension(60, 30));
+        textField.setMinimumSize(new Dimension(60, 60));
         textField.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,7 +53,9 @@ public class NewClientDialog extends JDialog {
         if (null == text || "".equals(text)) {
             return null;
         }
-        String[] clientData = text.split("&");
+        //Base64解码
+        String originText = Base64.decodeStr(text);
+        String[] clientData = originText.split("&");
         if (5 != clientData.length) {
             return null;
         } else {

@@ -5,12 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
-import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.service.ActivityService;
 import org.vision.service.admin.service.RecordService;
+import org.vision.service.admin.service.vo.VisionActivityClientCheckRecordVO;
 import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
-import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +21,7 @@ public class ActivityController {
     private ActivityService activityService;
 
     private RecordService recordService;
-    
+
     public ActivityController(ActivityService activityService, RecordService recordService) {
         this.activityService = activityService;
         this.recordService = recordService;
@@ -145,19 +144,26 @@ public class ActivityController {
      * 导入活动用户视力筛查数据
      *
      * @param activityId
-     * @param multipartFile
+     * @param file
      * @return
      */
     @PostMapping("/{activityId}/record/upload")
-    public ResponseData<List<? extends VisionCheckRecordVO>> uploadClientCheckRecord(@PathVariable("activityId") String activityId, MultipartFile multipartFile) {
-        return new ResponseData<>(activityService.importClientCheckRecord(activityId, multipartFile));
+    public ResponseData<List<? extends VisionActivityClientCheckRecordVO>> uploadClientCheckRecord(@PathVariable("activityId") String activityId, MultipartFile file) {
+        return new ResponseData<>(activityService.importClientCheckRecord(activityId, file));
     }
 
-
+    /**
+     * 获取指定活动的用户视力筛查数据
+     *
+     * @param activityId
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
     @PostMapping("/{activityId}/record/list")
-    public ResponseData<List<? extends VisionCheckRecordVO>> getClientCheckRecord(@PathVariable("activityId") String activityId,
+    public ResponseData<List<? extends VisionActivityClientCheckRecordVO>> getClientCheckRecord(@PathVariable("activityId") String activityId,
         @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
-        return new ResponseData<>(recordService.getActivityRecordList(activityId, pageSize, pageNum));
+        return new ResponseData<>(activityService.getActivityClientCheckRecordList(activityId, pageSize, pageNum));
     }
 }

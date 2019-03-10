@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
     public MainFrame(String name, List<VisionClient> visionClientList, InetAddress inetAddress) throws SocketException {
 
         super(name);
+        // 启动Netty Server监听
         this.inetAddress = inetAddress;
         Runnable runnable = () -> {
             server = new VisionNettyServer(Addressing.inetHostFormat(this.inetAddress));
@@ -44,6 +45,7 @@ public class MainFrame extends JFrame {
         thread.start();
         System.out.println("启动监听线程成功！");
 
+        //窗体配置
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -87,9 +89,7 @@ public class MainFrame extends JFrame {
                         visionClientList.add(dialog.getVisionClient());
                         clientModel.fireTableDataChanged();
                         clientTable.setRowSelectionInterval(visionClientList.size() - 1, visionClientList.size() - 1);
-
                         server.setVisionClient(visionClientList.get(clientTable.getSelectedRow()));
-
                     }
                 }
             }
@@ -101,6 +101,7 @@ public class MainFrame extends JFrame {
         AbstractTableModel recordModel = new RecordModel(null);
         JTable rightTable = new JTable(recordModel);
 
+        //选择刷新
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         selectionModel.addListSelectionListener(e -> {
             if (-1 != clientTable.getSelectedRow()) {

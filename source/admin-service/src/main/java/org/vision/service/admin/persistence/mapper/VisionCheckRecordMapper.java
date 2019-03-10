@@ -1,20 +1,12 @@
 package org.vision.service.admin.persistence.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.persistence.model.VisionCheckRecord;
-import org.vision.service.admin.persistence.model.VisionCheckRecordClientView;
+import org.vision.service.admin.persistence.model.VisionClientCheckRecordView;
+
+import java.util.List;
 
 @Mapper
 public interface VisionCheckRecordMapper {
@@ -114,9 +106,6 @@ public interface VisionCheckRecordMapper {
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(VisionCheckRecord record);
-    
-    List<VisionCheckRecordClientView> selectByCriteria(VisionCheckRecordCriteria criteria);
-    
-    List<VisionCheckRecordClientView> selectActivityRecordByCriteria(String activityId);
-    
+
+    List<VisionClientCheckRecordView> selectByCriteria(VisionCheckRecordCriteria criteria);
 }

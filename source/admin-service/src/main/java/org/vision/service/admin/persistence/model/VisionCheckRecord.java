@@ -57,5 +57,5 @@ public class VisionCheckRecord implements Serializable {
 
     private Date modifiedTime;
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -8849148213350395951L;
 }

@@ -5,7 +5,7 @@
         <id column="c_id" property="id" jdbcType="CHAR"/>
         <result column="c_wx_client_id" property="wxClientId" jdbcType="CHAR"/>
         <result column="c_name" property="name" jdbcType="VARCHAR"/>
-        <result column="c_gender" property="gender" jdbcType="BIT"/>
+        <result column="c_gender" property="gender" jdbcType="INTEGER"/>
         <result column="c_age" property="age" jdbcType="INTEGER"/>
         <result column="c_id_number" property="idNumber" jdbcType="VARCHAR"/>
         <result column="c_native_place" property="nativePlace" jdbcType="VARCHAR"/>

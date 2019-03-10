@@ -19,6 +19,7 @@ public class VisionUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         try {
+            System.out.println(String.format("user %s want to login", username));
             return systemUserService.getUserByUsername(username);
 
         } catch (IllegalArgumentException e) {

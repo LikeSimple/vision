@@ -14,7 +14,7 @@ public class VisionClient implements Serializable {
 
     private String name;
 
-    private Byte gender;
+    private Integer gender;
 
     private Integer age;
 

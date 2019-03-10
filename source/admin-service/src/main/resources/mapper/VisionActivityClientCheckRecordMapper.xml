@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.vision.service.admin.persistence.mapper.VisionCheckRecordMapper">
+<mapper namespace="org.vision.service.admin.persistence.mapper.VisionActivityClientCheckRecordMapper">
 
     <resultMap id="VisionCheckRecordMap" type="org.vision.service.admin.persistence.model.VisionCheckRecord">
         <result column="vcr_id" jdbcType="CHAR" property="id"/>
@@ -106,7 +106,7 @@
         <result column="vs_modified_time" property="modifiedTime" jdbcType="DATE"/>
     </resultMap>
 
-    <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionClientCheckRecordView">
+    <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionActivityClientCheckRecordView">
         <association property="visionActivity" resultMap="VisionActivityMap"/>
         <association property="visionActivityClient" resultMap="VisionActivityClientMap"/>
         <association property="visionClient" resultMap="VisionClientMap"/>
@@ -115,7 +115,6 @@
         <association property="visionSchoolClassMember" resultMap="VisionSchoolClassMemberMap"/>
         <collection property="visionCheckRecordList" resultMap="VisionCheckRecordMap"/>
     </resultMap>
-
     <sql id="Base_Column_List">
         SELECT vcr.id                    as vcr_id,
                vcr.vision_client_id      as vcr_vision_client_id,
@@ -216,7 +215,8 @@
                  INNER JOIN vision_school vs on vs.id = vsc.vision_school_id
     </sql>
 
-    <select id="selectByCriteria" resultMap="BaseMap"  parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
+    <select id="selectByCriteria" resultMap="BaseMap"
+            parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
         <include refid="Base_Column_List"/>
         <where>
             <if test="schoolName != null and schoolName !=''">
@@ -234,7 +234,7 @@
             <if test="activityName != null and activityName !=''">
                 and va.`name` like CONCAT('%', #{activityName,jdbcType=VARCHAR}, '%')
             </if>
-            
+
             <if test="beginDate != null and beginDate != ''">
                 <![CDATA[and vcr.created_time >= #{beginDate, jdbcType=DATE}]]></if>
             <if test="endDate != null and endDate != ''">
@@ -244,11 +244,11 @@
         order by va.id, vc.id, vcr.id
     </select>
 
-    <select id="selectActivityRecordByCriteria" resultMap="BaseMap" parameterType="org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria">
+    <select id="selectByActivityId" resultMap="BaseMap" parameterType="String">
         <include refid="Base_Column_List"/>
         where
         va.`id` = #{activityId,jdbcType=CHAR}
         order by va.id, vc.id, vcr.id
     </select>
-    
+
 </mapper>

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.service.RecordService;
-import org.vision.service.admin.service.vo.VisionCheckRecordVO;
+import org.vision.service.admin.service.vo.VisionClientCheckRecordVO;
 
 import java.util.List;
 
@@ -23,17 +23,18 @@ public class RecordController {
 
     /**
      * 根据条件查找视力筛查记录
+     *
      * @param visionCheckRecordCriteria
      * @param pageSize
      * @param pageNum
      * @return
      */
     @PostMapping("/list")
-    public ResponseData<List<? extends VisionCheckRecordVO>> getList(
+    public ResponseData<List<? extends VisionClientCheckRecordVO>> getList(
             VisionCheckRecordCriteria visionCheckRecordCriteria,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
 
-        return new ResponseData<>(recordService.getList(visionCheckRecordCriteria, pageSize, pageNum));
+        return new ResponseData<>(recordService.getClientCheckRecordList(visionCheckRecordCriteria, pageSize, pageNum));
     }
 }

@@ -6,15 +6,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
-import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.persistence.mapper.*;
 import org.vision.service.admin.persistence.model.*;
 import org.vision.service.admin.service.ActivityService;
+import org.vision.service.admin.service.vo.VisionActivityClientCheckRecordVO;
 import org.vision.service.admin.util.PoiUtil;
 import org.vision.service.admin.util.ShortUUIDGenerator;
 
@@ -41,6 +42,9 @@ public class AdminServiceApplicationTests {
 
     @Autowired
     private SystemAuthorityMapper systemAuthorityMapper;
+
+    @Autowired
+    private SystemUserProfileMapper systemUserProfileMapper;
 
     @Autowired
     private SystemUserRoleMapper systemUserRoleMapper;
@@ -72,14 +76,35 @@ public class AdminServiceApplicationTests {
     @Autowired
     private VisionCheckRecordMapper visionCheckRecordMapper;
 
+    @Autowired
+    private VisionActivityClientCheckRecordMapper visionActivityClientCheckRecordMapper;
+
     @Test
     @Transactional
     public void contextLoads() {
 
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(4);
+
         String username = "admin";
         String password = "admin";
 
-        SystemUser systemUser = systemUserMapper.selectByUsername(username);
+        SystemUser systemUser = new SystemUser();
+
+        systemUser.setId(ShortUUIDGenerator.newID());
+        systemUser.setUsername("admin");
+        systemUser.setPassword(encoder.encode("admin"));
+        systemUser.setEnabled(true);
+        systemUser.setLocked(false);
+        systemUser.setCreatedTime(new Date());
+        systemUserMapper.insertSelective(systemUser);
+
+        SystemUserProfile profile = new SystemUserProfile();
+        profile.setId(systemUser.getId());
+        profile.setAvatar("");
+        profile.setGender((byte) 1);
+        profile.setName("管理员");
+        profile.setCreatedTime(new Date());
+        systemUserProfileMapper.insertSelective(profile);
 
         SystemRole systemRole = new SystemRole();
         systemRole.setId(ShortUUIDGenerator.newID());
@@ -130,6 +155,7 @@ public class AdminServiceApplicationTests {
 
         activityParam.setName("XXX学校视力筛查活动");
         activityParam.setAddress("上海市黄浦区中山南一路XXX弄XXX号");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         activityParam.setBeginDate(new Date(2019, 3, 1));
         activityParam.setEndDate(new Date(2019, 3, 10));
         activityParam.setContent("活动内容通知等等等等");
@@ -146,12 +172,12 @@ public class AdminServiceApplicationTests {
     @Transactional
     public void InsertVisionActivityClientTest() {
         //VisionActivity
-        VisionActivity visionActivity = visionActivityMapper.selectByPrimaryKey("2KSDlSrNZfBrUMzrG9iad6");
+        VisionActivity visionActivity = visionActivityMapper.selectByPrimaryKey("1emsbyhwN5PHAjTl3wFjAZ");
         //import client
         VisionClient visionClient = new VisionClient();
         visionClient.setId(ShortUUIDGenerator.newID());
         visionClient.setName("赵子杰");
-        visionClient.setGender((byte) 1);
+        visionClient.setGender(1);
         visionClient.setAge(14);
         visionClient.setIdNumber("310115200501283450");
         visionClient.setNativePlace("江苏东台");
@@ -267,7 +293,7 @@ public class AdminServiceApplicationTests {
                     }
 
                     visionClient.setName(list.get(i)[keys.get("姓名")]);
-                    visionClient.setGender((byte) (list.get(i)[keys.get("性别")].equals("男") ? 1 : 2));
+                    visionClient.setGender(list.get(i)[keys.get("性别")].equals("男") ? 1 : 2);
                     visionClient.setAge(Integer.valueOf(list.get(i)[keys.get("年龄")]));
                     visionClient.setIdNumber(list.get(i)[keys.get("身份证号")].trim());
                     visionClient.setNativePlace(list.get(i)[keys.get("籍贯")]);
@@ -388,7 +414,7 @@ public class AdminServiceApplicationTests {
     public void CheckRecordTest() throws ParseException {
         VisionCheckRecord visionCheckRecord = new VisionCheckRecord();
         visionCheckRecord.setId(ShortUUIDGenerator.newID());
-        visionCheckRecord.setVisionClientId("0Z5dmcYQd3qqrsf0LtXXUN");
+        visionCheckRecord.setVisionClientId("1Bsa70ScNaOHM86yDf4vYr");
         visionCheckRecord.setEyeType("OS");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         visionCheckRecord.setCheckDate(df.parse("2019-03-08 12:00:00"));
@@ -414,12 +440,17 @@ public class AdminServiceApplicationTests {
     }
 
     @Test
-    public void SelectCheckRecordTest() {
-        VisionCheckRecordCriteria checkRecordCriteria = new VisionCheckRecordCriteria();
-        checkRecordCriteria.setActivityId("06WKRfvmJ6KEnb8N-gp3lL");
-        List<VisionCheckRecordClientView> visionCheckRecords = visionCheckRecordMapper.selectByCriteria(checkRecordCriteria);
-        Assert.notEmpty(visionCheckRecords);
-        System.out.println(visionCheckRecords);
+    public void selectActivityClientCheckRecordMapperTest() {
+        List<VisionActivityClientCheckRecordView> visionActivityClientCheckRecordViewList = visionActivityClientCheckRecordMapper.selectByActivityId("1emsbyhwN5PHAjTl3wFjAZ");
+        Assert.notEmpty(visionActivityClientCheckRecordViewList);
+        System.out.println(visionActivityClientCheckRecordViewList.get(0));
+    }
+
+    @Test
+    public void selectActivityClientCheckRecordServiceTest() {
+        List<? extends VisionActivityClientCheckRecordVO> visionActivityClientCheckRecordVOS = activityService.getActivityClientCheckRecordList("1emsbyhwN5PHAjTl3wFjAZ", 20, 1);
+        Assert.notEmpty(visionActivityClientCheckRecordVOS);
+
     }
 
 }

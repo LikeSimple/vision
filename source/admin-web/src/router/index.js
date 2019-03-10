@@ -129,6 +129,7 @@ export default new Router({
         },
         {
             path: '/qrcode',
+            name: 'qrcode',
             component: resolve => require(['../components/page/VisionActivityClientQRCode.vue'], resolve),
             meta: { title: '权限测试', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
         },

@@ -9,11 +9,6 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-        </el-select>-->
         <el-select v-model="select_cate" placeholder="请选择活动" class="handle-select mr10">
           <el-option
             v-for="item in activityList"
@@ -22,9 +17,16 @@
             :value="item.id"
           ></el-option>
         </el-select>
-        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+        <el-button type="primary" icon="el-icon-lx-qrcode" @click="printQRCode">二维码</el-button>
       </div>
-      <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+      <el-table
+        :data="data"
+        border
+        class="table"
+        ref="multipleTable"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="table-expand">
@@ -62,7 +64,13 @@
         <el-table-column prop="className" label="班级" width="120" align="center"></el-table-column>
         <el-table-column prop="studentNumber" label="学号" width="120" align="center"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
-        <el-table-column prop="gender" label="性别" width="50" :formatter="genderFormatter" align="center"></el-table-column>
+        <el-table-column
+          prop="gender"
+          label="性别"
+          width="50"
+          :formatter="genderFormatter"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="age" label="年龄" width="60" align="center"></el-table-column>
         <el-table-column prop="visionAcuity" label="视力" width="60" align="center"></el-table-column>
         <el-table-column prop="visionAcuityLeft" label="左眼" width="60" align="center"></el-table-column>
@@ -155,7 +163,7 @@ export default {
     },
     getData() {
       if (this.select_cate == null || this.select_cate == "") {
-        alert("请选择活动");
+        this.$message.warning("没有选择活动！");
         return false;
       }
       getActivityClientList(this.select_cate, this.cur_page, 20).then(res => {
@@ -215,6 +223,19 @@ export default {
       getActivityList(null, 1, 200).then(res => {
         this.activityList = res.data;
       });
+    },
+    printQRCode() {
+      if (this.select_cate == null || this.select_cate == "") {
+        this.$message.warning("没有选择活动！");
+        return false;
+      }
+      // resolve href
+      const { href } = this.$router.resolve({
+        name: "qrcode",
+        query: { activityId: this.select_cate }
+      });
+      console.log(href);
+      window.open(href, "_blank");
     }
   }
 };
@@ -258,6 +279,6 @@ export default {
   margin-right: 0;
   margin-bottom: 0;
   width: 30%;
-  color:coral;
+  color: coral;
 }
 </style>

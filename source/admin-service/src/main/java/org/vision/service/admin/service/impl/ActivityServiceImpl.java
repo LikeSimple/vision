@@ -11,6 +11,7 @@ import org.vision.service.admin.controller.criteria.ActivityParam;
 import org.vision.service.admin.persistence.mapper.*;
 import org.vision.service.admin.persistence.model.*;
 import org.vision.service.admin.service.ActivityService;
+import org.vision.service.admin.service.vo.VisionActivityClientCheckRecordVO;
 import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
 import org.vision.service.admin.service.vo.VisionCheckRecordVO;
@@ -32,24 +33,24 @@ public class ActivityServiceImpl implements ActivityService {
 
     private VisionActivityClientMapper activityClientMapper;
 
-    private VisionClientMapper visionClientMapper;
+    private VisionActivityClientCheckRecordMapper activityClientCheckRecordMapper;
 
-    private VisionSchoolMapper visionSchoolMapper;
+    private VisionClientMapper clientMapper;
 
-    private VisionSchoolClassMapper visionSchoolClassMapper;
+    private VisionSchoolMapper schoolMapper;
 
-    private VisionSchoolClassMemberMapper visionSchoolClassMemberMapper;
+    private VisionSchoolClassMapper schoolClassMapper;
 
-    private VisionActivityClientMapper visionActivityClientMapper;
+    private VisionSchoolClassMemberMapper schoolClassMemberMapper;
 
-    public ActivityServiceImpl(VisionActivityMapper activityMapper, VisionActivityClientMapper activityClientMapper, VisionClientMapper visionClientMapper, VisionSchoolMapper visionSchoolMapper, VisionSchoolClassMapper visionSchoolClassMapper, VisionSchoolClassMemberMapper visionSchoolClassMemberMapper, VisionActivityClientMapper visionActivityClientMapper) {
+    public ActivityServiceImpl(VisionActivityMapper activityMapper, VisionActivityClientMapper activityClientMapper, VisionActivityClientCheckRecordMapper activityClientCheckRecordMapper, VisionClientMapper clientMapper, VisionSchoolMapper schoolMapper, VisionSchoolClassMapper schoolClassMapper, VisionSchoolClassMemberMapper schoolClassMemberMapper) {
         this.activityMapper = activityMapper;
         this.activityClientMapper = activityClientMapper;
-        this.visionClientMapper = visionClientMapper;
-        this.visionSchoolMapper = visionSchoolMapper;
-        this.visionSchoolClassMapper = visionSchoolClassMapper;
-        this.visionSchoolClassMemberMapper = visionSchoolClassMemberMapper;
-        this.visionActivityClientMapper = visionActivityClientMapper;
+        this.activityClientCheckRecordMapper = activityClientCheckRecordMapper;
+        this.clientMapper = clientMapper;
+        this.schoolMapper = schoolMapper;
+        this.schoolClassMapper = schoolClassMapper;
+        this.schoolClassMemberMapper = schoolClassMemberMapper;
     }
 
     @Override
@@ -163,7 +164,7 @@ public class ActivityServiceImpl implements ActivityService {
 
                 isNew = false;
                 // 列表数据没有重复，数据库进行查重
-                visionClient = visionClientMapper.selectByIdNumber(tempKey);
+                visionClient = clientMapper.selectByIdNumber(tempKey);
 
                 if (null == visionClient) {
                     // 数据库没有重复（新数据）
@@ -174,7 +175,7 @@ public class ActivityServiceImpl implements ActivityService {
                 }
 
                 visionClient.setName(list.get(i)[keys.get("姓名")]);
-                visionClient.setGender((byte) (list.get(i)[keys.get("性别")].equals("男") ? 1 : 2));
+                visionClient.setGender((list.get(i)[keys.get("性别")].equals("男") ? 1 : 2));
                 visionClient.setAge(Integer.valueOf(list.get(i)[keys.get("年龄")]));
                 visionClient.setIdNumber(list.get(i)[keys.get("身份证号")].trim());
                 visionClient.setNativePlace(list.get(i)[keys.get("籍贯")]);
@@ -193,11 +194,11 @@ public class ActivityServiceImpl implements ActivityService {
                 visionClient.setAxisRight(Integer.valueOf(list.get(i)[keys.get("轴位右")]));
                 visionClient.setPupilDistance(Integer.valueOf(list.get(i)[keys.get("瞳距")]));
                 if (isNew) {
-                    Assert.isTrue(1 == visionClientMapper.insertSelective(visionClient));
+                    Assert.isTrue(1 == clientMapper.insertSelective(visionClient));
                     log.info("保存新用户成功！");
                 } else {
                     visionClient.setModifiedTime(new Date());
-                    Assert.isTrue(1 == visionClientMapper.updateByPrimaryKey(visionClient));
+                    Assert.isTrue(1 == clientMapper.updateByPrimaryKey(visionClient));
                     log.info("用户数据更新成功！");
                 }
                 // 保持数据到列表
@@ -214,13 +215,13 @@ public class ActivityServiceImpl implements ActivityService {
             if (null == visionSchool) {
 
                 //当前列表中没有重复，数据库查重
-                visionSchool = visionSchoolMapper.selectByName(tempKey);
+                visionSchool = schoolMapper.selectByName(tempKey);
                 if (null == visionSchool) {
                     visionSchool = new VisionSchool();
                     visionSchool.setId(ShortUUIDGenerator.newID());
                     visionSchool.setName(list.get(i)[keys.get("学校")]);
                     visionSchool.setCreatedTime(new Date());
-                    Assert.isTrue(1 == visionSchoolMapper.insertSelective(visionSchool));
+                    Assert.isTrue(1 == schoolMapper.insertSelective(visionSchool));
                 }
                 visionSchoolHashMap.put(tempKey, visionSchool);
             }
@@ -229,14 +230,14 @@ public class ActivityServiceImpl implements ActivityService {
             tempKey = list.get(i)[keys.get("班级")].trim();
             visionSchoolClass = visionSchoolClassHashMap.get(tempKey);
             if (null == visionSchoolClass) {
-                visionSchoolClass = visionSchoolClassMapper.selectByName(tempKey);
+                visionSchoolClass = schoolClassMapper.selectByName(tempKey);
                 if (null == visionSchoolClass) {
                     visionSchoolClass = new VisionSchoolClass();
                     visionSchoolClass.setId(ShortUUIDGenerator.newID());
                     visionSchoolClass.setName(list.get(i)[keys.get("班级")]);
                     visionSchoolClass.setVisionSchoolId(visionSchool.getId());
                     visionSchoolClass.setCreatedTime(new Date());
-                    Assert.isTrue(1 == visionSchoolClassMapper.insertSelective(visionSchoolClass));
+                    Assert.isTrue(1 == schoolClassMapper.insertSelective(visionSchoolClass));
                 }
                 visionSchoolClassHashMap.put(tempKey, visionSchoolClass);
             }
@@ -245,7 +246,7 @@ public class ActivityServiceImpl implements ActivityService {
             tempKey = list.get(i)[keys.get("学号")];
             visionSchoolClassMember = visionSchoolClassMemberHashMap.get(tempKey);
             if (null == visionSchoolClassMember) {
-                visionSchoolClassMember = visionSchoolClassMemberMapper.selectByCombinedKeys(visionSchoolClass.getId(), visionClient.getId());
+                visionSchoolClassMember = schoolClassMemberMapper.selectByCombinedKeys(visionSchoolClass.getId(), visionClient.getId());
                 isNew = false;
                 if (null == visionSchoolClassMember) {
                     visionSchoolClassMember = new VisionSchoolClassMember();
@@ -257,23 +258,23 @@ public class ActivityServiceImpl implements ActivityService {
                 visionSchoolClassMember.setStudentNumber(list.get(i)[keys.get("学号")]);
                 visionSchoolClassMember.setVisionClientId(visionClient.getId());
                 if (isNew) {
-                    Assert.isTrue(1 == visionSchoolClassMemberMapper.insertSelective(visionSchoolClassMember));
+                    Assert.isTrue(1 == schoolClassMemberMapper.insertSelective(visionSchoolClassMember));
                 } else {
                     visionSchoolClassMember.setModifiedTime(new Date());
-                    Assert.isTrue(1 == visionSchoolClassMemberMapper.updateByPrimaryKeySelective(visionSchoolClassMember));
+                    Assert.isTrue(1 == schoolClassMemberMapper.updateByPrimaryKeySelective(visionSchoolClassMember));
                 }
                 visionSchoolClassMemberHashMap.put(tempKey, visionSchoolClassMember);
             }
 
             //import activity client(需要查重)
-            visionActivityClient = visionActivityClientMapper.selectByPrimaryKey(activityId, visionClient.getId());
+            visionActivityClient = activityClientMapper.selectByPrimaryKey(activityId, visionClient.getId());
             if (null == visionActivityClient) {
                 visionActivityClient = new VisionActivityClient();
                 visionActivityClient.setVisionActivityId(activityId);
                 visionActivityClient.setVisionMemberId(visionSchoolClassMember.getId());
                 visionActivityClient.setVisionClientId(visionClient.getId());
                 visionActivityClient.setCreatedTime(new Date());
-                Assert.isTrue(1 == visionActivityClientMapper.insertSelective(visionActivityClient));
+                Assert.isTrue(1 == activityClientMapper.insertSelective(visionActivityClient));
             }
         }
 
@@ -284,18 +285,25 @@ public class ActivityServiceImpl implements ActivityService {
         visionSchoolClassHashMap.clear();
         visionSchoolClassMemberHashMap.clear();
 
-        return visionActivityClientMapper.selectByActivityId(activityId).stream().map(VisionActivityClientVOImpl::new).collect(Collectors.toList());
+        return activityClientMapper.selectByActivityId(activityId).stream().map(VisionActivityClientVOImpl::new).collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional
-    public List<? extends VisionCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile multipartFile) {
-        return null;
-    }
 
     @Override
     public VisionActivityVO selectById(String activityId) {
         return new VisionActivityVOImpl(activityMapper.selectByPrimaryKey(activityId));
+    }
+
+    @Override
+    @Transactional
+    public List<? extends VisionActivityClientCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile file) {
+        return null;
+    }
+
+    @Override
+    public List<? extends VisionActivityClientCheckRecordVO> getActivityClientCheckRecordList(String activityId, int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        return activityClientCheckRecordMapper.selectByActivityId(activityId).stream().map(VisionActivityClientCheckRecordVOImpl::new).collect(Collectors.toList());
     }
 
     private int indexOf(String[] source, String key) {
@@ -305,8 +313,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     private void printLine(int line, String[] source) {
-        for (int i = 0; i < source.length; i++)
-            System.out.print(String.format("%d %s\t", line, source[i]));
+        for (String s : source) System.out.print(String.format("%d %s\t", line, s));
         System.out.println();
     }
 
@@ -405,7 +412,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         @Override
         public Integer getGender() {
-            return new Integer(visionActivityClientView.getVisionClient().getGender());
+            return visionActivityClientView.getVisionClient().getGender();
         }
 
         @Override
@@ -523,4 +530,268 @@ public class ActivityServiceImpl implements ActivityService {
             return visionActivityClientView.getVisionClient().getPupilDistance();
         }
     }
+
+    private class VisionCheckRecordVOImpl implements VisionCheckRecordVO {
+
+        private VisionCheckRecord visionCheckRecord;
+
+        public VisionCheckRecordVOImpl(VisionCheckRecord visionCheckRecord) {
+            this.visionCheckRecord = visionCheckRecord;
+        }
+
+        @Override
+        public String getId() {
+            return visionCheckRecord.getId();
+        }
+
+        @Override
+        public String getEyeType() {
+            return visionCheckRecord.getEyeType();
+        }
+
+        @Override
+        public Date checkDate() {
+            return visionCheckRecord.getCheckDate();
+        }
+
+        @Override
+        public Integer getDataType() {
+            return visionCheckRecord.getDataType();
+        }
+
+        @Override
+        public String getPictureFile() {
+            return visionCheckRecord.getPictureFile();
+        }
+
+        @Override
+        public BigDecimal getPupil() {
+            return visionCheckRecord.getPupil();
+        }
+
+        @Override
+        public BigDecimal getSe1() {
+            return visionCheckRecord.getSe1();
+        }
+
+        @Override
+        public BigDecimal getDs1() {
+            return visionCheckRecord.getDs1();
+        }
+
+        @Override
+        public BigDecimal getDc1() {
+            return visionCheckRecord.getDc1();
+        }
+
+        @Override
+        public Integer getAxis1() {
+            return visionCheckRecord.getAxis1();
+        }
+
+        @Override
+        public BigDecimal getSe2() {
+            return visionCheckRecord.getSe2();
+        }
+
+        @Override
+        public BigDecimal getDs2() {
+            return visionCheckRecord.getDs2();
+        }
+
+        @Override
+        public BigDecimal getDc2() {
+            return visionCheckRecord.getDc2();
+        }
+
+        @Override
+        public Integer getAxis2() {
+            return visionCheckRecord.getAxis2();
+        }
+
+        @Override
+        public Integer getPd() {
+            return visionCheckRecord.getPd();
+        }
+
+        @Override
+        public BigDecimal getMmHg() {
+            return visionCheckRecord.getMmHg();
+        }
+
+        @Override
+        public Integer getGazeH() {
+            return visionCheckRecord.getGazeH();
+        }
+
+        @Override
+        public Integer getGazeV() {
+            return visionCheckRecord.getGazeV();
+        }
+    }
+
+    private class VisionActivityClientCheckRecordVOImpl implements VisionActivityClientCheckRecordVO {
+
+        private VisionActivityClientCheckRecordView visionActivityClientCheckRecordView;
+
+        private VisionActivityClientCheckRecordVOImpl(VisionActivityClientCheckRecordView visionActivityClientCheckRecordView) {
+            this.visionActivityClientCheckRecordView = visionActivityClientCheckRecordView;
+        }
+
+        @Override
+        public List<? extends VisionCheckRecordVO> getCheckRecordList() {
+            return visionActivityClientCheckRecordView.getVisionCheckRecordList().stream().map(VisionCheckRecordVOImpl::new).collect(Collectors.toList());
+        }
+
+        @Override
+        public String getVisionActivityId() {
+            return visionActivityClientCheckRecordView.getVisionActivity().getId();
+        }
+
+        @Override
+        public String getSchoolName() {
+            return visionActivityClientCheckRecordView.getVisionSchool().getName();
+        }
+
+        @Override
+        public String getClassName() {
+            return visionActivityClientCheckRecordView.getVisionSchoolClass().getName();
+        }
+
+        @Override
+        public String getStudentNumber() {
+            return visionActivityClientCheckRecordView.getVisionSchoolClassMember().getStudentNumber();
+        }
+
+        @Override
+        public String getClientId() {
+            return visionActivityClientCheckRecordView.getVisionClient().getId();
+        }
+
+        @Override
+        public String getName() {
+            return visionActivityClientCheckRecordView.getVisionClient().getName();
+        }
+
+        @Override
+        public Integer getGender() {
+            return visionActivityClientCheckRecordView.getVisionClient().getGender();
+        }
+
+        @Override
+        public Integer getAge() {
+            return visionActivityClientCheckRecordView.getVisionClient().getAge();
+        }
+
+        @Override
+        public String getIdNumber() {
+            return visionActivityClientCheckRecordView.getVisionClient().getIdNumber();
+        }
+
+        @Override
+        public String getNativePlace() {
+            return visionActivityClientCheckRecordView.getVisionClient().getNativePlace();
+        }
+
+        @Override
+        public BigDecimal getHeight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getHeight();
+        }
+
+        @Override
+        public BigDecimal getWeight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getWeight();
+        }
+
+        @Override
+        public Date getBirthday() {
+            return visionActivityClientCheckRecordView.getVisionClient().getBirthday();
+        }
+
+        @Override
+        public String getPhoneNumber() {
+            return visionActivityClientCheckRecordView.getVisionClient().getPhoneNumber();
+        }
+
+        @Override
+        public String getProvince() {
+            return visionActivityClientCheckRecordView.getVisionClient().getProvince();
+        }
+
+        @Override
+        public String getCity() {
+            return visionActivityClientCheckRecordView.getVisionClient().getCity();
+        }
+
+        @Override
+        public String county() {
+            return visionActivityClientCheckRecordView.getVisionClient().getCounty();
+        }
+
+        @Override
+        public String getDetailAddress() {
+            return visionActivityClientCheckRecordView.getVisionClient().getDetailAddress();
+        }
+
+        @Override
+        public BigDecimal getVisionAcuityLeft() {
+            return visionActivityClientCheckRecordView.getVisionClient().getVisionAcuityLeft();
+        }
+
+        @Override
+        public BigDecimal getVisionAcuityRight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getVisionAcuityRight();
+        }
+
+        @Override
+        public BigDecimal getVisionAcuity() {
+            return visionActivityClientCheckRecordView.getVisionClient().getVisionAcuity();
+        }
+
+        @Override
+        public Integer getDioptersLeft() {
+            return visionActivityClientCheckRecordView.getVisionClient().getDioptersLeft();
+        }
+
+        @Override
+        public Integer getDioptersRight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getDioptersRight();
+        }
+
+        @Override
+        public Integer getAstigmatismLeft() {
+            return visionActivityClientCheckRecordView.getVisionClient().getAstigmatismLeft();
+        }
+
+        @Override
+        public Integer getAstigmatismRight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getAstigmatismRight();
+        }
+
+        @Override
+        public Integer getJointLuminosityLeft() {
+            return visionActivityClientCheckRecordView.getVisionClient().getJointLuminosityLeft();
+        }
+
+        @Override
+        public Integer getJointLuminosityRight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getJointLuminosityRight();
+        }
+
+        @Override
+        public Integer getAxisLeft() {
+            return visionActivityClientCheckRecordView.getVisionClient().getAxisLeft();
+        }
+
+        @Override
+        public Integer getAxisRight() {
+            return visionActivityClientCheckRecordView.getVisionClient().getAxisRight();
+        }
+
+        @Override
+        public Integer getPupilDistance() {
+            return visionActivityClientCheckRecordView.getVisionClient().getPupilDistance();
+        }
+    }
+
 }

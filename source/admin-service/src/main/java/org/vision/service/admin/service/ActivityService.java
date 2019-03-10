@@ -3,9 +3,9 @@ package org.vision.service.admin.service;
 import org.springframework.web.multipart.MultipartFile;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
+import org.vision.service.admin.service.vo.VisionActivityClientCheckRecordVO;
 import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
-import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,6 +13,8 @@ import java.util.List;
 public interface ActivityService {
 
     List<? extends VisionActivityVO> selectByCriteria(ActivityCriteria activityCriteria, int pageSize, int pageNum);
+
+    VisionActivityVO selectById(String activityId);
 
     VisionActivityVO create(ActivityParam activityParam);
 
@@ -30,7 +32,7 @@ public interface ActivityService {
 
     List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile) throws IOException;
 
-    List<? extends VisionCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile multipartFile);
+    List<? extends VisionActivityClientCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile file);
 
-    VisionActivityVO selectById(String activityId);
+    List<? extends VisionActivityClientCheckRecordVO> getActivityClientCheckRecordList(String activityId, int pageSize, int pageNum);
 }
