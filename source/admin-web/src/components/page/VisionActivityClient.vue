@@ -220,7 +220,7 @@ export default {
       this.delVisible = false;
     },
     getActivityListMethod() {
-      getActivityList(null, 1, 200).then(res => {
+      getActivityList(null, 1, 0).then(res => {
         this.activityList = res.data;
       });
     },

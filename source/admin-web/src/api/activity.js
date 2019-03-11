@@ -1,13 +1,22 @@
 import request from '../util/request'
 
 export const getActivityList = (activityCriteria, pageNum, pageSize) => {
+    let criteria = activityCriteria
+    if (!activityCriteria) {
+      criteria  = {
+        nameCriteria: '',
+        beginDate: null,
+        endDate: null,
+        archived: false
+      }
+    } 
     return request({
       url: '/api/activity/list',
       method: 'post',
       params: {
         pageNum, pageSize
       },
-      data: activityCriteria
+      data: criteria
       
     })
   }

@@ -20,11 +20,8 @@ public class ActivityController {
 
     private ActivityService activityService;
 
-    private RecordService recordService;
-
-    public ActivityController(ActivityService activityService, RecordService recordService) {
+    public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
-        this.recordService = recordService;
     }
 
     /**
