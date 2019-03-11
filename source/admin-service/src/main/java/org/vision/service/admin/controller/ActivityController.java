@@ -37,7 +37,7 @@ public class ActivityController {
      */
     @PostMapping("/list")
     public ResponseData<List<? extends VisionActivityVO>> getList(
-            ActivityCriteria activityCriteria,
+            @RequestBody  ActivityCriteria activityCriteria,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
         return new ResponseData<>(activityService.selectByCriteria(activityCriteria, pageSize, pageNum));

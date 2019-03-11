@@ -9,7 +9,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
+        <el-input v-model="activityCriteria.nameCriteria" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
         <el-button type="primary" icon="search" @click="create">创建</el-button>
       </div>
@@ -62,7 +62,7 @@
     </div>
 
     <!-- 上传弹出框 -->
-    <el-dialog title="编辑" :visible.sync="uploadVisible" width="50%">
+    <el-dialog title="上传" :visible.sync="uploadVisible" width="50%">
       <el-input value="currentActivityId" type="hidden"></el-input>
       <el-upload class="upload-demo" drag v-bind:action="'/api/activity/' + this.currentItem.id + '/client/upload'"
       v-bind:headers="tokenHeader"
@@ -87,13 +87,13 @@
             <el-date-picker
               v-model="form.beginDate"
               type="date"
-              value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="开始日期"
             ></el-date-picker>
             <el-date-picker
               v-model="form.endDate"
               type="date"
-              value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="结束日期"
             ></el-date-picker>
           </el-form-item>
@@ -133,13 +133,13 @@
             <el-date-picker
               v-model="form.beginDate"
               type="date"
-              value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="开始日期"
             ></el-date-picker>
             <el-date-picker
               v-model="form.endDate"
               type="date"
-              value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="结束日期"
             ></el-date-picker>
           </el-form-item>
@@ -168,9 +168,9 @@
       </span>
     </el-dialog>
 
-    <!-- 删除提示框 -->
+    <!-- 归档提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
-      <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
+      <div class="del-dialog-cnt">归档不可恢复，是否确定？</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisible = false">取 消</el-button>
         <el-button type="primary" @click="deleteRow">确 定</el-button>
@@ -198,7 +198,12 @@ export default {
       cur_page: 1,
       multipleSelection: [],
       select_cate: "",
-      select_word: "",
+      activityCriteria: {
+        nameCriteria: '',
+        beginDate: '',
+        endDate: '',
+        archived: false
+      },
       del_list: [],
       is_search: false,
       editVisible: false,
@@ -222,7 +227,7 @@ export default {
     };
   },
   created() {
-    this.getData("");
+    this.getData(this.activityCriteria);
   },
   computed: {
     data() {
@@ -238,14 +243,14 @@ export default {
       this.cur_page = val;
       this.getData("");
     },
-    getData(selectKey) {
-      getActivityList(selectKey, this.cur_page, 20).then(res => {
+    getData(critiera) {
+      getActivityList(critiera, this.cur_page, 20).then(res => {
         this.tableData = res.data;
       });
     },
     search() {
       this.is_search = true;
-      this.getData(this.select_word);
+      this.getData(this.activityCriteria);
     },
     create() {
       this.form = {
@@ -289,16 +294,6 @@ export default {
       this.currentItem = this.tableData[this.idx];
       this.uploadVisible = true;
     },
-    delAll() {
-      const length = this.multipleSelection.length;
-      let str = "";
-      this.del_list = this.del_list.concat(this.multipleSelection);
-      for (let i = 0; i < length; i++) {
-        str += this.multipleSelection[i].name + " ";
-      }
-      this.$message.error("删除了" + str);
-      this.multipleSelection = [];
-    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -319,8 +314,9 @@ export default {
     // 确定删除
     deleteRow() {
       deleteActivity(this.idx);
-      this.$message.success("删除成功");
       this.delVisible = false;
+      this.$message.success("归档成功");
+      this.search();
     }
   }
 };

@@ -1,12 +1,14 @@
 import request from '../util/request'
 
-export const getActivityList = (nameCriteria, pageNum, pageSize) => {
+export const getActivityList = (activityCriteria, pageNum, pageSize) => {
     return request({
       url: '/api/activity/list',
       method: 'post',
       params: {
-        nameCriteria, pageNum, pageSize
-      }
+        pageNum, pageSize
+      },
+      data: activityCriteria
+      
     })
   }
 
@@ -14,16 +16,16 @@ export const createActivity = (form) => {
   return request({
     url: '/api/activity/new',
     method: 'post',
-    params: form
+    data: form
   })
 }
 
 export const editActivity = (form) => {
 
   return request({
-    url: '/api/activity/' + id + '/modify',
+    url: '/api/activity/' + form.id + '/modify',
     method: 'post',
-    params: form
+    data: form
   })
 }
 

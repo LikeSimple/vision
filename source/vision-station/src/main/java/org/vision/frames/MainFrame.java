@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
         leftTopPanel.setMinimumSize(new Dimension(300, 100));
 
         JLabel addressLabel = new JLabel(Addressing.inetHostFormat(inetAddress));
-        addressLabel.setMinimumSize(new Dimension(150,30));
+        addressLabel.setMinimumSize(new Dimension(150, 30));
         leftTopPanel.add(addressLabel);
 
         //左边学员表格
