@@ -6,7 +6,6 @@ import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
 import org.vision.service.admin.service.ActivityService;
-import org.vision.service.admin.service.RecordService;
 import org.vision.service.admin.service.vo.VisionActivityClientCheckRecordVO;
 import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
@@ -34,7 +33,7 @@ public class ActivityController {
      */
     @PostMapping("/list")
     public ResponseData<List<? extends VisionActivityVO>> getList(
-            @RequestBody  ActivityCriteria activityCriteria,
+            @RequestBody ActivityCriteria activityCriteria,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
         return new ResponseData<>(activityService.selectByCriteria(activityCriteria, pageSize, pageNum));
@@ -159,8 +158,8 @@ public class ActivityController {
      */
     @PostMapping("/{activityId}/record/list")
     public ResponseData<List<? extends VisionActivityClientCheckRecordVO>> getClientCheckRecord(@PathVariable("activityId") String activityId,
-        @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
-        @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
+                                                                                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
+                                                                                                @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
         return new ResponseData<>(activityService.getActivityClientCheckRecordList(activityId, pageSize, pageNum));
     }
 }

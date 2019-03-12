@@ -16,6 +16,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, {
     size: 'small'
 });
+
 Vue.prototype.$axios = axios;
 
 function hasPermission(authorities, permissionAuthorities) {
