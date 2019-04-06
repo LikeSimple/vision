@@ -11,6 +11,7 @@ import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -144,7 +145,7 @@ public class ActivityController {
      * @return
      */
     @PostMapping("/{activityId}/record/upload")
-    public ResponseData<List<? extends VisionActivityClientCheckRecordVO>> uploadClientCheckRecord(@PathVariable("activityId") String activityId, MultipartFile file) {
+    public ResponseData<List<? extends VisionActivityClientCheckRecordVO>> uploadClientCheckRecord(@PathVariable("activityId") String activityId, MultipartFile file) throws ParseException, IOException {
         return new ResponseData<>(activityService.importClientCheckRecord(activityId, file));
     }
 

@@ -8,6 +8,7 @@ import org.vision.service.admin.service.vo.VisionActivityClientVO;
 import org.vision.service.admin.service.vo.VisionActivityVO;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 public interface ActivityService {
@@ -32,7 +33,7 @@ public interface ActivityService {
 
     List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile) throws IOException;
 
-    List<? extends VisionActivityClientCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile file);
+    List<? extends VisionActivityClientCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile file) throws ParseException, IOException;
 
     List<? extends VisionActivityClientCheckRecordVO> getActivityClientCheckRecordList(String activityId, int pageSize, int pageNum);
 }

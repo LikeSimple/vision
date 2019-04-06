@@ -1,10 +1,16 @@
 package org.vision.service.admin;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.text.csv.CsvData;
+import cn.hutool.core.text.csv.CsvReader;
+import cn.hutool.core.text.csv.CsvRow;
+import cn.hutool.core.text.csv.CsvUtil;
 import io.jsonwebtoken.lang.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,7 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestConfiguration(value = "")
 public class AdminServiceApplicationTests {
 
     @Autowired
@@ -451,6 +458,70 @@ public class AdminServiceApplicationTests {
         List<? extends VisionActivityClientCheckRecordVO> visionActivityClientCheckRecordVOS = activityService.getActivityClientCheckRecordList("1emsbyhwN5PHAjTl3wFjAZ", 20, 1);
         Assert.notEmpty(visionActivityClientCheckRecordVOS);
 
+    }
+
+    @Test
+    @Transactional
+    public void uploadCSVTest() throws ParseException {
+
+        CsvReader reader = CsvUtil.getReader();
+        reader.setContainsHeader(true);
+        CsvData data = reader.read(FileUtil.file("../../../../docs/20190313_vision_check_data.csv"));
+        List<CsvRow> rows = data.getRows();
+
+        for (CsvRow csvRow : rows) {
+            //getRawList返回一个List列表，列表的每一项为CSV中的一个单元格（既逗号分隔部分）
+            //Insert into vision check record
+            DateFormat df = new SimpleDateFormat("yyyyMMdd");
+            VisionCheckRecord record = new VisionCheckRecord();
+            record.setId(ShortUUIDGenerator.newID());
+            record.setVisionClientId(csvRow.getByName("clientId"));
+            record.setEyeType(csvRow.getByName("eyeType").equals("1")?"OD":"OS");
+            record.setCheckDate(df.parse(csvRow.getByName("date")));
+            record.setDataType(new Integer(csvRow.getByName("dataType")));
+            record.setPictureFile("");
+            record.setPupil(new BigDecimal(csvRow.getByName("pupil")));
+            record.setSe1(new BigDecimal(csvRow.getByName("se1")));
+            record.setSe2(new BigDecimal(csvRow.getByName("se2")));
+            record.setDs1(new BigDecimal(csvRow.getByName("ds1")));
+            record.setDs2(new BigDecimal(csvRow.getByName("ds2")));
+            record.setDc1(new BigDecimal(csvRow.getByName("dc1")));
+            record.setDc2(new BigDecimal(csvRow.getByName("dc2")));
+            record.setAxis1(new Integer(csvRow.getByName("axis1")));
+            record.setAxis2(new Integer(csvRow.getByName("axis2")));
+            record.setPd(new Integer(csvRow.getByName("pd")));
+            record.setMmHg(new BigDecimal(csvRow.getByName("mmHg")));
+            record.setGazeH(new Integer(csvRow.getByName("gazeH")));
+            record.setGazeV(new Integer(csvRow.getByName("gazeV")));
+            record.setRemark("");
+            record.setEnabled(true);
+            df = new SimpleDateFormat("yyyyMMddHHmmss");
+            System.out.println(csvRow.getByName("date") + csvRow.getByName("time"));
+            record.setCreateTime(df.parse(csvRow.getByName("date") + csvRow.getByName("time")));
+            visionCheckRecordMapper.insertSelective(record);
+
+            //Insert into vision activity client check record
+            VisionActivityClientCheckRecord checkRecord = new VisionActivityClientCheckRecord();
+            checkRecord.setVisionActivityId(csvRow.getByName("activityId"));
+            checkRecord.setVisionCheckRecordId(record.getId());
+            checkRecord.setVisionClientId(csvRow.getByName("clientId"));
+            checkRecord.setCreatedTime(new Date());
+            visionActivityClientCheckRecordMapper.insertSelective(checkRecord);
+        }
+    }
+
+    @Test
+    public void dateFormatTest() {
+        try {
+            String d = "20190313";
+            String t = "123303";
+
+            DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date date = df.parse(d + t);
+            System.out.println(date);
+        }catch (ParseException pe) {
+            System.out.println(pe);
+        }
     }
 
 }

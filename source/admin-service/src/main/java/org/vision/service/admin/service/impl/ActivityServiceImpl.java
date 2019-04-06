@@ -1,5 +1,10 @@
 package org.vision.service.admin.service.impl;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.text.csv.CsvData;
+import cn.hutool.core.text.csv.CsvReader;
+import cn.hutool.core.text.csv.CsvRow;
+import cn.hutool.core.text.csv.CsvUtil;
 import com.github.pagehelper.PageHelper;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +23,13 @@ import org.vision.service.admin.service.vo.VisionCheckRecordVO;
 import org.vision.service.admin.util.PoiUtil;
 import org.vision.service.admin.util.ShortUUIDGenerator;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +53,11 @@ public class ActivityServiceImpl implements ActivityService {
 
     private VisionSchoolClassMemberMapper schoolClassMemberMapper;
 
-    public ActivityServiceImpl(VisionActivityMapper activityMapper, VisionActivityClientMapper activityClientMapper, VisionActivityClientCheckRecordMapper activityClientCheckRecordMapper, VisionClientMapper clientMapper, VisionSchoolMapper schoolMapper, VisionSchoolClassMapper schoolClassMapper, VisionSchoolClassMemberMapper schoolClassMemberMapper) {
+    private VisionActivityClientCheckRecordMapper visionActivityClientCheckRecordMapper;
+
+    private VisionCheckRecordMapper visionCheckRecordMapper;
+
+    public ActivityServiceImpl(VisionActivityMapper activityMapper, VisionActivityClientMapper activityClientMapper, VisionActivityClientCheckRecordMapper activityClientCheckRecordMapper, VisionClientMapper clientMapper, VisionSchoolMapper schoolMapper, VisionSchoolClassMapper schoolClassMapper, VisionSchoolClassMemberMapper schoolClassMemberMapper, VisionActivityClientCheckRecordMapper visionActivityClientCheckRecordMapper, VisionCheckRecordMapper visionCheckRecordMapper) {
         this.activityMapper = activityMapper;
         this.activityClientMapper = activityClientMapper;
         this.activityClientCheckRecordMapper = activityClientCheckRecordMapper;
@@ -51,6 +65,8 @@ public class ActivityServiceImpl implements ActivityService {
         this.schoolMapper = schoolMapper;
         this.schoolClassMapper = schoolClassMapper;
         this.schoolClassMemberMapper = schoolClassMemberMapper;
+        this.visionActivityClientCheckRecordMapper = visionActivityClientCheckRecordMapper;
+        this.visionCheckRecordMapper = visionCheckRecordMapper;
     }
 
     @Override
@@ -296,7 +312,50 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @Transactional
-    public List<? extends VisionActivityClientCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile file) {
+    public List<? extends VisionActivityClientCheckRecordVO> importClientCheckRecord(String activityId, MultipartFile file) throws ParseException, IOException {
+        CsvReader reader = CsvUtil.getReader();
+        reader.setContainsHeader(true);
+        CsvData data = reader.read(new InputStreamReader(file.getInputStream()));
+        List<CsvRow> rows = data.getRows();
+
+        for (CsvRow csvRow : rows) {
+            //getRawList返回一个List列表，列表的每一项为CSV中的一个单元格（既逗号分隔部分）
+            //Insert into vision check record
+            DateFormat df = new SimpleDateFormat("yyyyMMdd");
+            VisionCheckRecord record = new VisionCheckRecord();
+            record.setId(ShortUUIDGenerator.newID());
+            record.setVisionClientId(csvRow.getByName("clientId"));
+            record.setEyeType(csvRow.getByName("eyeType").equals("1")?"OD":"OS");
+            record.setCheckDate(df.parse(csvRow.getByName("date")));
+            record.setDataType(new Integer(csvRow.getByName("dataType")));
+            record.setPictureFile("");
+            record.setPupil(new BigDecimal(csvRow.getByName("pupil")));
+            record.setSe1(new BigDecimal(csvRow.getByName("se1")));
+            record.setSe2(new BigDecimal(csvRow.getByName("se2")));
+            record.setDs1(new BigDecimal(csvRow.getByName("ds1")));
+            record.setDs2(new BigDecimal(csvRow.getByName("ds2")));
+            record.setDc1(new BigDecimal(csvRow.getByName("dc1")));
+            record.setDc2(new BigDecimal(csvRow.getByName("dc2")));
+            record.setAxis1(new Integer(csvRow.getByName("axis1")));
+            record.setAxis2(new Integer(csvRow.getByName("axis2")));
+            record.setPd(new Integer(csvRow.getByName("pd")));
+            record.setMmHg(new BigDecimal(csvRow.getByName("mmHg")));
+            record.setGazeH(new Integer(csvRow.getByName("gazeH")));
+            record.setGazeV(new Integer(csvRow.getByName("gazeV")));
+            record.setRemark("");
+            record.setEnabled(true);
+            df = new SimpleDateFormat("yyyyMMddHHmmss");
+            record.setCreateTime(df.parse(csvRow.getByName("date") + csvRow.getByName("time")));
+            visionCheckRecordMapper.insertSelective(record);
+
+            //Insert into vision activity client check record
+            VisionActivityClientCheckRecord checkRecord = new VisionActivityClientCheckRecord();
+            checkRecord.setVisionActivityId(csvRow.getByName("activityId"));
+            checkRecord.setVisionCheckRecordId(record.getId());
+            checkRecord.setVisionClientId(csvRow.getByName("clientId"));
+            checkRecord.setCreatedTime(new Date());
+            visionActivityClientCheckRecordMapper.insertSelective(checkRecord);
+        }
         return null;
     }
 

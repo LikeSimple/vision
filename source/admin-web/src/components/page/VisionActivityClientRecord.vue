@@ -18,6 +18,7 @@
           ></el-option>
         </el-select>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="primary" icon="upload" @click="handleUpload">导入</el-button>
       </div>
       <el-table
         :data="data"
@@ -84,12 +85,26 @@
         ></el-pagination>
       </div>
     </div>
+    <!-- 上传弹出框 -->
+    <el-dialog title="上传" :visible.sync="uploadVisible" width="50%">
+      <el-input value="select_cate" type="hidden"></el-input>
+      <el-upload class="upload-record" drag v-bind:action="'/api/activity/' + this.select_cate + '/record/upload'"
+      v-bind:headers="tokenHeader"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip" slot="tip">只能上传csv文件，且不超过2M</div>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getActivityList } from "../../api/activity.js";
 import { getActivityClientRecordList } from "../../api/activityClientRecord.js";
+import { getToken } from '../../util/token.js'
 export default {
   name: "basetable",
   data() {
@@ -98,6 +113,7 @@ export default {
       tableData: [],
       cur_page: 1,
       multipleSelection: [],
+      uploadVisible: false,
       del_list: [],
       is_search: false,
       editVisible: false,
@@ -118,7 +134,10 @@ export default {
   computed: {
     data() {
       return this.tableData;
-    }
+    },
+    tokenHeader() {
+      return { Authorization: 'Bearer ' + getToken() }
+    },
   },
   methods: {
     handleCurrentChange(val) {
@@ -146,6 +165,14 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+
+    handleUpload() {
+      if (null == this.select_cate || '' == this.select_cate) {
+        this.$message.warning("没有选择活动！");
+        return false;
+      }
+      this.uploadVisible = true;
+    },
     eyeTypeFormatter(row, column) {
       var value = "未知";
       console.log(row);
@@ -161,7 +188,8 @@ export default {
       getActivityList(null, 1, 0).then(res => {
         this.activityList = res.data;
       });
-    }
+    },
+
   }
 };
 </script>
