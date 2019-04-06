@@ -19,6 +19,9 @@ import java.net.InetSocketAddress;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static org.vision.utils.ByteArrayUtil.combineArray;
@@ -170,15 +173,15 @@ public class VisionNettyServer {
             byte[] allData = combineArray(header, data);
             System.out.println("CRC16: " + CRC16Util.calcCrc16(allData));
 
-//            if (new BigInteger(crc16).intValue() != CRC16Util.calcCrc16(allData)) {
-//                // CRC校验没通过，要求重传
-//                System.out.println("接收的数据CRC校验没通过，向客户端发送重发指令");
-//                ByteBuf response = Unpooled.copiedBuffer(INSTRUCTION_REPEAT);
-//                ctx.write(response);
-//                ctx.flush();
-//                return null;
-//            }
-//            System.out.println("接收的数据CRC校验通过");
+            if (new BigInteger(crc16).intValue() != CRC16Util.calcCrc16(allData)) {
+                // CRC校验没通过，要求重传
+                System.out.println("接收的数据CRC校验没通过，向客户端发送重发指令");
+                ByteBuf response = Unpooled.copiedBuffer(INSTRUCTION_REPEAT);
+                ctx.write(response);
+                ctx.flush();
+                return null;
+            }
+            System.out.println("接收的数据CRC校验通过");
 
             VisionMessageData messageData = new VisionMessageData(data, messageHeader.getDataType());
             return new VisionMessage(messageHeader, messageData, crc16);
@@ -187,13 +190,23 @@ public class VisionNettyServer {
 
     private class VisionServerHandler extends ChannelHandlerAdapter {
 
+        private String basePath = "";
+
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             // 对Message进行业务处理
             VisionMessage message = (VisionMessage) msg;
             //处理业务(根目录，一个文本文件，图片文件，图片文件名，用户ID包含在本文文件内）
-            System.out.println(message);
-            saveMessage(message);
+            if ("".equals(basePath)) {
+                //创建今日主目录
+                DateFormat df = new SimpleDateFormat("yyyyMMddHH");
+                basePath = "vision/" + df.format(new Date()) + "/";
+                Path base = FileSystems.getDefault().getPath(basePath);
+                if (Files.notExists(base, NOFOLLOW_LINKS)) {
+                    Files.createDirectories(base);
+                }
+            }
+            saveMessage(basePath, message);
             //发送本次传送结束指令
             System.out.println("数据接收完成，向客户端发送结束指令");
             ByteBuf response = Unpooled.copiedBuffer(INSTRUCTION_END);
@@ -201,12 +214,12 @@ public class VisionNettyServer {
             ctx.flush();
         }
 
-        private void saveMessage(VisionMessage message) {
+        private void saveMessage(String basePath, VisionMessage message) {
 
             //图形文件
             switch (message.getHeader().getDataType()) {
                 case 2:
-                    String imageFile = visionClient.getActivityId() + "_" + visionClient.getClientId() + "_"
+                    String imageFile = basePath + visionClient.getActivityId() + "_" + visionClient.getClientId() + "_"
                             + message.getHeader().getDate() + message.getHeader().getTime() + ".jpg";
                     BufferedOutputStream outputStream = null;
 
@@ -236,7 +249,7 @@ public class VisionNettyServer {
                 case 1:
                     visionClient.getRecordList().add(new VisionClientRecord(message));
                     // CSV文件(Append)
-                    String file = message.getHeader().getDate() + "_vision_check_data.csv";
+                    String file = basePath + message.getHeader().getDate() + "_vision_check_data.csv";
                     PrintWriter writer = null;
                     try {
                         Path filePath = FileSystems.getDefault().getPath(file);
