@@ -57,4 +57,10 @@ public interface SystemRoleAuthorityMapper {
           "and authority_id = #{authorityId,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(SystemRoleAuthority record);
+    
+    @Delete({
+      "delete from system_role_authority",
+      "where role_id = #{roleId,jdbcType=CHAR}"
+    })
+    int deleteByRoleId(@Param("roleId") String roleId);
 }

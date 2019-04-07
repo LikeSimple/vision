@@ -1,5 +1,7 @@
 package org.vision.service.admin.persistence.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.vision.service.admin.persistence.model.SystemUser;
@@ -46,6 +48,26 @@ public interface SystemUserMapper {
             @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
     })
     SystemUser selectByUsername(String username);
+    
+    @Select({
+      "select",
+      "id, username, password, enabled, locked, account_expire, credential_expire, ",
+      "created_time, modified_time",
+      "from system_user",
+      "where id = #{id,jdbcType=VARCHAR}"
+    })
+    @Results({
+          @Result(column = "id", property = "id", jdbcType = JdbcType.CHAR, id = true),
+          @Result(column = "username", property = "username", jdbcType = JdbcType.VARCHAR),
+          @Result(column = "password", property = "password", jdbcType = JdbcType.CHAR),
+          @Result(column = "enabled", property = "enabled", jdbcType = JdbcType.BIT),
+          @Result(column = "locked", property = "locked", jdbcType = JdbcType.BIT),
+          @Result(column = "account_expire", property = "accountExpire", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "credential_expire", property = "credentialExpire", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+    })
+    SystemUser selectById(String id);
 
     @UpdateProvider(type = SystemUserSqlProvider.class, method = "updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(SystemUser record);
@@ -63,4 +85,23 @@ public interface SystemUserMapper {
             "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(SystemUser record);
+    
+    @Select({
+      "select",
+      "id, username, password, enabled, locked, account_expire, credential_expire, ",
+      "created_time, modified_time",
+      "from system_user"
+    })
+    @Results({
+          @Result(column = "id", property = "id", jdbcType = JdbcType.CHAR, id = true),
+          @Result(column = "username", property = "username", jdbcType = JdbcType.VARCHAR),
+          @Result(column = "password", property = "password", jdbcType = JdbcType.CHAR),
+          @Result(column = "enabled", property = "enabled", jdbcType = JdbcType.BIT),
+          @Result(column = "locked", property = "locked", jdbcType = JdbcType.BIT),
+          @Result(column = "account_expire", property = "accountExpire", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "credential_expire", property = "credentialExpire", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+    })
+    List<SystemUser> selectList();
 }

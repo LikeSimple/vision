@@ -78,4 +78,21 @@ public interface SystemAuthorityMapper {
             @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
     })
     List<SystemAuthority> selectByUserId(String systemUserId);
+    
+    @Select({
+      "select distinct",
+      "sa.id, sa.`name`, sa.`desc`, sa.created_time, sa.modified_time",
+      "from system_authority sa",
+      "inner join system_role_authority sra on sa.id = sra.authority_id",
+      "where sra.role_id = #{id, jdbcType=CHAR}",
+      "order by sa.name"
+    })
+    @Results({
+          @Result(column = "id", property = "id", jdbcType = JdbcType.CHAR, id = true),
+          @Result(column = "name", property = "name", jdbcType = JdbcType.VARCHAR),
+          @Result(column = "desc", property = "desc", jdbcType = JdbcType.VARCHAR),
+          @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+    })
+    List<SystemAuthority> selectByRoleId(String sysRoleId);    
 }

@@ -1,5 +1,7 @@
 package org.vision.service.admin.persistence.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -58,4 +60,34 @@ public interface SystemRoleMapper {
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(SystemRole record);
+    
+    @Select({
+      "select",
+      "id, `name`, `desc`, created_time, modified_time",
+      "from system_role"
+    })
+    @Results({
+        @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
+        @Result(column="name", property="name", jdbcType=JdbcType.CHAR),
+        @Result(column="desc", property="desc", jdbcType=JdbcType.VARCHAR),
+        @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
+    })
+    List<SystemRole> selectList();
+    
+    @Select({
+      "select",
+      "id, `name`, `desc`, created_time, modified_time",
+      "from system_role r",
+      " join system_user_role u on r.id = u.role_id ",
+      " where system_user_id = #{userId,jdbcType=CHAR}"
+    })
+    @Results({
+        @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
+        @Result(column="name", property="name", jdbcType=JdbcType.CHAR),
+        @Result(column="desc", property="desc", jdbcType=JdbcType.VARCHAR),
+        @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
+    })
+    List<SystemRole> selectListByUserId(String userId);
 }

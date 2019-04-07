@@ -22,6 +22,10 @@ public class ResponseData<T> implements Serializable {
         this.success = true;
         this.data = data;
     }
+    
+    public ResponseData() {
+      
+    }
 
     public ResponseData(int errorCode, String errorMessage) {
         this.success = false;
