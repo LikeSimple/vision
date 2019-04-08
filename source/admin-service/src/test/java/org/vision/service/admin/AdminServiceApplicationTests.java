@@ -5,14 +5,16 @@ import cn.hutool.core.text.csv.CsvData;
 import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvRow;
 import cn.hutool.core.text.csv.CsvUtil;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.lang.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,18 +29,22 @@ import org.vision.service.admin.util.ShortUUIDGenerator;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestConfiguration(value = "")
+@SpringBootTest
 public class AdminServiceApplicationTests {
 
     @Autowired
@@ -85,6 +91,18 @@ public class AdminServiceApplicationTests {
 
     @Autowired
     private VisionActivityClientCheckRecordMapper visionActivityClientCheckRecordMapper;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private ProvinceMapper provinceMapper;
+
+    @Autowired
+    private CityMapper cityMapper;
+
+    @Autowired
+    private CountyMapper countyMapper;
 
     @Test
     @Transactional
@@ -476,7 +494,7 @@ public class AdminServiceApplicationTests {
             VisionCheckRecord record = new VisionCheckRecord();
             record.setId(ShortUUIDGenerator.newID());
             record.setVisionClientId(csvRow.getByName("clientId"));
-            record.setEyeType(csvRow.getByName("eyeType").equals("1")?"OD":"OS");
+            record.setEyeType(csvRow.getByName("eyeType").equals("1") ? "OD" : "OS");
             record.setCheckDate(df.parse(csvRow.getByName("date")));
             record.setDataType(new Integer(csvRow.getByName("dataType")));
             record.setPictureFile("");
@@ -519,8 +537,107 @@ public class AdminServiceApplicationTests {
             DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
             Date date = df.parse(d + t);
             System.out.println(date);
-        }catch (ParseException pe) {
+        } catch (ParseException pe) {
             System.out.println(pe);
+        }
+    }
+
+    @Test
+    @Transactional
+    public void importProvince() throws IOException {
+
+        byte[] jsonData = Files.readAllBytes(Paths.get("/home/jimmy/develop/python/china_regions-master/json/province.json"));
+        JsonNode node = objectMapper.readTree(jsonData);
+        Iterator<JsonNode> iterator = node.iterator();
+
+        JsonNode province;
+        Province provinceEntity;
+        while (iterator.hasNext()) {
+            province = iterator.next();
+
+            provinceEntity = new Province();
+            provinceEntity.setId(ShortUUIDGenerator.newID());
+            provinceEntity.setName(province.get("name").asText());
+            provinceEntity.setCreatedTime(new Date());
+            assert (1 == provinceMapper.insertSelective(provinceEntity));
+        }
+    }
+
+    @Test
+    @Transactional
+    public void importCity() throws IOException {
+        byte[] provinceData = Files.readAllBytes(Paths.get("/home/jimmy/develop/python/china_regions-master/json/province.json"));
+        JsonNode provinceList = objectMapper.readTree(provinceData);
+        Iterator<JsonNode> provinceNode = provinceList.iterator();
+
+        byte[] jsonData = Files.readAllBytes(Paths.get("/home/jimmy/develop/python/china_regions-master/json/city.json"));
+        JsonNode cityData = objectMapper.readTree(jsonData);
+
+        Province provinceEntity;
+        City cityEntity;
+        while (provinceNode.hasNext()) {
+            JsonNode province = provinceNode.next(); //获取当前省
+            provinceEntity = provinceMapper.selectByName(province.get("name").asText()); // 获取对应的市对象
+            JsonNode cityList = cityData.get(province.get("id").asText()); // 获取省对应的市列表
+            Iterator<JsonNode> cityIterator = cityList.iterator();
+            while (cityIterator.hasNext()) {
+                JsonNode cityNode = cityIterator.next();
+
+                cityEntity = new City();
+                cityEntity.setId(ShortUUIDGenerator.newID());
+                cityEntity.setProvinceId(provinceEntity.getId());
+                cityEntity.setName(cityNode.get("name").asText());
+                cityEntity.setCreatedTime(new Date());
+                assert (1 == cityMapper.insertSelective(cityEntity));
+            }
+        }
+    }
+
+    @Test
+    @Transactional
+    public void importCounty() throws IOException {
+        // 获取省数据
+        byte[] provinceData = Files.readAllBytes(Paths.get("/home/jimmy/develop/python/china_regions-master/json/province.json"));
+        JsonNode provinceList = objectMapper.readTree(provinceData);
+        Iterator<JsonNode> provinceNode = provinceList.iterator();
+
+        byte[] cityData = Files.readAllBytes(Paths.get("/home/jimmy/develop/python/china_regions-master/json/city.json"));
+        JsonNode allCityList = objectMapper.readTree(cityData);
+
+        byte[] countyData = Files.readAllBytes(Paths.get("/home/jimmy/develop/python/china_regions-master/json/country.json"));
+        JsonNode allCountyList = objectMapper.readTree(countyData);
+
+        Province provinceEntity;
+        City cityEntity;
+        County county;
+        while (provinceNode.hasNext()) {
+
+            JsonNode province = provinceNode.next(); //获取当前省
+            provinceEntity = provinceMapper.selectByName(province.get("name").asText());
+            JsonNode cityList = allCityList.get(province.get("id").asText()); // 获取省对应的市列表
+            Iterator<JsonNode> cityIterator = cityList.iterator();
+
+            while (cityIterator.hasNext()) {
+                JsonNode city = cityIterator.next();
+
+                cityEntity = cityMapper.selectByName(provinceEntity.getId(), city.get("name").asText());
+                JsonNode countyList = allCountyList.get(city.get("id").asText()); // 获取市对应的县列表
+                if (null != countyList) {
+                    Iterator<JsonNode> countyIterator = countyList.iterator();
+                    while (countyIterator.hasNext()) {
+                        JsonNode countyNode = countyIterator.next();
+
+                        county = new County();
+                        county.setId(ShortUUIDGenerator.newID());
+                        county.setCityId(cityEntity.getId());
+                        county.setName(countyNode.get("name").asText());
+                        county.setCreatedTime(new Date());
+
+                        assert (1 == countyMapper.insertSelective(county));
+
+                    }
+                }
+            }
         }
     }
 

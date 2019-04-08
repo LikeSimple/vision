@@ -8,7 +8,7 @@ import lombok.Data;
 public class City implements Serializable {
     private String id;
 
-    private String countyId;
+    private String provinceId;
 
     private String name;
 

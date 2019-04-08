@@ -13,8 +13,8 @@ public class CitySqlProvider {
             sql.VALUES("id", "#{id,jdbcType=CHAR}");
         }
         
-        if (record.getCountyId() != null) {
-            sql.VALUES("county_id", "#{countyId,jdbcType=CHAR}");
+        if (record.getProvinceId() != null) {
+            sql.VALUES("province_id", "#{provinceId,jdbcType=CHAR}");
         }
         
         if (record.getName() != null) {
@@ -36,8 +36,8 @@ public class CitySqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("city");
         
-        if (record.getCountyId() != null) {
-            sql.SET("county_id = #{countyId,jdbcType=CHAR}");
+        if (record.getProvinceId() != null) {
+            sql.SET("province_id = #{provinceId,jdbcType=CHAR}");
         }
         
         if (record.getName() != null) {

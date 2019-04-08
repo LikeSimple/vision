@@ -17,8 +17,8 @@ public class CountySqlProvider {
             sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getProvinceId() != null) {
-            sql.VALUES("province_id", "#{provinceId,jdbcType=CHAR}");
+        if (record.getCityId() != null) {
+            sql.VALUES("city_id", "#{cityId,jdbcType=CHAR}");
         }
         
         if (record.getCreatedTime() != null) {
@@ -40,8 +40,8 @@ public class CountySqlProvider {
             sql.SET("name = #{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getProvinceId() != null) {
-            sql.SET("province_id = #{provinceId,jdbcType=CHAR}");
+        if (record.getCityId() != null) {
+            sql.SET("city_id = #{cityId,jdbcType=CHAR}");
         }
         
         if (record.getCreatedTime() != null) {

@@ -56,4 +56,18 @@ public interface ProvinceMapper {
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(Province record);
+
+    @Select({
+            "select",
+            "id, name, created_time, modified_time",
+            "from province",
+            "where name = #{name,jdbcType=CHAR}"
+    })
+    @Results({
+            @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
+            @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+            @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
+            @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
+    })
+    Province selectByName(String name);
 }

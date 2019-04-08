@@ -10,7 +10,7 @@ public class County implements Serializable {
 
     private String name;
 
-    private String provinceId;
+    private String cityId;
 
     private Date createdTime;
 
