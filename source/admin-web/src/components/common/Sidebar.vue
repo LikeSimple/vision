@@ -46,8 +46,18 @@
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'client',
-                        title: '客户'
-                    },                    
+                        title: '用户'
+                    },      
+                    {
+                        icon: 'el-icon-lx-favor',
+                        index: 'report',
+                        title: '权限'
+                    },
+                    {
+                        icon: 'el-icon-lx-copy',
+                        index: 'statistics',
+                        title: '角色列表'
+                    },          
                     {
                         icon: 'el-icon-lx-cascades',
                         index: '3',
@@ -66,17 +76,7 @@
                                 title: '活动报告管理'
                             },
                         ]
-                    },                    
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'report',
-                        title: '报告'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'statistics',
-                        title: '统计'
-                    },                    
+                    },                                       
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'table',

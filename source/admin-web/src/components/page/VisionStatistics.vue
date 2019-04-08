@@ -2,21 +2,19 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>活动</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>角色列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
+                <!-- <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
                     <el-option key="1" label="广东省" value="广东省"></el-option>
                     <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
+                </el-select> -->
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
+            <el-table :data="data" border class="table" ref="multipleTable">
                 <el-table-column prop="date" label="日期" sortable width="150">
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" width="120">
@@ -37,19 +35,15 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-
-            </el-form>
+        <el-dialog title="编辑" :visible.sync="editVisible" width="50%">
+            <el-tree
+                :data="data2"
+                show-checkbox
+                node-key="id"
+                :default-expanded-keys="[2, 3]"
+                :default-checked-keys="[5]"
+                :props="defaultProps">
+            </el-tree>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
@@ -87,7 +81,46 @@
                     date: '',
                     address: ''
                 },
-                idx: -1
+                idx: -1,
+               data2: [{
+                    id: 1,
+                    label: '一级 1',
+                    children: [{
+                        id: 4,
+                        label: '二级 1-1',
+                        children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                        }, {
+                        id: 10,
+                        label: '三级 1-1-2'
+                        }]
+                    }]
+                    }, {
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                    }, {
+                    id: 3,
+                    label: '一级 3',
+                    children: [{
+                        id: 7,
+                        label: '二级 3-1'
+                    }, {
+                        id: 8,
+                        label: '二级 3-2'
+                    }]
+                    }],
+                    defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                    }
             }
         },
         created() {
@@ -115,6 +148,36 @@
             }
         },
         methods: {
+            loadNode1(node, resolve) {
+               if (node.level === 0) {
+                return resolve([{ name: 'region1' }, { name: 'region2' }]);
+                }
+                if (node.level > 3) return resolve([]);
+
+                var hasChild;
+                if (node.data.name === 'region1') {
+                hasChild = true;
+                } else if (node.data.name === 'region2') {
+                hasChild = false;
+                } else {
+                hasChild = Math.random() > 0.5;
+                }
+
+                setTimeout(() => {
+                var data;
+                if (hasChild) {
+                    data = [{
+                    name: 'zone' + this.count++
+                    }, {
+                    name: 'zone' + this.count++
+                    }];
+                } else {
+                    data = [];
+                }
+
+                resolve(data);
+                }, 500);
+            },
             // 分页导航
             handleCurrentChange(val) {
                 this.cur_page = val;

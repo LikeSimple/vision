@@ -171,3 +171,10 @@ a {
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
 }
+.handle-box {
+    position: relative;
+}
+.handle-add {
+   position: absolute;
+   right: 0;
+}

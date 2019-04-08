@@ -135,7 +135,11 @@
                 // }).then((res) => {
                 //     this.tableData = res.data.list;
                 // })
-                getActivityList().then(res => {
+                let params = {
+                   pageNum: this.cur_page,
+                   pageSize: 20
+                }
+                getActivityList(params).then(res => {
                     this.tableData = res.data;
                 })
             },

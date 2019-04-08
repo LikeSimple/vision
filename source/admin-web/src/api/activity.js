@@ -1,8 +1,9 @@
 import request from '../util/request'
 
-export const getActivityList = () => {
+export const getActivityList = (data) => {
     return request({
       url: '/api/activity/list',
-      method: 'post'
+      method: 'post',
+      data:data
     })
   }
