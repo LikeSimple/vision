@@ -116,7 +116,6 @@ public class AdminServiceApplicationTests {
         SystemRole systemRole = new SystemRole();
         systemRole.setId(ShortUUIDGenerator.newID());
         systemRole.setName("ROLE_ADMIN");
-        systemRole.setDesc("");
         systemRoleMapper.insertSelective(systemRole);
 
         SystemUserRole systemUserRole = new SystemUserRole();

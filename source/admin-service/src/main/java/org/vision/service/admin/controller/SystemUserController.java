@@ -60,6 +60,7 @@ public class SystemUserController {
       return this.systemUserService.findById(sysUserId);
 
     }
+    
 
     @ApiOperation(value = "获得用户列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -71,7 +72,8 @@ public class SystemUserController {
 
     @ApiOperation(value = "修改用户")
     @RequestMapping(value = "/update/{sysUserId}", method = RequestMethod.POST)
-    public ResponseData<Object> update(@PathVariable("sysUserId")Integer sysUserId, @RequestBody SysUserUpdateBO bo) {
+    public ResponseData<Object> update(@PathVariable("sysUserId")String sysUserId, @RequestBody SysUserUpdateBO bo) {
+      bo.setSysUserId(sysUserId);
       VisionUserDetail userDetail = (VisionUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return this.systemUserService.update(bo, userDetail.getSystemUser());
 

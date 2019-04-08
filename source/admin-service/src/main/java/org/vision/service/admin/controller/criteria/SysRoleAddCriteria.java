@@ -14,8 +14,8 @@ public class SysRoleAddCriteria {
   @NotBlank
   private String roleName;
   
-  @io.swagger.annotations.ApiModelProperty(value = "系统资源id集合", name = "systemResourceList", required = true, example = "")
+  @io.swagger.annotations.ApiModelProperty(value = "系统资源id集合", name = "systemAuthorityList", required = true, example = "")
   @NotNull
-  private List<String> systemResourceList;
+  private List<String> systemAuthorityList;
   
 }

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="org.vision.service.admin.persistence.model.SystemRole">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     <id column="id" jdbcType="CHAR" property="id" />
     <result column="name" jdbcType="CHAR" property="name" />
@@ -15,7 +15,7 @@
   <sql id="Example_Where_Clause">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -48,7 +48,7 @@
   <sql id="Update_By_Example_Where_Clause">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -81,14 +81,14 @@
   <sql id="Base_Column_List">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     id, name, description, created_time, modified_time
   </sql>
   <select id="selectByExample" parameterType="org.vision.service.admin.persistence.model.SystemRoleExample" resultMap="BaseResultMap">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     select
     <if test="distinct">
@@ -106,7 +106,7 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     select 
     <include refid="Base_Column_List" />
@@ -116,7 +116,7 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     delete from system_role
     where id = #{id,jdbcType=CHAR}
@@ -124,7 +124,7 @@
   <delete id="deleteByExample" parameterType="org.vision.service.admin.persistence.model.SystemRoleExample">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     delete from system_role
     <if test="_parameter != null">
@@ -134,26 +134,23 @@
   <insert id="insert" parameterType="org.vision.service.admin.persistence.model.SystemRole">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into system_role (name, description, created_time, 
-      modified_time)
-    values (#{name,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{modifiedTime,jdbcType=TIMESTAMP})
+    insert into system_role (id, name, description, 
+      created_time, modified_time)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.vision.service.admin.persistence.model.SystemRole">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into system_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="name != null">
         name,
       </if>
@@ -168,6 +165,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
       <if test="name != null">
         #{name,jdbcType=CHAR},
       </if>
@@ -185,7 +185,7 @@
   <select id="countByExample" parameterType="org.vision.service.admin.persistence.model.SystemRoleExample" resultType="java.lang.Long">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     select count(*) from system_role
     <if test="_parameter != null">
@@ -195,7 +195,7 @@
   <update id="updateByExampleSelective" parameterType="map">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     update system_role
     <set>
@@ -222,7 +222,7 @@
   <update id="updateByExample" parameterType="map">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     update system_role
     set id = #{record.id,jdbcType=CHAR},
@@ -237,7 +237,7 @@
   <update id="updateByPrimaryKeySelective" parameterType="org.vision.service.admin.persistence.model.SystemRole">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     update system_role
     <set>
@@ -259,7 +259,7 @@
   <update id="updateByPrimaryKey" parameterType="org.vision.service.admin.persistence.model.SystemRole">
     <!--
       WARNING - 只读 - @mbg.generated
-      This element was generated on 2019-04-08 10:57:31.
+      This element was generated on 2019-04-08 18:40:13.
     -->
     update system_role
     set name = #{name,jdbcType=CHAR},

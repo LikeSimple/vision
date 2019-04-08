@@ -2,6 +2,8 @@ package org.vision.service.admin.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +26,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@RequestMapping("/sys-role")
+@RequestMapping("/api/sys-role")
 @RestController
 @Api(value = "角色相关接口")
 public class SysRoleController {
@@ -46,7 +48,7 @@ public class SysRoleController {
   
   @ApiOperation(value = "新增角色")
   @RequestMapping(value = "/add", method = RequestMethod.POST)
-  public ResponseData<Object> add(@RequestBody SysRoleAddCriteria bo) {
+  public ResponseData<Object> add(@RequestBody @Valid SysRoleAddCriteria bo) {
     
     VisionUserDetail userDetail = (VisionUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     
@@ -84,7 +86,7 @@ public class SysRoleController {
 
   @ApiOperation(value = "更新角色")
   @RequestMapping(value = "/update/{sysRoleId}", method = RequestMethod.POST)
-  public ResponseData<Object> update(@PathVariable("sysRoleId")Integer sysRoleId, @RequestBody SysRoleUpdateBO bo) {
+  public ResponseData<Object> update(@PathVariable("sysRoleId")String sysRoleId, @RequestBody SysRoleUpdateBO bo) {
 
     VisionUserDetail userDetail = (VisionUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return this.sysRoleService.update(bo, userDetail.getSystemUser());
