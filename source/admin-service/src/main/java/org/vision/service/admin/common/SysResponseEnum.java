@@ -24,6 +24,9 @@ public enum SysResponseEnum {
     
     USER_UPDATE_ERROR(112, "修改用户失败！"),
     USER_MIBILE_NOT_EXIST(113, "该手机号不存在！"),
+    USER_USERNAME_EXIST(130, "登录名已存在！"),
+    
+    ROLE_NAME_EXIST(200, "角色名称已存在！"),
 
     NETWORK_ERROR(114,"网络异常！"),
     SYSTEM_ERROR(115,"系统内部错误！"),

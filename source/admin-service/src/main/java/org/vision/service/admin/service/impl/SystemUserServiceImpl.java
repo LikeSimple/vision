@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.vision.service.admin.common.PasswordUtils;
 import org.vision.service.admin.common.ResponseData;
+import org.vision.service.admin.common.SysResponseEnum;
 import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.controller.criteria.SysUserAddBO;
 import org.vision.service.admin.controller.criteria.SysUserGetListBO;
@@ -126,12 +127,19 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public ResponseData<Object> add(SysUserAddBO bo, SystemUser systemUser) {
       
+      String name = bo.getName();
+      
+      SystemUser selectByUsername = this.systemUserMapper.selectByUsername(name);
+      if (selectByUsername != null) {
+        return new ResponseData<>(SysResponseEnum.USER_USERNAME_EXIST.getCode(), SysResponseEnum.USER_USERNAME_EXIST.getMessage());
+      }
+      
       String passwordEncoder = PasswordUtils.bcrypt(bo.getPassword());
       String id = ShortUUIDGenerator.newID();
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
       record.setId(id);
-      record.setUsername(bo.getName());
+      record.setUsername(name);
       record.setPassword(passwordEncoder);;
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.insertSelective(record);
@@ -192,7 +200,13 @@ public class SystemUserServiceImpl implements SystemUserService {
     public ResponseData<Object> update(SysUserUpdateBO bo, SystemUser systemUser) {
       
       String sysUserId = bo.getSysUserId();
-
+      String name = bo.getName();
+      
+      SystemUser selectByUsername = this.systemUserMapper.selectByUsername(name);
+      if (selectByUsername != null && !sysUserId.equals(selectByUsername.getId())) {
+        return new ResponseData<>(SysResponseEnum.USER_USERNAME_EXIST.getCode(), SysResponseEnum.USER_USERNAME_EXIST.getMessage());
+      }
+      
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
       record.setId(sysUserId);
