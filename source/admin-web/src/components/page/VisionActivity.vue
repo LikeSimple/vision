@@ -136,8 +136,7 @@
                 //     this.tableData = res.data.list;
                 // })
                 let params = {
-                   pageNum: this.cur_page,
-                   pageSize: 20
+                   page: this.cur_page
                 }
                 getActivityList(params).then(res => {
                     this.tableData = res.data;
