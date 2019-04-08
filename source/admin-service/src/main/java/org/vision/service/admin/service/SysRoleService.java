@@ -6,7 +6,6 @@ import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.controller.criteria.SysRoleAddCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleGetListCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleUpdateBO;
-import org.vision.service.admin.persistence.model.SystemAuthority;
 import org.vision.service.admin.persistence.model.SystemRole;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.service.vo.SystemAuthorityVO;

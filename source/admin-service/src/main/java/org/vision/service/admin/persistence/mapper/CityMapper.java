@@ -21,10 +21,10 @@ public interface CityMapper {
     int deleteByPrimaryKey(String id);
 
     @Insert({
-        "insert into city (id, county_id, ",
+        "insert into city (id, province_id, ",
         "name, created_time, ",
         "modified_time)",
-        "values (#{id,jdbcType=CHAR}, #{countyId,jdbcType=CHAR}, ",
+        "values (#{id,jdbcType=CHAR}, #{provinceId,jdbcType=CHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, ",
         "#{modifiedTime,jdbcType=TIMESTAMP})"
     })
@@ -35,13 +35,13 @@ public interface CityMapper {
 
     @Select({
         "select",
-        "id, county_id, name, created_time, modified_time",
+        "id, province_id, name, created_time, modified_time",
         "from city",
         "where id = #{id,jdbcType=CHAR}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
-        @Result(column="county_id", property="countyId", jdbcType=JdbcType.CHAR),
+        @Result(column= "province_id", property="provinceId", jdbcType=JdbcType.CHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
@@ -53,11 +53,26 @@ public interface CityMapper {
 
     @Update({
         "update city",
-        "set county_id = #{countyId,jdbcType=CHAR},",
+        "set province_id = #{provinceId,jdbcType=CHAR},",
           "name = #{name,jdbcType=VARCHAR},",
           "created_time = #{createdTime,jdbcType=TIMESTAMP},",
           "modified_time = #{modifiedTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(City record);
+
+    @Select({
+            "select",
+            "id, province_id, name, created_time, modified_time",
+            "from city",
+            "where province_id = #{provinceId,jdbcType=CHAR} and name = #{name,jdbcType=CHAR}"
+    })
+    @Results({
+            @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
+            @Result(column= "province_id", property="provinceId", jdbcType=JdbcType.CHAR),
+            @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+            @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
+            @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
+    })
+    City selectByName(String provinceId, String name);
 }

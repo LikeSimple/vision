@@ -7,24 +7,26 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                姓名：<el-input v-model="query_name"  class="handle-input"></el-input>
-                身份证号：<el-input v-model="query_id_number"  class="handle-input"></el-input>
-                学校：<el-input v-model="query_school_name"  class="handle-input"></el-input>
-                班级：<el-input v-model="query_class_name"  class="handle-input"></el-input>
-                活动：<el-input v-model="query_activity_name"  class="handle-input"></el-input>
+                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
+                    <el-option key="1" label="广东省" value="广东省"></el-option>
+                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
+                </el-select>
+                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column prop="schoolName" label="学校" width="180" align="center"></el-table-column>
-                <el-table-column prop="className" label="班级" width="120" align="center"></el-table-column>
-                <el-table-column prop="name" label="姓名" width="120" align="center"></el-table-column>
-                <el-table-column prop="idNumber" label="身份证号" width="200" align="center"></el-table-column>
-                <el-table-column prop="eyeType" label="左右眼" :formatter="eyeTypeFormatter" width="100" align="center"></el-table-column>
-                <el-table-column prop="pupil" label="瞳孔大小" width="50" align="center"></el-table-column>
-                <el-table-column prop="pd" label="瞳距" width="80" align="center"></el-table-column>
-                <el-table-column prop="activityName" label="活动" width="80" align="center"></el-table-column>
-                <el-table-column prop="checkDate" label="检测日期" width="200" align="center"></el-table-column>
-                
+            <el-table :data="data" border class="table" ref="multipleTable">
+                <el-table-column prop="date" label="日期" sortable width="150">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="120">
+                </el-table-column>
+                <el-table-column prop="address" label="地址" :formatter="formatter">
+                </el-table-column>
+                <el-table-column label="操作" width="180" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
             <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
@@ -64,7 +66,6 @@
 </template>
 
 <script>
-    import { getRecordList } from "../../api/record.js";
     export default {
         name: 'basetable',
         data() {
@@ -79,11 +80,6 @@
                 is_search: false,
                 editVisible: false,
                 delVisible: false,
-                query_name: "", 
-                query_id_number: "", 
-                query_school_name: "", 
-                query_class_name: "", 
-                query_activity_name: "",
                 form: {
                     name: '',
                     date: '',
@@ -97,7 +93,23 @@
         },
         computed: {
             data() {
-                return this.tableData;
+                return this.tableData.filter((d) => {
+                    let is_del = false;
+                    for (let i = 0; i < this.del_list.length; i++) {
+                        if (d.name === this.del_list[i].name) {
+                            is_del = true;
+                            break;
+                        }
+                    }
+                    if (!is_del) {
+                        if (d.address.indexOf(this.select_cate) > -1 &&
+                            (d.name.indexOf(this.select_word) > -1 ||
+                                d.address.indexOf(this.select_word) > -1)
+                        ) {
+                            return d;
+                        }
+                    }
+                })
             }
         },
         methods: {
@@ -108,13 +120,17 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                getRecordList(this.query_name, this.query_id_number, this.query_school_name, 
-                    this.query_class_name, this.query_activity_name, this.cur_page, 20).then((res) => {
-                    this.tableData = res.data;
+                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
+                if (process.env.NODE_ENV === 'development') {
+                    this.url = '/ms/table/list';
+                };
+                this.$axios.post(this.url, {
+                    page: this.cur_page
+                }).then((res) => {
+                    this.tableData = res.data.list;
                 })
             },
             search() {
-                this.getData();
                 this.is_search = true;
             },
             formatter(row, column) {
@@ -151,30 +167,18 @@
                 this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
-            },
-            eyeTypeFormatter(row, column) {
-                var value = "未知";
-                if ("OD" == row.eysType){
-                    value = "左眼";
-                } else if ("OD" == row.eysType){
-                    value = "右眼";
-                }
-                return value;
             }
         }
     }
-
 </script>
 
 <style scoped>
     .handle-box {
         margin-bottom: 20px;
     }
-
     .handle-select {
         width: 120px;
     }
-
     .handle-input {
         width: 300px;
         display: inline-block;

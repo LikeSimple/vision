@@ -29,7 +29,7 @@
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mybatis"
+        <sqlMapGenerator targetPackage="mapper"
                          targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
@@ -41,32 +41,32 @@
 
 
 
-        <!--<table tableName="city"-->
-               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
-               <!--enableUpdateByPrimaryKey="true"-->
-               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--enableUpdateByExample="false"-->
-               <!--modelType="flat">-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--</table>-->
+        <table schema="vision" tableName="city"
+               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
+               enableUpdateByPrimaryKey="true"
+               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
+               enableUpdateByExample="false"
+               modelType="flat">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
 
-        <!--<table tableName="county"-->
-               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
-               <!--enableUpdateByPrimaryKey="true"-->
-               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--enableUpdateByExample="false"-->
-               <!--modelType="flat">-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--</table>-->
+        <table schema="vision" tableName="county"
+               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
+               enableUpdateByPrimaryKey="true"
+               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
+               enableUpdateByExample="false"
+               modelType="flat">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
 
-        <!--<table tableName="province"-->
-               <!--enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
-               <!--enableUpdateByPrimaryKey="true"-->
-               <!--enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--enableUpdateByExample="false"-->
-               <!--modelType="flat">-->
-            <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--</table>-->
+        <table schema="vision" tableName="province"
+               enableInsert="true" enableDeleteByPrimaryKey="true" enableSelectByPrimaryKey="true"
+               enableUpdateByPrimaryKey="true"
+               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
+               enableUpdateByExample="false"
+               modelType="flat">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
 
 
         <!--<table tableName="system_audit"-->

@@ -1,0 +1,6 @@
+INSERT INTO vision.system_authority (id, name, `desc`, created_time, modified_time) VALUES ('1euTcmIZJdbVRrcTit7vYF', 'AUTH_ADMIN', '', '2019-04-08 14:27:36', null);
+INSERT INTO vision.system_role (id, name, description, created_time, modified_time) VALUES ('2DWV2Xjb55rrvvcczpOOoW', 'ROLE_ADMIN', '', '2019-04-08 14:27:36', null);
+INSERT INTO vision.system_role_authority (role_id, authority_id, created_time) VALUES ('2DWV2Xjb55rrvvcczpOOoW', '1euTcmIZJdbVRrcTit7vYF', '2019-04-08 14:27:36');
+INSERT INTO vision.system_user (id, username, password, enabled, locked, account_expire, credential_expire, created_time, modified_time) VALUES ('0korMBEch4YUjrWlC1SMSn', 'admin', '$2a$04$PEwnkEXChyLp4f7bgLMV4epAMsEVTCiPKGB95AeInRsS7ASrfGvJW', 1, 0, null, null, '2019-04-08 14:27:36', null);
+INSERT INTO vision.system_user_profile (id, name, avatar, gender, created_time, modified_time) VALUES ('0korMBEch4YUjrWlC1SMSn', '管理员', '', 1, '2019-04-08 14:27:36', null);
+INSERT INTO vision.system_user_role (system_user_id, role_id, created_time) VALUES ('0korMBEch4YUjrWlC1SMSn', '2DWV2Xjb55rrvvcczpOOoW', '2019-04-08 14:27:36');

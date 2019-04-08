@@ -100,7 +100,7 @@ public interface SystemRoleMapper {
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
         @Result(column="name", property="name", jdbcType=JdbcType.CHAR),
-        @Result(column="desc", property="desc", jdbcType=JdbcType.VARCHAR),
+        @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
         @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
     })

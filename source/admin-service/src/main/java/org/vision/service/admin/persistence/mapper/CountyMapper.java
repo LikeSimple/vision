@@ -21,9 +21,9 @@ public interface CountyMapper {
     int deleteByPrimaryKey(String id);
 
     @Insert({
-        "insert into county (id, name, province_id, ",
+        "insert into county (id, name, city_id, ",
         "created_time, modified_time)",
-        "values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{provinceId,jdbcType=CHAR}, ",
+        "values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{cityId,jdbcType=CHAR}, ",
         "#{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})"
     })
     int insert(County record);
@@ -33,14 +33,14 @@ public interface CountyMapper {
 
     @Select({
         "select",
-        "id, name, province_id, created_time, modified_time",
+        "id, name, city_id, created_time, modified_time",
         "from county",
         "where id = #{id,jdbcType=CHAR}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.CHAR, id=true),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="province_id", property="provinceId", jdbcType=JdbcType.CHAR),
+        @Result(column= "city_id", property="cityId", jdbcType=JdbcType.CHAR),
         @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
     })
@@ -52,7 +52,7 @@ public interface CountyMapper {
     @Update({
         "update county",
         "set name = #{name,jdbcType=VARCHAR},",
-          "province_id = #{provinceId,jdbcType=CHAR},",
+          "city_id = #{cityId,jdbcType=CHAR},",
           "created_time = #{createdTime,jdbcType=TIMESTAMP},",
           "modified_time = #{modifiedTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=CHAR}"
