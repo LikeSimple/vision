@@ -16,11 +16,15 @@ import org.vision.service.admin.persistence.mapper.SystemRoleMapper;
 import org.vision.service.admin.persistence.model.SystemAuthority;
 import org.vision.service.admin.persistence.model.SystemRole;
 import org.vision.service.admin.persistence.model.SystemRoleAuthority;
+import org.vision.service.admin.persistence.model.SystemRoleExample;
+import org.vision.service.admin.persistence.model.SystemRoleExample.Criteria;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.service.SysRoleService;
+import org.vision.service.admin.service.vo.SystemAuthorityVO;
 
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
+import com.github.pagehelper.util.StringUtil;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
@@ -63,9 +67,17 @@ public class SysRoleServiceImpl implements SysRoleService {
 
   @Override
   public ResponseData<PageInfo<SystemRole>> getList(SysRoleGetListCriteria criteria) {
-
+    
+    String roleName = criteria.getRoleName();
+    
+    SystemRoleExample example = new SystemRoleExample();
+    Criteria createCriteria  = example.createCriteria();
+    if (StringUtil.isNotEmpty(roleName)) {
+      createCriteria.andNameLike("%" + roleName + "%");
+    }
+    
     PageMethod.startPage(criteria.getPageNum(), criteria.getPageSize());
-    List<SystemRole> list = this.systemRoleMapper.selectList();
+    List<SystemRole> list = this.systemRoleMapper.selectByExample(example);
 
     ResponseData<PageInfo<SystemRole>> responseData = new ResponseData<>();
     responseData.setData(new PageInfo<>(list));
@@ -73,12 +85,15 @@ public class SysRoleServiceImpl implements SysRoleService {
   }
 
   @Override
-  public ResponseData<List<SystemAuthority>> findAuthority(String sysRoleId) {
-
+  public ResponseData<List<SystemAuthorityVO>> findAuthority(String sysRoleId) {
+    List<SystemAuthorityVO> allList = systemAuthorityMapper.selectAll();
+    
     List<SystemAuthority> list = systemAuthorityMapper.selectByRoleId(sysRoleId);
 
-    ResponseData<List<SystemAuthority>> responseData = new ResponseData<>();
-    responseData.setData(list);
+    dealAuthorityVO(allList, list);
+    
+    ResponseData<List<SystemAuthorityVO>> responseData = new ResponseData<>();
+    responseData.setData(allList);
     return responseData;
   }
 
@@ -128,4 +143,15 @@ public class SysRoleServiceImpl implements SysRoleService {
     return responseData;
   }
 
+  private void dealAuthorityVO(List<SystemAuthorityVO> allList, List<SystemAuthority> list) {
+    if (allList != null && list != null && !allList.isEmpty() && !list.isEmpty()) {
+      for (SystemAuthorityVO vo : allList) {
+        for (SystemAuthority po : list) {
+          if (vo.getId().equals(po.getId())) {
+            vo.setAuthorize(true);
+          }
+        }
+      }
+    }
+  }
 }

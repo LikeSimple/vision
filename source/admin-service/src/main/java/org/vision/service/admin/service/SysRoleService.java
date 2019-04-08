@@ -7,9 +7,9 @@ import org.vision.service.admin.controller.criteria.SysRoleAddCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleGetListCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleUpdateBO;
 import org.vision.service.admin.persistence.model.SystemAuthority;
-import org.vision.service.admin.persistence.model.SystemResource;
 import org.vision.service.admin.persistence.model.SystemRole;
 import org.vision.service.admin.persistence.model.SystemUser;
+import org.vision.service.admin.service.vo.SystemAuthorityVO;
 
 import com.github.pagehelper.PageInfo;
 
@@ -37,11 +37,11 @@ public interface SysRoleService {
   ResponseData<PageInfo<SystemRole>> getList(SysRoleGetListCriteria criteria);
   
   /**
-   * 查询角色详情
+   * 查询角色权限
    * @param sysRoleId
    * @return
    */
-  ResponseData<List<SystemAuthority>> findAuthority(String sysRoleId);
+  ResponseData<List<SystemAuthorityVO>> findAuthority(String sysRoleId);
   
   /**
    * 通过用户id查询角色列表

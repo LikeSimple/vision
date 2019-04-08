@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.vision.service.admin.persistence.model.SystemAuthority;
+import org.vision.service.admin.service.vo.SystemAuthorityVO;
 
 import java.util.List;
 
@@ -95,4 +96,19 @@ public interface SystemAuthorityMapper {
           @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
     })
     List<SystemAuthority> selectByRoleId(String sysRoleId);    
+    
+    @Select({
+      "select distinct",
+      "sa.id, sa.`name`, sa.`desc`, sa.created_time, sa.modified_time",
+      "from system_authority sa",
+      "order by sa.name"
+    })
+    @Results({
+          @Result(column = "id", property = "id", jdbcType = JdbcType.CHAR, id = true),
+          @Result(column = "name", property = "name", jdbcType = JdbcType.VARCHAR),
+          @Result(column = "desc", property = "desc", jdbcType = JdbcType.VARCHAR),
+          @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
+          @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+    })
+    List<SystemAuthorityVO> selectAll();
 }

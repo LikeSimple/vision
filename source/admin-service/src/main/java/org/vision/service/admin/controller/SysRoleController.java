@@ -14,9 +14,10 @@ import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.controller.criteria.SysRoleAddCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleGetListCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleUpdateBO;
-import org.vision.service.admin.persistence.model.SystemAuthority;
+import org.vision.service.admin.persistence.mapper.SystemAuthorityMapper;
 import org.vision.service.admin.persistence.model.SystemRole;
 import org.vision.service.admin.service.SysRoleService;
+import org.vision.service.admin.service.vo.SystemAuthorityVO;
 
 import com.github.pagehelper.PageInfo;
 
@@ -30,7 +31,19 @@ public class SysRoleController {
 
   @Autowired
   private SysRoleService sysRoleService;
+  
+  @Autowired
+  private SystemAuthorityMapper systemAuthorityMapper;
 
+  @ApiOperation(value = "获取权限列表")
+  @RequestMapping(value = "/get-authority-list", method = RequestMethod.POST)
+  public List<SystemAuthorityVO> getAuthorityList() {
+    
+    return this.systemAuthorityMapper.selectAll();
+
+
+  }
+  
   @ApiOperation(value = "新增角色")
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   public ResponseData<Object> add(@RequestBody SysRoleAddCriteria bo) {
@@ -55,7 +68,7 @@ public class SysRoleController {
 
   @ApiOperation(value = "查找角色")
   @RequestMapping(value = "/find/{sysRoleId}", method = RequestMethod.POST)
-  public ResponseData<List<SystemAuthority>> find(@PathVariable("sysRoleId")String sysRoleId) {
+  public ResponseData<List<SystemAuthorityVO>> find(@PathVariable("sysRoleId")String sysRoleId) {
     
     return this.sysRoleService.findAuthority(sysRoleId);
 

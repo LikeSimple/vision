@@ -1,10 +1,18 @@
 package org.vision.service.admin.service.impl;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.vision.service.admin.common.PasswordUtils;
 import org.vision.service.admin.common.ResponseData;
 import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.controller.criteria.SysUserAddBO;
@@ -14,11 +22,13 @@ import org.vision.service.admin.persistence.mapper.SystemAuthorityMapper;
 import org.vision.service.admin.persistence.mapper.SystemUserMapper;
 import org.vision.service.admin.persistence.mapper.SystemUserProfileMapper;
 import org.vision.service.admin.persistence.mapper.SystemUserRoleMapper;
-import org.vision.service.admin.persistence.model.SystemUser;
-import org.vision.service.admin.persistence.model.SystemUserProfile;
-import org.vision.service.admin.persistence.model.SystemUserRole;
 import org.vision.service.admin.persistence.model.SystemAuthority;
 import org.vision.service.admin.persistence.model.SystemRole;
+import org.vision.service.admin.persistence.model.SystemUser;
+import org.vision.service.admin.persistence.model.SystemUserExample;
+import org.vision.service.admin.persistence.model.SystemUserExample.Criteria;
+import org.vision.service.admin.persistence.model.SystemUserProfile;
+import org.vision.service.admin.persistence.model.SystemUserRole;
 import org.vision.service.admin.service.SysRoleService;
 import org.vision.service.admin.service.SystemUserService;
 import org.vision.service.admin.service.vo.SysUserVO;
@@ -26,12 +36,7 @@ import org.vision.service.admin.service.vo.SystemUserProfileVO;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.github.pagehelper.util.StringUtil;
 
 @Service("SystemUserService")
 public class SystemUserServiceImpl implements SystemUserService {
@@ -119,13 +124,13 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public ResponseData<Object> add(SysUserAddBO bo, SystemUser systemUser) {
-
-      String createUserId = systemUser.getId();
+      
+      String passwordEncoder = PasswordUtils.bcrypt(bo.getPassword());
 
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
       record.setUsername(bo.getName());
-      record.setPassword(bo.getPassword());;
+      record.setPassword(passwordEncoder);;
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.insertSelective(record);
 
@@ -148,11 +153,17 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public ResponseData<PageInfo<SystemUser>> getList(SysUserGetListBO bo) {
       String name = bo.getName();
-      String sysUserCode = bo.getSysUserCode();
-      String phone = bo.getPhone();
+      
+      SystemUserExample example = new SystemUserExample();
+      Criteria criteria = example.createCriteria();
+      if (StringUtil.isNotEmpty(name)) {
+        criteria.andUsernameLike("%" + name + "%");
+      }
       
       PageHelper.startPage(bo.getPageNum(), bo.getPageSize());
-      List<SystemUser> sysUserPOList = systemUserMapper.selectList();
+      
+      PageHelper.startPage(bo.getPageNum(), bo.getPageSize());
+      List<SystemUser> sysUserPOList = systemUserMapper.selectByExample(example);
       
       ResponseData<PageInfo<SystemUser>> responseData = new ResponseData<>();
       responseData.setData(new PageInfo<>(sysUserPOList));
@@ -183,7 +194,6 @@ public class SystemUserServiceImpl implements SystemUserService {
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
       record.setUsername(bo.getName());
-      record.setPassword(bo.getPassword());;
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.updateByPrimaryKeySelective(record);
 
