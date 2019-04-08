@@ -8,6 +8,7 @@ import cn.hutool.core.text.csv.CsvUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.lang.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ import java.util.List;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore
 public class AdminServiceApplicationTests {
 
     @Autowired
@@ -134,7 +136,7 @@ public class AdminServiceApplicationTests {
         SystemRole systemRole = new SystemRole();
         systemRole.setId(ShortUUIDGenerator.newID());
         systemRole.setName("ROLE_ADMIN");
-        systemRole.setDesc("");
+        systemRole.setDescription("");
         systemRoleMapper.insertSelective(systemRole);
 
         SystemUserRole systemUserRole = new SystemUserRole();

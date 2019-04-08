@@ -22,6 +22,12 @@ public interface SystemUserRoleMapper {
     })
     int deleteByPrimaryKey(@Param("systemUserId") String systemUserId, @Param("roleId") String roleId);
 
+    @Delete({
+      "delete from system_user_role",
+      "where system_user_id = #{systemUserId,jdbcType=CHAR}"
+    })
+    int deleteByUserId(@Param("systemUserId") String systemUserId);
+    
     @Insert({
         "insert into system_user_role (system_user_id, role_id, ",
         "created_time)",

@@ -22,7 +22,7 @@ export default new Router({
                 {
                     path: '/client',
                     component: resolve => require(['../components/page/VisionClient.vue'], resolve),
-                    meta: { title: '客户', permission: true, permissionAuthorities: ['AUTH_CLIENT'] }
+                    meta: { title: '用户', permission: true, permissionAuthorities: ['AUTH_CLIENT'] }
                 },
                 {
                     path: '/activity',
@@ -40,14 +40,14 @@ export default new Router({
                     meta: { title: '检测报告', permission: true, permissionAuthorities: ['AUTH_ACTIVITY'] }
                 },
                 {
-                    path: '/record',
-                    component: resolve => require(['../components/page/VisionRecord.vue'], resolve),
-                    meta: { title: '报告', permission: true, permissionAuthorities: ['AUTH_REPORT'] }
+                    path: '/report',
+                    component: resolve => require(['../components/page/VisionReport.vue'], resolve),
+                    meta: { title: '权限', permission: true, permissionAuthorities: ['AUTH_REPORT'] }
                 },
                 {
                     path: '/statistics',
                     component: resolve => require(['../components/page/VisionStatistics.vue'], resolve),
-                    meta: { title: '统计', permission: true, permissionAuthorities: ['ROLE_STATISTICS'] }
+                    meta: { title: '角色列表', permission: true, permissionAuthorities: ['ROLE_STATISTICS'] }
                 },
                 {
                     path: '/icon',

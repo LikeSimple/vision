@@ -85,7 +85,7 @@ create table system_role
     id char(22) not null
         primary key,
     name char(40) not null,
-    `desc` varchar(200) null,
+    `description` varchar(200) null,
     created_time datetime default CURRENT_TIMESTAMP not null,
     modified_time datetime null,
     constraint name

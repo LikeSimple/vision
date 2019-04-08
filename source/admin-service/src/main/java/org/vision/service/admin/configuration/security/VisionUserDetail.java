@@ -61,4 +61,8 @@ public class VisionUserDetail implements UserDetails {
     public String getId() {
         return systemUser.getId();
     }
+    
+    public SystemUser getSystemUser() {
+      return systemUser;
+    }
 }
