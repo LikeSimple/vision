@@ -9,7 +9,7 @@ public class SysRoleGetListCriteria {
   
   private int pageNum;
   
-  private int pageSize;
+  private int pageSize = 20;
   
   
 }

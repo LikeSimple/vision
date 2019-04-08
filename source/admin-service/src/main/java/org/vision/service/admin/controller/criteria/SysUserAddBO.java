@@ -17,19 +17,9 @@ public class SysUserAddBO {
   @io.swagger.annotations.ApiModelProperty(value = "密码", name = "password", required = false, example = "")
   @NotBlank
   private String password;
-
-  @io.swagger.annotations.ApiModelProperty(value = "手机号", name = "phone", required = false, example = "")
-  @NotBlank
-  private String phone;
-
-  @io.swagger.annotations.ApiModelProperty(value = "岗位", name = "position", required = false, example = "")
-  private String position;
   
   @io.swagger.annotations.ApiModelProperty(value = "角色id集合", name = "sysRoleIdList", required = true, example = "")
   @NotNull
   private List<String> sysRoleIdList;
-  
-  @io.swagger.annotations.ApiModelProperty(value = "备注", name = "remark", required = false, example = "")
-  private String remark;
 
 }

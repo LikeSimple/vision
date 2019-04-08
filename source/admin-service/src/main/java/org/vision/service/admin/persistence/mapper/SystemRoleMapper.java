@@ -92,7 +92,7 @@ public interface SystemRoleMapper {
     
     @Select({
       "select",
-      "id, `name`, `desc`, created_time, modified_time",
+      "r.id, r.`name`, r.`description`, r.created_time, r.modified_time",
       "from system_role r",
       " join system_user_role u on r.id = u.role_id ",
       " where system_user_id = #{userId,jdbcType=CHAR}"

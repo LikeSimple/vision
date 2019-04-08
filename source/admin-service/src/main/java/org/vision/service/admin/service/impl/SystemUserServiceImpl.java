@@ -33,6 +33,7 @@ import org.vision.service.admin.service.SysRoleService;
 import org.vision.service.admin.service.SystemUserService;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
+import org.vision.service.admin.util.ShortUUIDGenerator;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -126,9 +127,10 @@ public class SystemUserServiceImpl implements SystemUserService {
     public ResponseData<Object> add(SysUserAddBO bo, SystemUser systemUser) {
       
       String passwordEncoder = PasswordUtils.bcrypt(bo.getPassword());
-
+      String id = ShortUUIDGenerator.newID();
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
+      record.setId(id);
       record.setUsername(bo.getName());
       record.setPassword(passwordEncoder);;
       record.setCreatedTime(nowDate);;
@@ -193,6 +195,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
+      record.setId(sysUserId);
       record.setUsername(bo.getName());
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.updateByPrimaryKeySelective(record);

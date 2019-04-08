@@ -21,6 +21,7 @@ import org.vision.service.admin.persistence.model.SystemRoleExample.Criteria;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.service.SysRoleService;
 import org.vision.service.admin.service.vo.SystemAuthorityVO;
+import org.vision.service.admin.util.ShortUUIDGenerator;
 
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
@@ -43,18 +44,19 @@ public class SysRoleServiceImpl implements SysRoleService {
   public ResponseData<Object> add(SysRoleAddCriteria criteria, SystemUser systemUser) {
 
     Date nowDate = new Date();
+    
+    String id = ShortUUIDGenerator.newID();
     SystemRole sysRolePO = new SystemRole();
+    sysRolePO.setId(id);
     sysRolePO.setName(criteria.getRoleName());
     sysRolePO.setCreatedTime(nowDate);
     this.systemRoleMapper.insertSelective(sysRolePO);
 
-    String sysRoleId = sysRolePO.getId();
-
-    List<String> sysMenuIdList = criteria.getSystemResourceList();
+    List<String> sysMenuIdList = criteria.getSystemAuthorityList();
     for (String sysMenuId : sysMenuIdList) {
 
       SystemRoleAuthority po = new SystemRoleAuthority();
-      po.setRoleId(sysRoleId);
+      po.setRoleId(id);
       po.setAuthorityId(sysMenuId);
       po.setCreatedTime(nowDate);
 
