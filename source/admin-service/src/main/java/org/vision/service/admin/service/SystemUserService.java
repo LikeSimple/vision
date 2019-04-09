@@ -9,6 +9,7 @@ import org.vision.service.admin.controller.criteria.SysUserAddBO;
 import org.vision.service.admin.controller.criteria.SysUserGetListBO;
 import org.vision.service.admin.controller.criteria.SysUserUpdateBO;
 import org.vision.service.admin.persistence.model.SystemUser;
+import org.vision.service.admin.service.vo.SysUserListVO;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
 
@@ -33,7 +34,7 @@ public interface SystemUserService {
      * @param po
      * @return
      */
-    ResponseData<PageInfo<SystemUser>> getList(SysUserGetListBO bo);
+    ResponseData<PageInfo<SysUserListVO>> getList(SysUserGetListBO bo);
     
     /**
      * 通过id查询用户
@@ -69,5 +70,18 @@ public interface SystemUserService {
      * @return
      */
     ResponseData<Object> delete(String sysUserId, SystemUser systemUser);
+    
+    /**
+     * 新增角色
+     * @return
+     */
+    ResponseData<Object> addRole(String sysUserId, String sysRoleId);
+    
+    /**
+     * 删除角色
+     * @return
+     */
+    ResponseData<Object> deleteRole(String sysUserId, String sysRoleId);
+    
 
 }

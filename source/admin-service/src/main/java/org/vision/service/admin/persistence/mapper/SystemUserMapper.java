@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
+import org.vision.service.admin.controller.criteria.SysUserGetListBO;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.persistence.model.SystemUserExample;
+import org.vision.service.admin.service.vo.SysUserListVO;
 
 @Mapper
 public interface SystemUserMapper {
@@ -125,6 +127,8 @@ public interface SystemUserMapper {
           @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
     })
     SystemUser selectById(String id);
+    
+    List<SysUserListVO> getDetailList(SysUserGetListBO bo);
     
     
 }

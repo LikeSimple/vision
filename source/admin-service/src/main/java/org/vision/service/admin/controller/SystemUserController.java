@@ -14,6 +14,7 @@ import org.vision.service.admin.controller.criteria.SysUserGetListBO;
 import org.vision.service.admin.controller.criteria.SysUserUpdateBO;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.service.SystemUserService;
+import org.vision.service.admin.service.vo.SysUserListVO;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
 
@@ -64,7 +65,7 @@ public class SystemUserController {
 
     @ApiOperation(value = "获得用户列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ResponseData<PageInfo<SystemUser>> getList(@RequestBody SysUserGetListBO bo) {
+    public ResponseData<PageInfo<SysUserListVO>> getList(@RequestBody SysUserGetListBO bo) {
       return this.systemUserService.getList(bo);
 
 
@@ -93,5 +94,19 @@ public class SystemUserController {
       VisionUserDetail userDetail = (VisionUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return this.systemUserService.enable(sysUserId, userDetail.getSystemUser());
 
+    }
+    
+    @ApiOperation(value = "增加角色")
+    @RequestMapping(value = "/add-role/{sysUserId}/{sysRoleId}", method = RequestMethod.POST)
+    public ResponseData<Object> addRole(@PathVariable("sysUserId")String sysUserId,
+        @PathVariable("sysRoleId")String sysRoleId) {
+      return this.systemUserService.addRole(sysUserId, sysRoleId);
+
+    }
+    @ApiOperation(value = "删除角色")
+    @RequestMapping(value = "/delete-role/{sysUserId}/{sysRoleId}", method = RequestMethod.POST)
+    public ResponseData<Object> updateRole(@PathVariable("sysUserId")String sysUserId,
+        @PathVariable("sysRoleId")String sysRoleId) {
+      return this.systemUserService.deleteRole(sysUserId, sysRoleId);
     }
 }
