@@ -15,10 +15,11 @@ public interface VisionSchoolClassMemberMapper {
     @Insert({
             "insert into vision_school_class_member (id, vision_class_id, ",
             "student_number, vision_client_id, ",
-            "created_time, modified_time)",
+            "created_time, modified_time, enabled)",
             "values (#{id,jdbcType=CHAR}, #{visionClassId,jdbcType=CHAR}, ",
             "#{studentNumber,jdbcType=VARCHAR}, #{visionClientId,jdbcType=CHAR}, ",
-            "#{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})"
+            "#{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}" +
+                    "#{enabled, jdbcType=BIT})"
     })
     int insert(VisionSchoolClassMember record);
 
@@ -27,7 +28,7 @@ public interface VisionSchoolClassMemberMapper {
 
     @Select({
             "select",
-            "id, vision_class_id, student_number, vision_client_id, created_time, modified_time",
+            "id, vision_class_id, student_number, vision_client_id, created_time, modified_time, enabled",
             "from vision_school_class_member",
             "where id = #{id,jdbcType=CHAR}"
     })
@@ -37,7 +38,8 @@ public interface VisionSchoolClassMemberMapper {
             @Result(column = "student_number", property = "studentNumber", jdbcType = JdbcType.VARCHAR),
             @Result(column = "vision_client_id", property = "visionClientId", jdbcType = JdbcType.CHAR),
             @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
-            @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+            @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "enabled", property = "enabled", jdbcType = JdbcType.BIT)
     })
     VisionSchoolClassMember selectByPrimaryKey(String id);
 
@@ -50,14 +52,15 @@ public interface VisionSchoolClassMemberMapper {
             "student_number = #{studentNumber,jdbcType=VARCHAR},",
             "vision_client_id = #{visionClientId,jdbcType=CHAR},",
             "created_time = #{createdTime,jdbcType=TIMESTAMP},",
-            "modified_time = #{modifiedTime,jdbcType=TIMESTAMP}",
+            "modified_time = #{modifiedTime,jdbcType=TIMESTAMP},",
+            "enabled = #{enabled, jdbcType=BIT}",
             "where id = #{id,jdbcType=CHAR}"
     })
     int updateByPrimaryKey(VisionSchoolClassMember record);
 
     @Select({
             "select",
-            "id, vision_class_id, student_number, vision_client_id, created_time, modified_time",
+            "id, vision_class_id, student_number, vision_client_id, created_time, modified_time, enabled",
             "from vision_school_class_member",
             "where vision_class_id = #{visionClassId,jdbcType=CHAR} " +
                     "and vision_client_id = #{visionClientId,jdbcType=CHAR}"
@@ -68,7 +71,8 @@ public interface VisionSchoolClassMemberMapper {
             @Result(column = "student_number", property = "studentNumber", jdbcType = JdbcType.VARCHAR),
             @Result(column = "vision_client_id", property = "visionClientId", jdbcType = JdbcType.CHAR),
             @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
-            @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
+            @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "enabled", property = "enabled", jdbcType = JdbcType.BIT)
     })
     VisionSchoolClassMember selectByCombinedKeys(String visionClassId, String visionClientId);
 }

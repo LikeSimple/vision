@@ -44,23 +44,7 @@ public class VisionClient implements Serializable {
 
     private BigDecimal visionAcuity;
 
-    private Integer dioptersLeft;
-
-    private Integer dioptersRight;
-
-    private Integer astigmatismLeft;
-
-    private Integer astigmatismRight;
-
-    private Integer jointLuminosityLeft;
-
-    private Integer jointLuminosityRight;
-
-    private Integer axisLeft;
-
-    private Integer axisRight;
-
-    private Integer pupilDistance;
+    private String studentNumber;
 
     private Date createdTime;
 

@@ -15,9 +15,11 @@ public class VisionSchoolClassMember implements Serializable {
 
     private String visionClientId;
 
+    private Boolean enabled;
+
     private Date createdTime;
 
     private Date modifiedTime;
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5247698387647507789L;
 }

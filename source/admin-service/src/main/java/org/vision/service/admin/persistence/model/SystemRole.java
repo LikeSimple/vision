@@ -1,8 +1,11 @@
 package org.vision.service.admin.persistence.model;
 
+import lombok.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class SystemRole implements Serializable {
 
   /**
@@ -39,85 +42,6 @@ public class SystemRole implements Serializable {
    * 只读. 
    * @mbg.generated  2019-04-08 10:57:31
    */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 9103706986859719016L;
 
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public void setId(String id) {
-    this.id = id == null ? null : id.trim();
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public void setName(String name) {
-    this.name = name == null ? null : name.trim();
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public String getDescription() {
-    return description;
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public void setDescription(String description) {
-    this.description = description == null ? null : description.trim();
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public Date getCreatedTime() {
-    return createdTime;
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public void setCreatedTime(Date createdTime) {
-    this.createdTime = createdTime;
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public Date getModifiedTime() {
-    return modifiedTime;
-  }
-
-  /**
-   * 只读. 
-   * @mbg.generated  2019-04-08 10:57:31
-   */
-  public void setModifiedTime(Date modifiedTime) {
-    this.modifiedTime = modifiedTime;
-  }
 }

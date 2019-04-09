@@ -25,11 +25,7 @@ public interface VisionClientMapper {
         "province, city, ",
         "county, detail_address, ",
         "vision_acuity_left, vision_acuity_right, ",
-        "vision_acuity, diopters_left, ",
-        "diopters_right, astigmatism_left, ",
-        "astigmatism_right, joint_luminosity_left, ",
-        "joint_luminosity_right, axis_left, ",
-        "axis_right, pupil_distance, ",
+        "vision_acuity, student_number,",
         "created_time, modified_time)",
         "values (#{id,jdbcType=CHAR}, #{wxClientId,jdbcType=CHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{gender,jdbcType=BIT}, #{age,jdbcType=INTEGER}, ",
@@ -39,11 +35,7 @@ public interface VisionClientMapper {
         "#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, ",
         "#{county,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, ",
         "#{visionAcuityLeft,jdbcType=DECIMAL}, #{visionAcuityRight,jdbcType=DECIMAL}, ",
-        "#{visionAcuity,jdbcType=DECIMAL}, #{dioptersLeft,jdbcType=INTEGER}, ",
-        "#{dioptersRight,jdbcType=INTEGER}, #{astigmatismLeft,jdbcType=INTEGER}, ",
-        "#{astigmatismRight,jdbcType=INTEGER}, #{jointLuminosityLeft,jdbcType=INTEGER}, ",
-        "#{jointLuminosityRight,jdbcType=INTEGER}, #{axisLeft,jdbcType=INTEGER}, ",
-        "#{axisRight,jdbcType=INTEGER}, #{pupilDistance,jdbcType=INTEGER}, ",
+        "#{visionAcuity,jdbcType=DECIMAL}, #{studentNumber,jdbcType=VARCHAR}, ",
         "#{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})"
     })
     int insert(VisionClient record);
@@ -55,9 +47,7 @@ public interface VisionClientMapper {
         "select",
         "id, wx_client_id, name, gender, age, id_number, native_place, height, weight, ",
         "birthday, phone_number, province, city, county, detail_address, vision_acuity_left, ",
-        "vision_acuity_right, vision_acuity, diopters_left, diopters_right, astigmatism_left, ",
-        "astigmatism_right, joint_luminosity_left, joint_luminosity_right, axis_left, ",
-        "axis_right, pupil_distance, created_time, modified_time",
+        "vision_acuity_right, vision_acuity, student_number, created_time, modified_time",
         "from vision_client",
         "where id = #{id,jdbcType=CHAR}"
     })
@@ -80,15 +70,7 @@ public interface VisionClientMapper {
         @Result(column="vision_acuity_left", property="visionAcuityLeft", jdbcType=JdbcType.DECIMAL),
         @Result(column="vision_acuity_right", property="visionAcuityRight", jdbcType=JdbcType.DECIMAL),
         @Result(column="vision_acuity", property="visionAcuity", jdbcType=JdbcType.DECIMAL),
-        @Result(column="diopters_left", property="dioptersLeft", jdbcType=JdbcType.INTEGER),
-        @Result(column="diopters_right", property="dioptersRight", jdbcType=JdbcType.INTEGER),
-        @Result(column="astigmatism_left", property="astigmatismLeft", jdbcType=JdbcType.INTEGER),
-        @Result(column="astigmatism_right", property="astigmatismRight", jdbcType=JdbcType.INTEGER),
-        @Result(column="joint_luminosity_left", property="jointLuminosityLeft", jdbcType=JdbcType.INTEGER),
-        @Result(column="joint_luminosity_right", property="jointLuminosityRight", jdbcType=JdbcType.INTEGER),
-        @Result(column="axis_left", property="axisLeft", jdbcType=JdbcType.INTEGER),
-        @Result(column="axis_right", property="axisRight", jdbcType=JdbcType.INTEGER),
-        @Result(column="pupil_distance", property="pupilDistance", jdbcType=JdbcType.INTEGER),
+        @Result(column="student_number", property="studentNumber", jdbcType=JdbcType.VARCHAR),
         @Result(column="created_time", property="createdTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="modified_time", property="modifiedTime", jdbcType=JdbcType.TIMESTAMP)
     })
@@ -116,15 +98,7 @@ public interface VisionClientMapper {
           "vision_acuity_left = #{visionAcuityLeft,jdbcType=DECIMAL},",
           "vision_acuity_right = #{visionAcuityRight,jdbcType=DECIMAL},",
           "vision_acuity = #{visionAcuity,jdbcType=DECIMAL},",
-          "diopters_left = #{dioptersLeft,jdbcType=INTEGER},",
-          "diopters_right = #{dioptersRight,jdbcType=INTEGER},",
-          "astigmatism_left = #{astigmatismLeft,jdbcType=INTEGER},",
-          "astigmatism_right = #{astigmatismRight,jdbcType=INTEGER},",
-          "joint_luminosity_left = #{jointLuminosityLeft,jdbcType=INTEGER},",
-          "joint_luminosity_right = #{jointLuminosityRight,jdbcType=INTEGER},",
-          "axis_left = #{axisLeft,jdbcType=INTEGER},",
-          "axis_right = #{axisRight,jdbcType=INTEGER},",
-          "pupil_distance = #{pupilDistance,jdbcType=INTEGER},",
+          "student_number = #{studentNumber,jdbcType=VARCHAR},",
           "created_time = #{createdTime,jdbcType=TIMESTAMP},",
           "modified_time = #{modifiedTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=CHAR}"
@@ -135,9 +109,7 @@ public interface VisionClientMapper {
             "select",
             "id, wx_client_id, name, gender, age, id_number, native_place, height, weight, ",
             "birthday, phone_number, province, city, county, detail_address, vision_acuity_left, ",
-            "vision_acuity_right, vision_acuity, diopters_left, diopters_right, astigmatism_left, ",
-            "astigmatism_right, joint_luminosity_left, joint_luminosity_right, axis_left, ",
-            "axis_right, pupil_distance, created_time, modified_time",
+            "vision_acuity_right, vision_acuity, student_number, created_time, modified_time",
             "from vision_client",
             "where id_number = #{idNumber,jdbcType=VARCHAR}"
     })
@@ -160,15 +132,7 @@ public interface VisionClientMapper {
             @Result(column = "vision_acuity_left", property = "visionAcuityLeft", jdbcType = JdbcType.DECIMAL),
             @Result(column = "vision_acuity_right", property = "visionAcuityRight", jdbcType = JdbcType.DECIMAL),
             @Result(column = "vision_acuity", property = "visionAcuity", jdbcType = JdbcType.DECIMAL),
-            @Result(column = "diopters_left", property = "dioptersLeft", jdbcType = JdbcType.INTEGER),
-            @Result(column = "diopters_right", property = "dioptersRight", jdbcType = JdbcType.INTEGER),
-            @Result(column = "astigmatism_left", property = "astigmatismLeft", jdbcType = JdbcType.INTEGER),
-            @Result(column = "astigmatism_right", property = "astigmatismRight", jdbcType = JdbcType.INTEGER),
-            @Result(column = "joint_luminosity_left", property = "jointLuminosityLeft", jdbcType = JdbcType.INTEGER),
-            @Result(column = "joint_luminosity_right", property = "jointLuminosityRight", jdbcType = JdbcType.INTEGER),
-            @Result(column = "axis_left", property = "axisLeft", jdbcType = JdbcType.INTEGER),
-            @Result(column = "axis_right", property = "axisRight", jdbcType = JdbcType.INTEGER),
-            @Result(column = "pupil_distance", property = "pupilDistance", jdbcType = JdbcType.INTEGER),
+            @Result(column = "student_number", property = "studentNumber", jdbcType = JdbcType.VARCHAR),
             @Result(column = "created_time", property = "createdTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "modified_time", property = "modifiedTime", jdbcType = JdbcType.TIMESTAMP)
     })

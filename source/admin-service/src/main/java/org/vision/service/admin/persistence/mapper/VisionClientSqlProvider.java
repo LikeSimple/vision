@@ -81,40 +81,8 @@ public class VisionClientSqlProvider {
             sql.VALUES("vision_acuity", "#{visionAcuity,jdbcType=DECIMAL}");
         }
         
-        if (record.getDioptersLeft() != null) {
-            sql.VALUES("diopters_left", "#{dioptersLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getDioptersRight() != null) {
-            sql.VALUES("diopters_right", "#{dioptersRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAstigmatismLeft() != null) {
-            sql.VALUES("astigmatism_left", "#{astigmatismLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAstigmatismRight() != null) {
-            sql.VALUES("astigmatism_right", "#{astigmatismRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getJointLuminosityLeft() != null) {
-            sql.VALUES("joint_luminosity_left", "#{jointLuminosityLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getJointLuminosityRight() != null) {
-            sql.VALUES("joint_luminosity_right", "#{jointLuminosityRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAxisLeft() != null) {
-            sql.VALUES("axis_left", "#{axisLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAxisRight() != null) {
-            sql.VALUES("axis_right", "#{axisRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getPupilDistance() != null) {
-            sql.VALUES("pupil_distance", "#{pupilDistance,jdbcType=INTEGER}");
+        if (record.getStudentNumber() != null) {
+            sql.VALUES("student_number", "#{studentNumber,jdbcType=VARCHAR}");
         }
         
         if (record.getCreatedTime() != null) {
@@ -200,42 +168,10 @@ public class VisionClientSqlProvider {
             sql.SET("vision_acuity = #{visionAcuity,jdbcType=DECIMAL}");
         }
         
-        if (record.getDioptersLeft() != null) {
-            sql.SET("diopters_left = #{dioptersLeft,jdbcType=INTEGER}");
+        if (record.getStudentNumber() != null) {
+            sql.SET("student_number = #{studentNumber,jdbcType=INTEGER}");
         }
-        
-        if (record.getDioptersRight() != null) {
-            sql.SET("diopters_right = #{dioptersRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAstigmatismLeft() != null) {
-            sql.SET("astigmatism_left = #{astigmatismLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAstigmatismRight() != null) {
-            sql.SET("astigmatism_right = #{astigmatismRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getJointLuminosityLeft() != null) {
-            sql.SET("joint_luminosity_left = #{jointLuminosityLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getJointLuminosityRight() != null) {
-            sql.SET("joint_luminosity_right = #{jointLuminosityRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAxisLeft() != null) {
-            sql.SET("axis_left = #{axisLeft,jdbcType=INTEGER}");
-        }
-        
-        if (record.getAxisRight() != null) {
-            sql.SET("axis_right = #{axisRight,jdbcType=INTEGER}");
-        }
-        
-        if (record.getPupilDistance() != null) {
-            sql.SET("pupil_distance = #{pupilDistance,jdbcType=INTEGER}");
-        }
-        
+
         if (record.getCreatedTime() != null) {
             sql.SET("created_time = #{createdTime,jdbcType=TIMESTAMP}");
         }

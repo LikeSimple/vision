@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface VisionClientCheckRecordVO extends VisionClientVO {
 
-    public List<? extends VisionCheckRecordVO> getCheckRecordList();
+    List<? extends VisionCheckRecordVO> getCheckRecordList();
 }

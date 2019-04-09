@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vision.service.admin.controller.criteria.ActivityCriteria;
 import org.vision.service.admin.controller.criteria.ActivityParam;
+import org.vision.service.admin.controller.criteria.VisionCheckRecordCriteria;
 import org.vision.service.admin.persistence.mapper.*;
 import org.vision.service.admin.persistence.model.*;
 import org.vision.service.admin.service.ActivityService;
@@ -46,7 +47,7 @@ import java.util.List;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Ignore
+//@Ignore
 public class AdminServiceApplicationTests {
 
     @Autowired
@@ -641,6 +642,14 @@ public class AdminServiceApplicationTests {
                 }
             }
         }
+    }
+
+    @Test
+    @Transactional
+    public void getClientCheckReport() {
+        VisionCheckRecordCriteria checkRecordCriteria = new VisionCheckRecordCriteria();
+        List<VisionClientCheckRecordView> checkRecordViewList = visionCheckRecordMapper.selectByCriteria(checkRecordCriteria);
+
     }
 
 }

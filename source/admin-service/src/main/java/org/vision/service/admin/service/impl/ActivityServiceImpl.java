@@ -140,8 +140,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional
     public List<? extends VisionActivityClientVO> importClientList(String activityId, MultipartFile multipartFile) throws IOException {
         final String[] keyList = new String[]{"姓名", "性别", "年龄", "身份证号", "籍贯", "学校", "班级", "学号", "身高", "体重",
-                "裸眼视力左", "裸眼视力右", "裸眼视力双眼", "屈光度左", "屈光度右", "散光度左", "散光度右", "联合光度左", "联合光度右",
-                "轴位左", "轴位右", "瞳距"};
+                "裸眼视力左", "裸眼视力右", "裸眼视力双眼", "学籍号"};
 
         //用于查重（保存已有对象Id）
         HashMap<String, VisionClient> visionClientHashMap = new HashMap<>();
@@ -200,15 +199,8 @@ public class ActivityServiceImpl implements ActivityService {
                 visionClient.setVisionAcuityLeft(BigDecimal.valueOf(Double.valueOf(list.get(i)[keys.get("裸眼视力左")])));
                 visionClient.setVisionAcuityRight(BigDecimal.valueOf(Double.valueOf(list.get(i)[keys.get("裸眼视力右")])));
                 visionClient.setVisionAcuity(BigDecimal.valueOf(Double.valueOf(list.get(i)[keys.get("裸眼视力双眼")])));
-                visionClient.setDioptersLeft(Integer.valueOf(list.get(i)[keys.get("屈光度左")]));
-                visionClient.setDioptersRight(Integer.valueOf(list.get(i)[keys.get("屈光度右")]));
-                visionClient.setAstigmatismLeft(Integer.valueOf(list.get(i)[keys.get("散光度左")]));
-                visionClient.setAstigmatismRight(Integer.valueOf(list.get(i)[keys.get("散光度右")]));
-                visionClient.setJointLuminosityLeft(Integer.valueOf(list.get(i)[keys.get("联合光度左")]));
-                visionClient.setJointLuminosityRight(Integer.valueOf(list.get(i)[keys.get("联合光度右")]));
-                visionClient.setAxisLeft(Integer.valueOf(list.get(i)[keys.get("轴位左")]));
-                visionClient.setAxisRight(Integer.valueOf(list.get(i)[keys.get("轴位右")]));
-                visionClient.setPupilDistance(Integer.valueOf(list.get(i)[keys.get("瞳距")]));
+                visionClient.setStudentNumber(list.get(i)[keys.get("学籍号")]);
+
                 if (isNew) {
                     Assert.isTrue(1 == clientMapper.insertSelective(visionClient));
                     log.info("保存新用户成功！");
@@ -273,10 +265,12 @@ public class ActivityServiceImpl implements ActivityService {
                 visionSchoolClassMember.setVisionClassId(visionSchoolClass.getId());
                 visionSchoolClassMember.setStudentNumber(list.get(i)[keys.get("学号")]);
                 visionSchoolClassMember.setVisionClientId(visionClient.getId());
+                visionSchoolClassMember.setEnabled(true);
                 if (isNew) {
                     Assert.isTrue(1 == schoolClassMemberMapper.insertSelective(visionSchoolClassMember));
                 } else {
                     visionSchoolClassMember.setModifiedTime(new Date());
+                    // TODO Update enable to false
                     Assert.isTrue(1 == schoolClassMemberMapper.updateByPrimaryKeySelective(visionSchoolClassMember));
                 }
                 visionSchoolClassMemberHashMap.put(tempKey, visionSchoolClassMember);
@@ -455,7 +449,7 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         @Override
-        public String getStudentNumber() {
+        public String getSchoolStudentNumber() {
             return visionActivityClientView.getVisionSchoolClassMember().getStudentNumber();
         }
 
@@ -545,49 +539,10 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         @Override
-        public Integer getDioptersLeft() {
-            return visionActivityClientView.getVisionClient().getDioptersLeft();
+        public String getStudentNumber() {
+            return visionActivityClientView.getVisionClient().getStudentNumber();
         }
 
-        @Override
-        public Integer getDioptersRight() {
-            return visionActivityClientView.getVisionClient().getDioptersRight();
-        }
-
-        @Override
-        public Integer getAstigmatismLeft() {
-            return visionActivityClientView.getVisionClient().getAstigmatismLeft();
-        }
-
-        @Override
-        public Integer getAstigmatismRight() {
-            return visionActivityClientView.getVisionClient().getAstigmatismRight();
-        }
-
-        @Override
-        public Integer getJointLuminosityLeft() {
-            return visionActivityClientView.getVisionClient().getJointLuminosityLeft();
-        }
-
-        @Override
-        public Integer getJointLuminosityRight() {
-            return visionActivityClientView.getVisionClient().getJointLuminosityRight();
-        }
-
-        @Override
-        public Integer getAxisLeft() {
-            return visionActivityClientView.getVisionClient().getAxisLeft();
-        }
-
-        @Override
-        public Integer getAxisRight() {
-            return visionActivityClientView.getVisionClient().getAxisRight();
-        }
-
-        @Override
-        public Integer getPupilDistance() {
-            return visionActivityClientView.getVisionClient().getPupilDistance();
-        }
     }
 
     private class VisionCheckRecordVOImpl implements VisionCheckRecordVO {
@@ -718,7 +673,7 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         @Override
-        public String getStudentNumber() {
+        public String getSchoolStudentNumber() {
             return visionActivityClientCheckRecordView.getVisionSchoolClassMember().getStudentNumber();
         }
 
@@ -808,49 +763,10 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         @Override
-        public Integer getDioptersLeft() {
-            return visionActivityClientCheckRecordView.getVisionClient().getDioptersLeft();
+        public String getStudentNumber() {
+            return visionActivityClientCheckRecordView.getVisionClient().getStudentNumber();
         }
 
-        @Override
-        public Integer getDioptersRight() {
-            return visionActivityClientCheckRecordView.getVisionClient().getDioptersRight();
-        }
-
-        @Override
-        public Integer getAstigmatismLeft() {
-            return visionActivityClientCheckRecordView.getVisionClient().getAstigmatismLeft();
-        }
-
-        @Override
-        public Integer getAstigmatismRight() {
-            return visionActivityClientCheckRecordView.getVisionClient().getAstigmatismRight();
-        }
-
-        @Override
-        public Integer getJointLuminosityLeft() {
-            return visionActivityClientCheckRecordView.getVisionClient().getJointLuminosityLeft();
-        }
-
-        @Override
-        public Integer getJointLuminosityRight() {
-            return visionActivityClientCheckRecordView.getVisionClient().getJointLuminosityRight();
-        }
-
-        @Override
-        public Integer getAxisLeft() {
-            return visionActivityClientCheckRecordView.getVisionClient().getAxisLeft();
-        }
-
-        @Override
-        public Integer getAxisRight() {
-            return visionActivityClientCheckRecordView.getVisionClient().getAxisRight();
-        }
-
-        @Override
-        public Integer getPupilDistance() {
-            return visionActivityClientCheckRecordView.getVisionClient().getPupilDistance();
-        }
     }
 
 }

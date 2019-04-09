@@ -33,6 +33,11 @@ public class VisionSchoolClassMemberSqlProvider {
             sql.VALUES("modified_time", "#{modifiedTime,jdbcType=TIMESTAMP}");
         }
 
+        if (record.getEnabled() != null) {
+            sql.VALUES("enabled", "#{enabled,jdbcType=BIT}");
+        }
+
+
         return sql.toString();
     }
 
@@ -58,6 +63,10 @@ public class VisionSchoolClassMemberSqlProvider {
 
         if (record.getModifiedTime() != null) {
             sql.SET("modified_time = #{modifiedTime,jdbcType=TIMESTAMP}");
+        }
+
+        if (record.getEnabled() != null) {
+            sql.SET("enabled = #{enabled,jdbcType=BIT}");
         }
 
         sql.WHERE("id = #{id,jdbcType=CHAR}");

@@ -55,6 +55,11 @@ public class ClientServiceImpl implements ClientService {
 
         @Override
         public String getStudentNumber() {
+            return visionClientView.getVisionClient().getStudentNumber();
+        }
+
+        @Override
+        public String getSchoolStudentNumber() {
             return visionClientView.getVisionSchoolClassMember().getStudentNumber();
         }
 
@@ -143,49 +148,5 @@ public class ClientServiceImpl implements ClientService {
             return visionClientView.getVisionClient().getVisionAcuity();
         }
 
-        @Override
-        public Integer getDioptersLeft() {
-            return visionClientView.getVisionClient().getDioptersLeft();
-        }
-
-        @Override
-        public Integer getDioptersRight() {
-            return visionClientView.getVisionClient().getDioptersRight();
-        }
-
-        @Override
-        public Integer getAstigmatismLeft() {
-            return visionClientView.getVisionClient().getAstigmatismLeft();
-        }
-
-        @Override
-        public Integer getAstigmatismRight() {
-            return visionClientView.getVisionClient().getAstigmatismRight();
-        }
-
-        @Override
-        public Integer getJointLuminosityLeft() {
-            return visionClientView.getVisionClient().getJointLuminosityLeft();
-        }
-
-        @Override
-        public Integer getJointLuminosityRight() {
-            return visionClientView.getVisionClient().getJointLuminosityRight();
-        }
-
-        @Override
-        public Integer getAxisLeft() {
-            return visionClientView.getVisionClient().getAxisLeft();
-        }
-
-        @Override
-        public Integer getAxisRight() {
-            return visionClientView.getVisionClient().getAxisRight();
-        }
-
-        @Override
-        public Integer getPupilDistance() {
-            return visionClientView.getVisionClient().getPupilDistance();
-        }
     }
 }

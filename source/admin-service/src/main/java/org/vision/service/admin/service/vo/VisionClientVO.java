@@ -9,7 +9,7 @@ public interface VisionClientVO {
 
     String getClassName();
 
-    String getStudentNumber();
+    String getSchoolStudentNumber();
 
     String getClientId();
 
@@ -45,21 +45,5 @@ public interface VisionClientVO {
 
     BigDecimal getVisionAcuity();
 
-    Integer getDioptersLeft();
-
-    Integer getDioptersRight();
-
-    Integer getAstigmatismLeft();
-
-    Integer getAstigmatismRight();
-
-    Integer getJointLuminosityLeft();
-
-    Integer getJointLuminosityRight();
-
-    Integer getAxisLeft();
-
-    Integer getAxisRight();
-
-    Integer getPupilDistance();
+    String getStudentNumber();
 }

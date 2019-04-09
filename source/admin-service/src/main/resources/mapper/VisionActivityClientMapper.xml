@@ -41,15 +41,7 @@
         <result column="vc_vision_acuity_left" property="visionAcuityLeft" jdbcType="DECIMAL"/>
         <result column="vc_vision_acuity_right" property="visionAcuityRight" jdbcType="DECIMAL"/>
         <result column="vc_vision_acuity" property="visionAcuity" jdbcType="DECIMAL"/>
-        <result column="vc_diopters_left" property="dioptersLeft" jdbcType="INTEGER"/>
-        <result column="vc_diopters_right" property="dioptersRight" jdbcType="INTEGER"/>
-        <result column="vc_astigmatism_left" property="astigmatismLeft" jdbcType="INTEGER"/>
-        <result column="vc_astigmatism_right" property="astigmatismRight" jdbcType="INTEGER"/>
-        <result column="vc_joint_luminosity_left" property="jointLuminosityLeft" jdbcType="INTEGER"/>
-        <result column="vc_joint_luminosity_right" property="jointLuminosityRight" jdbcType="INTEGER"/>
-        <result column="vc_axis_left" property="axisLeft" jdbcType="INTEGER"/>
-        <result column="vc_axis_right" property="axisRight" jdbcType="INTEGER"/>
-        <result column="vc_pupil_distance" property="pupilDistance" jdbcType="INTEGER"/>
+        <result column="vc_student_number" property="studentNumber" jdbcType="VARCHAR"/>
         <result column="vc_created_time" property="createdTime" jdbcType="DATE"/>
         <result column="vc_modified_time" property="modifiedTime" jdbcType="DATE"/>
     </resultMap>
@@ -81,6 +73,7 @@
         <result column="vscm_student_number" property="studentNumber" jdbcType="VARCHAR"/>
         <result column="vscm_created_time" property="createdTime" jdbcType="DATE"/>
         <result column="vscm_modified_time" property="modifiedTime" jdbcType="DATE"/>
+        <result column="vscm_enabled" property="enabled" jdbcType="BIT" />
     </resultMap>
 
     <resultMap id="BaseMap" type="org.vision.service.admin.persistence.model.VisionActivityClientView">
@@ -127,15 +120,7 @@
              vc.vision_acuity_left     as vc_vision_acuity_left,
              vc.vision_acuity_right    as vc_vision_acuity_right,
              vc.vision_acuity          as vc_vision_acuity,
-             vc.diopters_left          as vc_diopters_left,
-             vc.diopters_right         as vc_diopters_right,
-             vc.astigmatism_left       as vc_astigmatism_left,
-             vc.astigmatism_right      as vc_astigmatism_right,
-             vc.joint_luminosity_left  as vc_joint_luminosity_left,
-             vc.joint_luminosity_right as vc_joint_luminosity_right,
-             vc.axis_left              as vc_axis_left,
-             vc.axis_right             as vc_axis_right,
-             vc.pupil_distance         as vc_pupil_distance,
+             vc.student_number         as vc_student_number,
              vc.created_time           as vc_created_time,
              vc.modified_time          as vc_modified_time,
              vscm.id                   as vscm_id,
@@ -144,6 +129,7 @@
              vscm.student_number       as vscm_student_number,
              vscm.created_time         as vscm_created_time,
              vscm.modified_time        as vscm_modified_time,
+             vscm.enabled              as vscm_enabled,
              vsc.id                    as vsc_id,
              vsc.vision_school_id      as vsc_vision_school_id,
              vsc.name                  as vsc_name,
