@@ -333,4 +333,27 @@
       modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=CHAR}
   </update>
+  
+  <select id="getDetailList" parameterType="org.vision.service.admin.controller.criteria.SysUserGetListBO" resultType="org.vision.service.admin.service.vo.SysUserListVO">
+    select
+    	u.id user_id, 
+    	u.username user_name, 
+    	u.enabled, 
+    	u.locked, 
+    	u.account_expire, 
+    	u.credential_expire, 
+    	p.id profile_id, 
+    	p.name profile_name, 
+    	p.avatar, 
+    	p.gender, 
+    	p.created_time, 
+    	p.modified_time
+    from system_user u join system_user_profile p on u.id = p.id
+    <where>
+	    <if test="name != null and name !=''">
+	      and p.`name` like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+	    </if>
+	</where> 
+	order by u.created_time desc   
+  </select>  
 </mapper>

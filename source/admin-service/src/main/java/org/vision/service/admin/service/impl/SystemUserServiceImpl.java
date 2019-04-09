@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
+import javax.xml.crypto.Data;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.aspectj.weaver.ResolvableTypeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.vision.service.admin.common.PasswordUtils;
 import org.vision.service.admin.common.ResponseData;
+import org.vision.service.admin.common.SysResponseEnum;
 import org.vision.service.admin.configuration.security.VisionUserDetail;
 import org.vision.service.admin.controller.criteria.SysUserAddBO;
 import org.vision.service.admin.controller.criteria.SysUserGetListBO;
@@ -31,6 +34,7 @@ import org.vision.service.admin.persistence.model.SystemUserProfile;
 import org.vision.service.admin.persistence.model.SystemUserRole;
 import org.vision.service.admin.service.SysRoleService;
 import org.vision.service.admin.service.SystemUserService;
+import org.vision.service.admin.service.vo.SysUserListVO;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
 import org.vision.service.admin.util.ShortUUIDGenerator;
@@ -126,49 +130,42 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public ResponseData<Object> add(SysUserAddBO bo, SystemUser systemUser) {
       
+      String loginName = bo.getLoginName();
+      
+      SystemUser selectByUsername = this.systemUserMapper.selectByUsername(loginName);
+      if (selectByUsername != null) {
+        return new ResponseData<>(SysResponseEnum.USER_USERNAME_EXIST.getCode(), SysResponseEnum.USER_USERNAME_EXIST.getMessage());
+      }
+      
       String passwordEncoder = PasswordUtils.bcrypt(bo.getPassword());
       String id = ShortUUIDGenerator.newID();
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
       record.setId(id);
-      record.setUsername(bo.getName());
+      record.setUsername(loginName);
       record.setPassword(passwordEncoder);;
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.insertSelective(record);
 
-      String sysUserId = record.getId();
-
-      List<String> sysRoleIdList = bo.getSysRoleIdList();
-      for (String sysRoleId : sysRoleIdList) {
-
-        SystemUserRole po = new SystemUserRole();
-        po.setSystemUserId(sysUserId);
-        po.setRoleId(sysRoleId);
-        po.setCreatedTime(nowDate);
-
-        this.systemUserRoleMapper.insertSelective(po);
-      }
+      SystemUserProfile profile = new SystemUserProfile();
+      profile.setId(id);
+      profile.setName(bo.getName());
+      profile.setAvatar(bo.getAvatar());
+      profile.setGender(bo.getGender());
+      this.systemUserProfileMapper.insertSelective(profile);
 
       return new ResponseData<>();
     }
 
     @Override
-    public ResponseData<PageInfo<SystemUser>> getList(SysUserGetListBO bo) {
-      String name = bo.getName();
-      
-      SystemUserExample example = new SystemUserExample();
-      Criteria criteria = example.createCriteria();
-      if (StringUtil.isNotEmpty(name)) {
-        criteria.andUsernameLike("%" + name + "%");
-      }
+    public ResponseData<PageInfo<SysUserListVO>> getList(SysUserGetListBO bo) {
       
       PageHelper.startPage(bo.getPageNum(), bo.getPageSize());
+
+      List<SysUserListVO> detailList = systemUserMapper.getDetailList(bo);
       
-      PageHelper.startPage(bo.getPageNum(), bo.getPageSize());
-      List<SystemUser> sysUserPOList = systemUserMapper.selectByExample(example);
-      
-      ResponseData<PageInfo<SystemUser>> responseData = new ResponseData<>();
-      responseData.setData(new PageInfo<>(sysUserPOList));
+      ResponseData<PageInfo<SysUserListVO>> responseData = new ResponseData<>();
+      responseData.setData(new PageInfo<>(detailList));
       return responseData;
     }
 
@@ -192,7 +189,13 @@ public class SystemUserServiceImpl implements SystemUserService {
     public ResponseData<Object> update(SysUserUpdateBO bo, SystemUser systemUser) {
       
       String sysUserId = bo.getSysUserId();
-
+      String name = bo.getName();
+      
+      SystemUser selectByUsername = this.systemUserMapper.selectByUsername(name);
+      if (selectByUsername != null && !sysUserId.equals(selectByUsername.getId())) {
+        return new ResponseData<>(SysResponseEnum.USER_USERNAME_EXIST.getCode(), SysResponseEnum.USER_USERNAME_EXIST.getMessage());
+      }
+      
       Date nowDate = new Date();
       SystemUser record = new SystemUser();
       record.setId(sysUserId);
@@ -200,19 +203,6 @@ public class SystemUserServiceImpl implements SystemUserService {
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.updateByPrimaryKeySelective(record);
 
-      List<String> sysRoleIdList = bo.getSysRoleIdList();
-      if (CollectionUtils.isNotEmpty(sysRoleIdList)) {
-        
-        this.systemUserRoleMapper.deleteByUserId(sysUserId);
-        
-        for (String sysRoleId : sysRoleIdList) {
-          SystemUserRole po = new SystemUserRole();
-          po.setSystemUserId(sysUserId);
-          po.setRoleId(sysRoleId);
-          po.setCreatedTime(nowDate);
-          this.systemUserRoleMapper.insertSelective(po);
-        }
-      }
       return new ResponseData<>();
     }
 
@@ -244,6 +234,23 @@ public class SystemUserServiceImpl implements SystemUserService {
       
       systemUserMapper.updateByPrimaryKeySelective(record);
       
+      return new ResponseData<>();
+    }
+
+    @Override
+    public ResponseData<Object> addRole(String sysUserId, String sysRoleId) {
+
+      systemUserRoleMapper.deleteByPrimaryKey(sysUserId, sysRoleId);
+      return new ResponseData<>();
+    }
+
+    @Override
+    public ResponseData<Object> deleteRole(String sysUserId, String sysRoleId) {
+      SystemUserRole po = new SystemUserRole();
+      po.setSystemUserId(sysUserId);
+      po.setRoleId(sysRoleId);
+      po.setCreatedTime(new Date());
+      systemUserRoleMapper.insertSelective(po);
       return new ResponseData<>();
     }
 

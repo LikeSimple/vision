@@ -7,6 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vision.service.admin.common.ResponseData;
+import org.vision.service.admin.common.SysResponseEnum;
 import org.vision.service.admin.controller.criteria.SysRoleAddCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleGetListCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleUpdateBO;
@@ -42,13 +43,25 @@ public class SysRoleServiceImpl implements SysRoleService {
 
   @Override
   public ResponseData<Object> add(SysRoleAddCriteria criteria, SystemUser systemUser) {
-
+    ResponseData<Object> responseData = new ResponseData<>();
+    
+    String roleName = criteria.getRoleName();
+    SystemRoleExample example = new SystemRoleExample();
+    Criteria createCriteria  = example.createCriteria();
+    if (StringUtil.isNotEmpty(roleName)) {
+      createCriteria.andNameLike("%" + roleName + "%");
+    }
+    List<SystemRole> exist = systemRoleMapper.selectByExample(example);
+    if (exist != null && !exist.isEmpty()) {
+      return new ResponseData<>(SysResponseEnum.ROLE_NAME_EXIST.getCode(), SysResponseEnum.ROLE_NAME_EXIST.getMessage());
+    }
+    
     Date nowDate = new Date();
     
     String id = ShortUUIDGenerator.newID();
     SystemRole sysRolePO = new SystemRole();
     sysRolePO.setId(id);
-    sysRolePO.setName(criteria.getRoleName());
+    sysRolePO.setName(roleName);
     sysRolePO.setCreatedTime(nowDate);
     this.systemRoleMapper.insertSelective(sysRolePO);
 
@@ -64,7 +77,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
 
-    return new ResponseData<>();
+    return responseData;
   }
 
   @Override
@@ -101,7 +114,22 @@ public class SysRoleServiceImpl implements SysRoleService {
 
   @Override
   public ResponseData<Object> update(SysRoleUpdateBO bo, SystemUser systemUser) {
+    ResponseData<Object> responseData = new ResponseData<>();
+    
+    String roleName = bo.getName();
     String sysRoleId = bo.getId();
+    
+    SystemRoleExample example = new SystemRoleExample();
+    Criteria createCriteria  = example.createCriteria();
+    if (StringUtil.isNotEmpty(roleName)) {
+      createCriteria.andNameLike("%" + roleName + "%");
+    }
+    List<SystemRole> exist = systemRoleMapper.selectByExample(example);
+    if (exist != null && !exist.isEmpty()) {
+      if (!exist.get(0).getId().equals(sysRoleId)) {
+        return new ResponseData<>(SysResponseEnum.ROLE_NAME_EXIST.getCode(), SysResponseEnum.ROLE_NAME_EXIST.getMessage());
+      }
+    }
 
     Date nowDate = new Date();
     SystemRole sysRolePO = new SystemRole();
