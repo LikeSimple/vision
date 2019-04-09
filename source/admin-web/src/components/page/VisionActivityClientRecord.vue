@@ -9,7 +9,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-select v-model="select_cate" placeholder="请选择活动" class="handle-select mr10">
+        <el-select v-model="form.activityId" placeholder="请选择活动" class="handle-select mr10">
           <el-option
             v-for="item in activityList"
             :key="item.id"
@@ -17,8 +17,10 @@
             :value="item.id"
           ></el-option>
         </el-select>
+        <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
         <el-button type="primary" icon="upload" @click="handleUpload">导入</el-button>
+        <el-button type="primary" icon="download" @click="handleDownload">下载</el-button>
       </div>
       <el-table
         :data="data"
@@ -121,9 +123,11 @@ export default {
       activityList: [],
       select_cate: "",
       form: {
-        name: "",
-        date: "",
-        address: ""
+        activityId: "",
+        province: "",
+        city: "",
+        school: "",
+        age: ""
       },
       idx: -1
     };
@@ -145,14 +149,14 @@ export default {
       this.getData();
     },
     getData() {
-      getActivityClientRecordList(this.select_cate, this.cur_page, 20).then(
+      getActivityClientRecordList(this.form.activityId, this.cur_page, 20).then(
         res => {
           this.tableData = res.data;
         }
       );
     },
     search() {
-      if (this.select_cate == null || this.select_cate == "") {
+      if (this.form.activityId == null || this.form.activityId == "") {
         alert("请选择活动");
         return false;
       }
@@ -167,7 +171,7 @@ export default {
     },
 
     handleUpload() {
-      if (null == this.select_cate || '' == this.select_cate) {
+      if (null == this.form.activityId || '' == this.form.activityId) {
         this.$message.warning("没有选择活动！");
         return false;
       }
@@ -200,7 +204,7 @@ export default {
 }
 
 .handle-select {
-  width: 120px;
+  width: 160px;
 }
 
 .handle-input {

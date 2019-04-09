@@ -47,7 +47,7 @@ import java.util.List;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@Ignore
+@Ignore
 public class AdminServiceApplicationTests {
 
     @Autowired
@@ -214,15 +214,7 @@ public class AdminServiceApplicationTests {
         visionClient.setVisionAcuityLeft(BigDecimal.valueOf(0.3));
         visionClient.setVisionAcuityRight(BigDecimal.valueOf(0.4));
         visionClient.setVisionAcuity(BigDecimal.valueOf(0.4));
-        visionClient.setDioptersLeft(-175);
-        visionClient.setDioptersRight(-150);
-        visionClient.setAstigmatismLeft(0);
-        visionClient.setAstigmatismRight(0);
-        visionClient.setJointLuminosityLeft(-175);
-        visionClient.setJointLuminosityRight(-150);
-        visionClient.setAxisLeft(180);
-        visionClient.setAxisRight(180);
-        visionClient.setPupilDistance(53);
+        visionClient.setStudentNumber("00000000");
         visionClient.setCreatedTime(new Date());
         Assert.isTrue(1 == visionClientMapper.insertSelective(visionClient));
         //import School
@@ -330,15 +322,7 @@ public class AdminServiceApplicationTests {
                     visionClient.setVisionAcuityLeft(BigDecimal.valueOf(Double.valueOf(list.get(i)[keys.get("裸眼视力左")])));
                     visionClient.setVisionAcuityRight(BigDecimal.valueOf(Double.valueOf(list.get(i)[keys.get("裸眼视力右")])));
                     visionClient.setVisionAcuity(BigDecimal.valueOf(Double.valueOf(list.get(i)[keys.get("裸眼视力双眼")])));
-                    visionClient.setDioptersLeft(Integer.valueOf(list.get(i)[keys.get("屈光度左")]));
-                    visionClient.setDioptersRight(Integer.valueOf(list.get(i)[keys.get("屈光度右")]));
-                    visionClient.setAstigmatismLeft(Integer.valueOf(list.get(i)[keys.get("散光度左")]));
-                    visionClient.setAstigmatismRight(Integer.valueOf(list.get(i)[keys.get("散光度右")]));
-                    visionClient.setJointLuminosityLeft(Integer.valueOf(list.get(i)[keys.get("联合光度左")]));
-                    visionClient.setJointLuminosityRight(Integer.valueOf(list.get(i)[keys.get("联合光度右")]));
-                    visionClient.setAxisLeft(Integer.valueOf(list.get(i)[keys.get("轴位左")]));
-                    visionClient.setAxisRight(Integer.valueOf(list.get(i)[keys.get("轴位右")]));
-                    visionClient.setPupilDistance(Integer.valueOf(list.get(i)[keys.get("瞳距")]));
+                    visionClient.setStudentNumber("00000000");
                     if (isNew) {
                         Assert.isTrue(1 == visionClientMapper.insertSelective(visionClient));
                     } else {
