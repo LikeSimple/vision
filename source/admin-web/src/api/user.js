@@ -44,3 +44,10 @@ export const findUserRoleList = (userId) => {
     method: 'post',
   })
 }
+// 重置密码
+export const resetPassword = (userId) => {
+    return request({
+      url: '/api/user/reset-password/'+userId,
+      method: 'post',
+    })
+  }

@@ -178,3 +178,28 @@ a {
    position: absolute;
    right: 0;
 }
+.handle-role-name.el-input{
+   margin:0 0 30px 0;
+   display: block;
+   width: 90%;
+}
+.handle-role-name .el-textarea__inner {
+   width: 90%;
+   min-height: 100px!important;
+}
+.user-form .el-form-item{
+  width: 300px;
+}
+.role-row .el-dialog .el-dialog__body{
+    min-height: 300px;
+}
+.role-row .el-checkbox {
+    display: block;
+    margin-bottom: 20px;
+}
+.group {
+    margin-top: 30px;
+}
+.btn.el-button {
+    margin: 0 30px;
+}

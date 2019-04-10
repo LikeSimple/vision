@@ -21,12 +21,11 @@
         border
         class="table"
         ref="multipleTable"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column prop="userName" label="姓名" align="center"></el-table-column>
+        @selection-change="handleSelectionChange">
+        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
         <el-table-column  label="性别" align="center">
            <template slot-scope="scope">
-                <span>{{scope.row.gender ? '女':'男'}}</span>
+              <span>{{scope.row.gender ? '男':'女'}}</span>
             </template>
         </el-table-column>
         <el-table-column label="角色" align="center">
@@ -35,9 +34,10 @@
                 <el-button type="text" icon="el-icon-edit" @click="editRole(scope.row)">编辑</el-button>
             </template>
         </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="220" align="center">
             <template slot-scope="scope">
-                <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button type="text" icon="el-icon-setting" @click="handleResetPsw(scope.row)">重置密码</el-button>
+                <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row)">编辑</el-button>
                 <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -53,20 +53,22 @@
     </div>
 
     <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" :visible.sync="editVisible" width="50%">
+    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
       <el-form ref="form" :model="form" label-width="100px" class="user-form"> 
-          <el-form-item label="登录名">
-            <el-input v-model="form.loginName"></el-input>
-        </el-form-item>
-         <el-form-item label="密码">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
+        <div v-if="!userId">
+           <el-form-item label="登录名">
+               <el-input v-model="loginName"></el-input>
+           </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="password"></el-input>
+            </el-form-item>
+        </div>
         <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
+           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-         <el-radio v-model="form.gender" label="0">女</el-radio>
-         <el-radio v-model="form.gender" label="1">男</el-radio>
+         <el-radio v-model="form.gender" label="0" >女</el-radio>
+         <el-radio v-model="form.gender" label="1" >男</el-radio>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -74,15 +76,29 @@
         <el-button type="primary" @click="saveEdit">确 定</el-button>
       </span>
     </el-dialog>
+     <el-dialog title="重置密码" :visible.sync="passwordVisible" width="30%">
+          <el-form ref="form" :model="formPassword" label-width="100px"> 
+            <!-- <el-form-item label="旧密码">
+              <el-input v-model="formPassword.password"></el-input>
+            </el-form-item> -->
+            <el-form-item label="新密码">
+              <el-input v-model="formPassword.repassword"></el-input>
+            </el-form-item>
+         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="passwordVisible = false">取 消</el-button>
+            <el-button type="primary" @click="saveEditPassword">确 定</el-button>
+        </span>
+      </el-dialog>
     <el-dialog title="编辑角色" :visible.sync="roleVisible" width="50%" class="role-row">
-             <el-checkbox-group v-model="checkedSys">
-               <el-checkbox v-for="sys in sysList" :label="sys.name" :key="sys.name">{{sys.name}}</el-checkbox>
-            </el-checkbox-group>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="roleVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog>
+          <el-checkbox-group v-model="checkedSys">
+            <el-checkbox v-for="sys in sysList" :label="sys.name" :key="sys.name">{{sys.name}}</el-checkbox>
+        </el-checkbox-group>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="roleVisible = false">取 消</el-button>
+            <el-button type="primary" @click="saveEdit">确 定</el-button>
+        </span>
+      </el-dialog>
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
@@ -101,7 +117,8 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  findUserRoleList
+  findUserRoleList,
+  resetPassword
 } from "../../api/user.js";
 export default {
   name: "basetable",
@@ -119,16 +136,17 @@ export default {
       is_search: false,
       editVisible: false,
       roleVisible:false,
+      passwordVisible:false,
       sysList:[],
       checkedSys:[],
       delVisible: false,
       form: {
-        name: "",
-        password: "",
-        gender: "",
-        avatar: "",
-        loginName: ""
+        name: '',
+        gender: '1',
+        avatar: ''
       },
+      loginName:'',
+      password:'',
       idx: -1,
       tableData:[],
       total:0,
@@ -137,6 +155,10 @@ export default {
         name: '',
         pageNum: 1,
         pageSize: 20
+      },
+      formPassword:{
+        password:'',
+        repassword:''
       }
     };
   },
@@ -161,32 +183,26 @@ export default {
       this.params.pageNum = val;
       this.getUserData(this.params)
     },
-    // getData() {
-    //   getClientList(
-    //     this.clientNameCriteria,
-    //     this.idNumber,
-    //     this.schoolNameCriteria,
-    //     this.cur_page,
-    //     20
-    //   ).then(res => {
-    //     this.tableData = res.data;
-    //   });
-    // },
     search() {
       this.getUserData(this.params)
       this.is_search = true;
     },
-    handleEdit(index, row) {
-      console.log(row)
-      this.idx = index;
+    handleResetPsw(row){
+      // 重置密码
+      this.userId = row.userId
+      this.passwordVisible = true
+    },
+    saveEditPassword(){
+
+    },
+    handleEdit(row) {
       this.userId = row.userId
       this.form = {
         name: row.name,
-        password: row.password,
-        gender: row.gender,
+        gender: row.gender.toString(),
         avatar: row.avatar,
-        loginName: row.loginName
-      };
+      }
+      console.log(this.form)
       this.editVisible = true;
     },
     handleDelete(index, row) {

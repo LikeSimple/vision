@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <div class="printArea">
+    <el-button type="primary"  @click="print" class="btn" id="btn">打印</el-button>
+    <div class="printArea" id="print">
       <el-main class="card-wrapper">
         <el-col :span="8" v-for="item in qrcodeData" :key="item.clientId">
           <el-card class="qrcode-box-card">
@@ -57,6 +58,19 @@ export default {
     };
   },
   methods: {
+    // 打印
+    print(){
+      var printDom = document.getElementById('print')
+      var btn = document.getElementById('btn')
+      printDom.style.position = 'absolute'
+      btn.style.display = 'none'
+      var printhtml = printDom.innerHtml // 获取打印区域
+      var oldhtml = document.innerHtml // 保存原始内容
+      document.innerHtml = printhtml // 赋值打印
+      window.print()
+      document.innerHtml = oldhtml // 还原页面
+      window.location.reload()
+    },
     getList(activityId) {
       // pageSize = 0 代表获取全部数据
       getActivityClientList(activityId, 1, 0).then(res => {
@@ -87,10 +101,6 @@ export default {
 </script>
 
 <style scoped>
-.printArea {
-  position: absolute;
-}
-
 .qrcode-card-text {
   font-size: 15px;
   color: brown;

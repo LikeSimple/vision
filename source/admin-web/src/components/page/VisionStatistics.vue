@@ -16,7 +16,7 @@
                 </el-table-column>
                 <el-table-column prop="description" align="center" label="描述">
                 </el-table-column>
-                <el-table-column prop="createdTime" align="center" label="日期" width="100">
+                <el-table-column prop="createdTime" align="center" label="日期">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -32,10 +32,10 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="roleVisible" width="50%">
-            <el-input v-model="roleName" placeholder="角色名称" class="handle-input handle-role-name mr10"></el-input>
-            <el-input type="textarea" v-model="desc" class="handle-input handle-role-name mr10" placeholder="描述"></el-input>
-             <el-checkbox-group v-model="checkedSys">
+        <el-dialog title="编辑" :visible.sync="roleVisible" width="30%">
+            <el-input v-model="roleName" placeholder="角色名称" class="handle-role-name mr10"></el-input>
+            <el-input type="textarea" v-model="desc" class="handle-role-name" placeholder="描述"></el-input>
+             <el-checkbox-group v-model="checkedSys" class="group">
                <el-checkbox v-for="sys in sysList" :label="sys.name" :key="sys.name">{{sys.name}}</el-checkbox>
             </el-checkbox-group>
             <span slot="footer" class="dialog-footer">
