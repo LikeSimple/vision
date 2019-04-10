@@ -1,0 +1,41 @@
+version: "2.4"
+services:
+  web: 
+    image: registry.cn-beijing.aliyuncs.com/jimmyxu/vision-web:1.0.0
+    ports:
+      - "8080:80"
+    networks:
+      - vision_net
+    environment:
+      TZ: "Asia/Shanghai"
+    mem_limit: 512MB
+    depends_on:
+      - admin
+      - mysql
+    restart: on-failure
+  admin:
+    image: registry.cn-beijing.aliyuncs.com/jimmyxu/vision-service:1.0.0
+    networks:
+      - vision_net    
+    mem_limit: 1024MB
+    environment:
+      TZ: "Asia/Shanghai"
+      JAVA_OPTS: "-Xms512m -Xmx768m -Dspring.profiles.active=compose -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+    depends_on:
+      - mysql
+    restart: on-failure
+  mysql:
+    image: mysql:5.7.24
+    networks:
+      - vision_net
+    ports:
+      - "3306:3306"
+    mem_limit: 1024MB
+    environment:
+      - "TIME_ZONE=Asia/Shanghai"
+      - "MYSQL_ROOT_PASSWORD=1234"
+      - "MYSQL_DATABASE=vision"
+    command: ["--character-set-server=utf8mb4","--collation-server=utf8mb4_unicode_ci"]
+    restart: on-failure
+networks:
+  vision_net:

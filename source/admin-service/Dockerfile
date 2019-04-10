@@ -1,11 +1,9 @@
-FROM openjdk:8u181-jre-slim-stretch
-RUN groupadd app && useradd -g app -d /home/app -s /bin/sh -m app
-USER app
-ARG PROJECT_NAME
+FROM openjdk:8-jre-alpine
+RUN addgroup -S app && adduser -SDG app app
+WORKDIR /home/app
+RUN mkdir -p /home/app/log
+VOLUME /tmp
 ARG JAR_FILE
-WORKDIR /home/app/${PROJECT_NAME}
-COPY target/${JAR_FILE} /home/app/${PROJECT_NAME}
-COPY entrypoint.sh /home/app/${PROJECT_NAME}
-ENV JAR_FILE=${JAR_FILE}
-EXPOSE 8080
-ENTRYPOINT ["bash", "./entrypoint.sh"]
+COPY target/admin-0.0.1-SNAPSHOT.jar app.jar
+ENV JAVA_OPTS=""
+ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
