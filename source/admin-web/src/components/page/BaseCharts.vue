@@ -1,109 +1,278 @@
 <template>
-    <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-favor"></i> schart图表</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="container">
-            <div class="plugins-tips">
-                vue-schart：vue.js封装sChart.js的图表组件。
-                访问地址：<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
-            </div>
-            <div class="schart-box">
-                <div class="content-title">柱状图</div>
-                <schart class="schart" canvasId="bar" :data="data1" type="bar" :options="options1"></schart>
-            </div>
-            <div class="schart-box">
-            <div class="content-title">折线图</div>
-            <schart class="schart" canvasId="line" :data="data1" type="line" :options="options2"></schart>
-            </div>
-            <div class="schart-box">
-            <div class="content-title">饼状图</div>
-            <schart class="schart" canvasId="pie" :data="data2" type="pie" :options="options3"></schart>
-            </div>
-            <div class="schart-box">
-            <div class="content-title">环形图</div>
-            <schart class="schart" canvasId="ring" :data="data2" type="ring" :options="options4"></schart>
-            </div>
-        </div>
+  <div class="table">
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-lx-cascades"></i>用户
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+    <div class="container">
+      <div class="handle-box">姓名：
+        <el-input v-model="clientNameCriteria" class="handle-input mr10"></el-input>身份证号：
+        <el-input v-model="idNumber" class="handle-input mr10"></el-input>学校：
+        <el-input v-model="schoolNameCriteria" class="handle-input mr10"></el-input>
+        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="primary" class="handle-add">新增</el-button>
+      </div>
+      <el-table
+        :data="data"
+        border
+        class="table"
+        ref="multipleTable"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="table-expand">
+              <el-form-item label="左屈光度">
+                <span>{{ props.row.dioptersLeft }}</span>
+              </el-form-item>
+              <el-form-item label="右屈光度">
+                <span>{{ props.row.dioptersRight }}</span>
+              </el-form-item>
+              <el-form-item label="左散光度">
+                <span>{{ props.row.astigmatismLeft }}</span>
+              </el-form-item>
+              <el-form-item label="右散光度">
+                <span>{{ props.row.astigmatismRight }}</span>
+              </el-form-item>
+              <el-form-item label="左联合光度">
+                <span>{{ props.row.jointLuminosityLeft }}</span>
+              </el-form-item>
+              <el-form-item label="右联合光度">
+                <span>{{ props.row.jointLuminosityRight }}</span>
+              </el-form-item>
+              <el-form-item label="左轴">
+                <span>{{ props.row.axisLeft }}</span>
+              </el-form-item>
+              <el-form-item label="右轴">
+                <span>{{ props.row.axisRight }}</span>
+              </el-form-item>
+              <el-form-item label="轴距">
+                <span>{{ props.row.pupilDistance }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column prop="schoolName" label="学校" sortable width="160" align="center"></el-table-column>
+        <el-table-column prop="className" label="班级" width="120" align="center"></el-table-column>
+        <el-table-column prop="studentNumber" label="学号" width="100" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+        <el-table-column
+          prop="gender"
+          label="性别"
+          width="50"
+          :formatter="genderFormatter"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="age" label="年龄" width="50" align="center"></el-table-column>
+        <el-table-column prop="visionAcuity" label="视力" width="60" align="center"></el-table-column>
+        <el-table-column prop="visionAcuityLeft" label="左眼" width="60" align="center"></el-table-column>
+        <el-table-column prop="visionAcuityRight" label="右眼" width="60" align="center"></el-table-column>
+        <el-table-column prop="idNumber" label="身份证号" width="200" align="center"></el-table-column>
+         <el-table-column label="操作" width="180" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+      </el-table>
+      <div class="pagination">
+        <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          layout="prev, pager, next"
+          :total="1000"
+        ></el-pagination>
+      </div>
+    </div>
+
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="50px">
+        <el-form-item label="日期">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="form.date"
+            value-format="yyyy-MM-dd"
+            style="width: 100%;"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-input v-model="form.address"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
+      <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRow">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
-    import Schart from 'vue-schart';
-    export default {
-        name: 'basecharts',
-        components: {
-            Schart
-        },
-        data: () => ({
-            data1:[
-                {name:'2012',value:1141},
-                {name:'2013',value:1499},
-                {name:'2014',value:2260},
-                {name:'2015',value:1170},
-                {name:'2016',value:970},
-                {name:'2017',value:1450}
-            ],
-            data2 : [
-                {name:'短袖',value:1200},
-                {name:'休闲裤',value:1222},
-                {name:'连衣裙',value:1283},
-                {name:'外套',value:1314},
-                {name:'羽绒服',value:2314}
-            ],
-            options1: {
-                title: '某商店近年营业总额',
-                autoWidth: true,   // 设置宽高自适应
-                showValue: false,
-                bgColor: '#F9EFCC',
-                fillColor: '#00887C',
-                contentColor: 'rgba(46,199,201,0.3)',
-                yEqual: 7
-            },
-            options2: {
-                title: '某商店近年营业总额',
-                bgColor: '#D5E4EB',
-                titleColor: '#00887C',
-                fillColor: 'red',
-                contentColor: 'rgba(46,199,201,0.3)'
-            },
-            options3: {
-                title: '某商店各商品年度销量',
-                bgColor: '#829dca',
-                titleColor: '#ffffff',
-                legendColor: '#ffffff',
-                radius: 120
-            },
-            options4: {
-                title: '某商店各商品年度销量',
-                bgColor: '#829daa',
-                titleColor: '#ffffff',
-                legendColor: '#ffffff',
-                radius: 120,
-                innerRadius:80
-            }
-        })
+import {
+  getActivityList,
+  createActivity,
+  editActivity,
+  deleteActivity,
+  getClientList
+} from "../../api/client.js";
+export default {
+  name: "basetable",
+  data() {
+    return {
+      url: "./vuetable.json",
+      tableData: [],
+      cur_page: 1,
+      multipleSelection: [],
+      select_cate: "",
+      select_word: "",
+      clientNameCriteria: "",
+      idNumber: "",
+      schoolNameCriteria: "",
+      del_list: [],
+      is_search: false,
+      editVisible: false,
+      delVisible: false,
+      form: {
+        name: "",
+        date: "",
+        address: ""
+      },
+      idx: -1
+    };
+  },
+  created() {
+    this.getData(null, null, null);
+  },
+  computed: {
+    data() {
+      return this.tableData;
     }
+  },
+  methods: {
+    // 分页导航
+    handleCurrentChange(val) {
+      this.cur_page = val;
+      this.getData();
+    },
+    getData() {
+      getClientList(
+        this.clientNameCriteria,
+        this.idNumber,
+        this.schoolNameCriteria,
+        this.cur_page,
+        20
+      ).then(res => {
+        this.tableData = res.data;
+      });
+    },
+    search() {
+      this.getData();
+      this.is_search = true;
+    },
+    genderFormatter(row, column) {
+      return 1 == row.gender ? "男" : "女";
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    handleEdit(index, row) {
+      this.idx = index;
+      const item = this.tableData[index];
+      this.form = {
+        name: item.name,
+        date: item.date,
+        address: item.address
+      };
+      this.editVisible = true;
+    },
+    handleDelete(index, row) {
+      this.idx = index;
+      this.delVisible = true;
+    },
+    delAll() {
+      const length = this.multipleSelection.length;
+      let str = "";
+      this.del_list = this.del_list.concat(this.multipleSelection);
+      for (let i = 0; i < length; i++) {
+        str += this.multipleSelection[i].name + " ";
+      }
+      this.$message.error("删除了" + str);
+      this.multipleSelection = [];
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // 保存编辑
+    saveEdit() {
+      this.$set(this.tableData, this.idx, this.form);
+      this.editVisible = false;
+      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+    },
+    // 确定删除
+    deleteRow() {
+      this.tableData.splice(this.idx, 1);
+      this.$message.success("删除成功");
+      this.delVisible = false;
+    }
+  }
+};
 </script>
 
 <style scoped>
-.schart-box{
-    display: inline-block;
-    margin: 20px;
+.handle-box {
+  margin-bottom: 20px;
 }
-    .schart{
-        width: 500px;
-        height: 400px;
-    }
-    .content-title{
-        clear: both;
-        font-weight: 400;
-        line-height: 50px;
-        margin: 10px 0;
-        font-size: 22px;
-        color: #1f2f3d;
-    }
-    
+
+.handle-select {
+  width: 120px;
+}
+
+.handle-input {
+  width: 200px;
+  display: inline-block;
+}
+.del-dialog-cnt {
+  font-size: 16px;
+  text-align: center;
+}
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+.red {
+  color: #ff0000;
+}
+.mr10 {
+  margin-right: 10px;
+}
+
+.table-expand {
+  font-size: 0;
+}
+.table-expand label {
+  color: #99a9bf;
+}
+.table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 30%;
+  color:coral;
+}
 </style>

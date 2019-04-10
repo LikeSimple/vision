@@ -49,15 +49,15 @@
                         title: '用户'
                     },      
                     {
+                        icon: 'el-icon-lx-copy',
+                        index: 'statistics',
+                        title: '角色'
+                    },  
+                    {
                         icon: 'el-icon-lx-favor',
                         index: 'report',
                         title: '权限'
-                    },
-                    {
-                        icon: 'el-icon-lx-copy',
-                        index: 'statistics',
-                        title: '角色列表'
-                    },          
+                    },        
                     {
                         icon: 'el-icon-lx-cascades',
                         index: '3',
