@@ -1,15 +1,13 @@
 package org.vision.service.admin.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
-import javax.xml.crypto.Data;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.aspectj.weaver.ResolvableTypeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,32 +20,35 @@ import org.vision.service.admin.controller.criteria.SysUserAddBO;
 import org.vision.service.admin.controller.criteria.SysUserGetListBO;
 import org.vision.service.admin.controller.criteria.SysUserUpdateBO;
 import org.vision.service.admin.persistence.mapper.SystemAuthorityMapper;
+import org.vision.service.admin.persistence.mapper.SystemRoleMapper;
 import org.vision.service.admin.persistence.mapper.SystemUserMapper;
 import org.vision.service.admin.persistence.mapper.SystemUserProfileMapper;
 import org.vision.service.admin.persistence.mapper.SystemUserRoleMapper;
 import org.vision.service.admin.persistence.model.SystemAuthority;
 import org.vision.service.admin.persistence.model.SystemRole;
+import org.vision.service.admin.persistence.model.SystemRoleExample;
 import org.vision.service.admin.persistence.model.SystemUser;
-import org.vision.service.admin.persistence.model.SystemUserExample;
-import org.vision.service.admin.persistence.model.SystemUserExample.Criteria;
 import org.vision.service.admin.persistence.model.SystemUserProfile;
 import org.vision.service.admin.persistence.model.SystemUserRole;
 import org.vision.service.admin.service.SysRoleService;
 import org.vision.service.admin.service.SystemUserService;
 import org.vision.service.admin.service.vo.SysUserListVO;
+import org.vision.service.admin.service.vo.SysUserRoleVO;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
 import org.vision.service.admin.util.ShortUUIDGenerator;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.util.StringUtil;
 
 @Service("SystemUserService")
 public class SystemUserServiceImpl implements SystemUserService {
 
     @Autowired
     private SysRoleService sysRoleService;
+    
+    @Autowired
+    private SystemRoleMapper systemRoleMapper;
     
     private SystemUserMapper systemUserMapper;
     
@@ -203,6 +204,12 @@ public class SystemUserServiceImpl implements SystemUserService {
       record.setCreatedTime(nowDate);;
       this.systemUserMapper.updateByPrimaryKeySelective(record);
 
+      SystemUserProfile profile = new SystemUserProfile();
+      profile.setId(sysUserId);
+      profile.setName(bo.getName());
+      profile.setAvatar(bo.getAvatar());
+      profile.setGender(bo.getGender());
+      this.systemUserProfileMapper.updateByPrimaryKeySelective(profile);
       return new ResponseData<>();
     }
 
@@ -210,6 +217,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     public ResponseData<Object> delete(String sysUserId, SystemUser systemUser) {
 
       systemUserMapper.deleteByPrimaryKey(sysUserId);
+      systemUserProfileMapper.deleteByPrimaryKey(sysUserId);
       return new ResponseData<>();
     }
 
@@ -239,19 +247,48 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public ResponseData<Object> addRole(String sysUserId, String sysRoleId) {
-
-      systemUserRoleMapper.deleteByPrimaryKey(sysUserId, sysRoleId);
-      return new ResponseData<>();
-    }
-
-    @Override
-    public ResponseData<Object> deleteRole(String sysUserId, String sysRoleId) {
       SystemUserRole po = new SystemUserRole();
       po.setSystemUserId(sysUserId);
       po.setRoleId(sysRoleId);
       po.setCreatedTime(new Date());
       systemUserRoleMapper.insertSelective(po);
       return new ResponseData<>();
+
+    }
+
+    @Override
+    public ResponseData<Object> deleteRole(String sysUserId, String sysRoleId) {
+      systemUserRoleMapper.deleteByPrimaryKey(sysUserId, sysRoleId);
+      return new ResponseData<>();
+    }
+
+    @Override
+    public ResponseData<List<SysUserRoleVO>> findRole(String sysUserId) {
+      
+      List<SystemRole> list = systemRoleMapper.selectByExample(new SystemRoleExample());
+      
+      List<SysUserRoleVO> sysRoleList = new ArrayList<>();
+      for (SystemRole po : list) {
+        SysUserRoleVO vo = new SysUserRoleVO();
+        vo.setCreatedTime(po.getCreatedTime());
+        vo.setDescription(po.getDescription());
+        vo.setId(po.getId());
+        vo.setModifiedTime(po.getModifiedTime());
+        vo.setName(po.getName());
+        sysRoleList.add(vo);
+      }
+      
+      List<SystemRole> userRoleList = sysRoleService.getListByUserId(sysUserId).getData();
+      
+      for (SysUserRoleVO vo : sysRoleList) {
+        for (SystemRole userRole : userRoleList) {
+          if (vo.getId().equals(userRole.getId())) {
+            vo.setAdd(true);
+          }
+        }
+      }
+      
+      return new ResponseData<List<SysUserRoleVO>>(sysRoleList);
     }
 
 }

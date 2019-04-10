@@ -8,6 +8,7 @@ import org.vision.service.admin.controller.criteria.SysRoleGetListCriteria;
 import org.vision.service.admin.controller.criteria.SysRoleUpdateBO;
 import org.vision.service.admin.persistence.model.SystemRole;
 import org.vision.service.admin.persistence.model.SystemUser;
+import org.vision.service.admin.service.vo.SysUserRoleVO;
 import org.vision.service.admin.service.vo.SystemAuthorityVO;
 
 import com.github.pagehelper.PageInfo;

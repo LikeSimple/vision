@@ -1,5 +1,9 @@
 package org.vision.service.admin.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,7 @@ import org.vision.service.admin.controller.criteria.SysUserUpdateBO;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.service.SystemUserService;
 import org.vision.service.admin.service.vo.SysUserListVO;
+import org.vision.service.admin.service.vo.SysUserRoleVO;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
 
@@ -39,7 +44,7 @@ public class SystemUserController {
     }
     @ApiOperation(value = "添加用户")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseData<Object> add(@RequestBody SysUserAddBO bo) {
+    public ResponseData<Object> add(@RequestBody @Valid SysUserAddBO bo) {
       
       VisionUserDetail userDetail = (VisionUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return this.systemUserService.add(bo, userDetail.getSystemUser());
@@ -59,6 +64,14 @@ public class SystemUserController {
     public ResponseData<SysUserVO> findById(@PathVariable("sysUserId") String sysUserId) {
 
       return this.systemUserService.findById(sysUserId);
+
+    }
+    
+    @ApiOperation(value = "查找用户角色列表")
+    @RequestMapping(value = "/find-role/{sysUserId}", method = RequestMethod.POST)
+    public ResponseData<List<SysUserRoleVO>> findRole(@PathVariable("sysUserId") String sysUserId) {
+
+      return this.systemUserService.findRole(sysUserId);
 
     }
     

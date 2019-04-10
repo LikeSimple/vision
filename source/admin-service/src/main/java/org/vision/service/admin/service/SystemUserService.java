@@ -1,5 +1,7 @@
 package org.vision.service.admin.service;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,7 @@ import org.vision.service.admin.controller.criteria.SysUserGetListBO;
 import org.vision.service.admin.controller.criteria.SysUserUpdateBO;
 import org.vision.service.admin.persistence.model.SystemUser;
 import org.vision.service.admin.service.vo.SysUserListVO;
+import org.vision.service.admin.service.vo.SysUserRoleVO;
 import org.vision.service.admin.service.vo.SysUserVO;
 import org.vision.service.admin.service.vo.SystemUserProfileVO;
 
@@ -42,6 +45,8 @@ public interface SystemUserService {
      * @return
      */
     ResponseData<SysUserVO> findById(String sysUserId);
+    
+    ResponseData<List<SysUserRoleVO>> findRole(String sysUserId);
     
     /**
      * 更新用户数据

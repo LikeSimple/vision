@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class SysUserAddBO {
 
-  @io.swagger.annotations.ApiModelProperty(value = "姓名", name = "name", required = false, example = "")
+  @io.swagger.annotations.ApiModelProperty(value = "登录名", name = "name", required = false, example = "")
   @NotBlank
   private String loginName;
   

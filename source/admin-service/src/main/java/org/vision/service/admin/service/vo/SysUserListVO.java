@@ -13,9 +13,6 @@ public class SysUserListVO {
   @io.swagger.annotations.ApiModelProperty(value = "",name = "username", required = false,example = "")
   private String userName;
 
-  @io.swagger.annotations.ApiModelProperty(value = "",name = "password", required = false,example = "")
-  private String password;
-
   @io.swagger.annotations.ApiModelProperty(value = "",name = "enabled", required = false,example = "")
   private Boolean enabled;
 
