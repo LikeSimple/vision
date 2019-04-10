@@ -189,7 +189,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public ResponseData<Object> update(SysUserUpdateBO bo, SystemUser systemUser) {
       
-      String sysUserId = bo.getSysUserId();
+      String sysUserId = bo.getUserId();
       String name = bo.getName();
       
       SystemUser selectByUsername = this.systemUserMapper.selectByUsername(name);
@@ -289,6 +289,19 @@ public class SystemUserServiceImpl implements SystemUserService {
       }
       
       return new ResponseData<List<SysUserRoleVO>>(sysRoleList);
+    }
+
+    @Override
+    public ResponseData<Object> resetPassword(String userId) {
+      String passwordEncoder = PasswordUtils.bcrypt("11111111");
+ 
+      Date nowDate = new Date();
+      SystemUser record = new SystemUser();
+      record.setId(userId);
+      record.setPassword(passwordEncoder);;
+      record.setModifiedTime(nowDate);;
+      this.systemUserMapper.updateByPrimaryKeySelective(record);
+      return new ResponseData<>();
     }
 
 }

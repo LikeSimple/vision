@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class SysUserUpdateBO {
 
-  @io.swagger.annotations.ApiModelProperty(value = "用户id", name = "sysUserId", required = false, example = "")
+  @io.swagger.annotations.ApiModelProperty(value = "用户id", name = "userId", required = false, example = "")
   @NotNull
-  private String sysUserId;
+  private String userId;
   
   @io.swagger.annotations.ApiModelProperty(value = "姓名", name = "name", required = false, example = "")
   @NotBlank

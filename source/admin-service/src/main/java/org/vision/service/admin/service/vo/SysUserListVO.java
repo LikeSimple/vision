@@ -10,8 +10,8 @@ public class SysUserListVO {
   @io.swagger.annotations.ApiModelProperty(value = "",name = "id", required = false,example = "")
   private String userId;
 
-  @io.swagger.annotations.ApiModelProperty(value = "",name = "username", required = false,example = "")
-  private String userName;
+  @io.swagger.annotations.ApiModelProperty(value = "",name = "loginName", required = false,example = "")
+  private String loginName;
 
   @io.swagger.annotations.ApiModelProperty(value = "",name = "enabled", required = false,example = "")
   private Boolean enabled;
@@ -24,10 +24,8 @@ public class SysUserListVO {
 
   @io.swagger.annotations.ApiModelProperty(value = "",name = "credentialExpire", required = false,example = "")
   private Date credentialExpire;
-  
-  private String profileId;
 
-  private String profileName;
+  private String name;
 
   private String avatar;
 

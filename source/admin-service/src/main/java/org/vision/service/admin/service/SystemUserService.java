@@ -55,6 +55,9 @@ public interface SystemUserService {
      */
     ResponseData<Object> update(SysUserUpdateBO bo, SystemUser systemUser);
     
+    ResponseData<Object> resetPassword(String userId);
+    
+    
     /**
      * 禁用用户
      * @param po

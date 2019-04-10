@@ -85,11 +85,18 @@ public class SystemUserController {
     }
 
     @ApiOperation(value = "修改用户")
-    @RequestMapping(value = "/update/{sysUserId}", method = RequestMethod.POST)
-    public ResponseData<Object> update(@PathVariable("sysUserId")String sysUserId, @RequestBody SysUserUpdateBO bo) {
-      bo.setSysUserId(sysUserId);
+    @RequestMapping(value = "/update/{userId}", method = RequestMethod.POST)
+    public ResponseData<Object> update(@PathVariable("userId")String userId, @RequestBody SysUserUpdateBO bo) {
+      bo.setUserId(userId);
       VisionUserDetail userDetail = (VisionUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return this.systemUserService.update(bo, userDetail.getSystemUser());
+
+    }
+    
+    @ApiOperation(value = "重置密码")
+    @RequestMapping(value = "/reset-password/{userId}", method = RequestMethod.POST)
+    public ResponseData<Object> resetPassword(@PathVariable("userId")String userId) {
+      return this.systemUserService.resetPassword(userId);
 
     }
     
